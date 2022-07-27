@@ -50,7 +50,24 @@ public class EnemyVM
     //TODO: functions (何型?)
 
     public void run(){
-        
+        Instruction instruction = instructions[programCounter];
+        switch (instruction.mnemonic)
+        {
+            case Mnemonic.PUSH:
+
+                break;
+            case Mnemonic.POP:
+                break;
+            case Mnemonic.ADD:
+                break;
+            case Mnemonic.SUB:
+                break;
+            case Mnemonic.MUL:
+                break;
+            case Mnemonic.DIV:
+                break;
+        }
+        programCounter++;
     }
     
 }

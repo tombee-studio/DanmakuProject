@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
 public class EnemyComponent : MonoBehaviour
@@ -13,7 +13,8 @@ public class EnemyComponent : MonoBehaviour
     //TODO: source を追加 (何型?)
 
     void Start()
-    { 
+    {
+        Debug.Log(interpreter.ReturnValue);
     }
 
     void Update()

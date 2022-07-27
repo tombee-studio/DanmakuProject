@@ -21,7 +21,16 @@ public class EnemyInterpreter
     public void test_run()
     {
         //TODO: 命令を追加
-        while (IsContinue) run();
-        Debug.Assert(false);
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  2)
+        );
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  3)
+        );
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD,   0)
+        );
+        while (!IsExit) run();
+        Debug.LogAssertion(ReturnValue == 5);
     }
 }

@@ -12,7 +12,28 @@ public partial class EnemyVM
             Debug.Log(vm.data.ToArray());
         }
     };
-    private List<Instruction> instructionSeries;
+
+    public struct Instruction
+    {
+        public Mnemonic mnemonic;
+        public int argument;
+        public Instruction(Mnemonic mnemonic, int argument)
+        {
+            this.mnemonic = mnemonic;
+            this.argument = argument;
+        }
+    }
+
+    public enum Mnemonic
+    {
+        PUSH,
+        ADD,
+        SUB,
+        MUL,
+        DIV
+    };
+
+    private List<Instruction> instructionSeries = new List<Instruction>();
     private int programCounter;
 
     private Stack<VMValueType> data = new Stack<VMValueType>();

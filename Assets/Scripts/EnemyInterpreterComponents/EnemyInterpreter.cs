@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
+
 
 public class EnemyInterpreter
 {
@@ -16,5 +17,11 @@ public class EnemyInterpreter
 
     public void run(){
         vm.run();
+    }
+    public void test_run()
+    {
+        //TODO: 命令を追加
+        while (IsContinue) run();
+        Debug.Assert(false);
     }
 }

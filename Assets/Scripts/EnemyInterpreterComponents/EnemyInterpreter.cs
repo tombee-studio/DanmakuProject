@@ -16,8 +16,12 @@ public class EnemyInterpreter
     }
 
     void Update() {
-        while(vm.isContinue){
+        while(vm.IsContinute){
             vm.run();
+        }
+
+        if (vm.IsExit) {
+            Debug.Log(vm.ReturnValue);
         }
     }
 }

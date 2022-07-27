@@ -53,15 +53,24 @@ public partial class EnemyVM
                 break;
         }
         programCounter++;
+        if (instructionSeries.Count == programCounter) finishProcess();
+
+
     }
-    public void PUSH(Instruction instruction) => data.Push(instruction.argument);
-    public void ADD()
+    private void finishProcess()
+    {
+        isExit = true;
+        isContinue = false;
+        retVal = data.Pop();
+    }
+    private void PUSH(Instruction instruction) => data.Push(instruction.argument);
+    private void ADD()
     {
         int operand2 = data.Pop();
         int operand1 = data.Pop();
         data.Push(operand1 + operand2);
     }
-    public void SUB()
+    private void SUB()
     {
         // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
         // スタックからPopされる、オペランドの順番はope2, ope1である。
@@ -69,13 +78,13 @@ public partial class EnemyVM
         int operand1 = data.Pop();
         data.Push(operand1 - operand2);
     }
-    public void MUL()
+    private void MUL()
     {
         int operand2 = data.Pop();
         int operand1 = data.Pop();
         data.Push(operand1 * operand2);
     }
-    public void DIV()
+    private void DIV()
     {
         int operand2 = data.Pop();
         int operand1 = data.Pop();

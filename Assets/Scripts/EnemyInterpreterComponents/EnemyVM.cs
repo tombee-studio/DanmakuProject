@@ -13,6 +13,23 @@ public class EnemyVM
         }
     };
 
+    private enum Mnemonic
+    {
+        PUSH,
+        POP,
+        ADD,
+        SUB,
+        MUL,
+        DIV
+    };
+    public struct Instruction
+    {
+        public Mnemonic mnemonic;
+        public int? argument;
+    }
+    private List<Instruction> instructions;
+    private int programCounter;
+
     private Stack<VMValueType> data = new Stack<VMValueType>();
     private bool isContinue = false;
     private bool isExit = true;  
@@ -33,7 +50,8 @@ public class EnemyVM
     //TODO: functions (何型?)
 
     public void run(){
-
+        
     }
+    
 }
  

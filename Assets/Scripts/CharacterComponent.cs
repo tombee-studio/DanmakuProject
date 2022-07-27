@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class CharactorComponent : MonoBehaviour
+public class CharacterComponent : MonoBehaviour
 {
     const float speed = 0.1f;
 

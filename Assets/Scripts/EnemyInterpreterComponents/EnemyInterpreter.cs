@@ -25,12 +25,36 @@ public class EnemyInterpreter
             new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  9)
         );
+        // stack: {2, 9}
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD,   0)
         );
+        // stack: {11}
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  3)
+        );
+        // stack: {11, 3}
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB,  0)
+        );
+        // stack: {8}
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+        );
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+        );
+        // stack: {8, 2, 2}
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0)
+        );
+        // stack: {8, 4}
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 0)
+        );
+        // stack: {2}
         while (!IsExit) run();
-        Debug.LogAssertion(ReturnValue == 5);
     }
 }

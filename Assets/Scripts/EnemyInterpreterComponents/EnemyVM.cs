@@ -5,7 +5,7 @@ using UnityEngine;
 
 using VMValueType = System.Int32;
 
-public partial class EnemyVM
+public class EnemyVM
 {
     public class EnemyVMException: Exception {
         public EnemyVMException(string message, EnemyVM vm) : base(message) {
@@ -37,8 +37,8 @@ public partial class EnemyVM
     private int programCounter;
 
     private Stack<VMValueType> data = new Stack<VMValueType>();
-    private bool isContinue = false;
-    private bool isExit = true;  
+    private bool isContinue = true;
+    private bool isExit = false;  
     private int retVal = 0;
 
     public bool IsContinute { get => isContinue; }
@@ -82,15 +82,17 @@ public partial class EnemyVM
     {
         isExit = true;
         isContinue = false;
-        retVal = data.Pop();
     }
+
     private void PUSH(Instruction instruction) => data.Push(instruction.argument);
+
     private void ADD()
     {
         int operand2 = data.Pop();
         int operand1 = data.Pop();
         data.Push(operand1 + operand2);
     }
+
     private void SUB()
     {
         // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
@@ -99,12 +101,14 @@ public partial class EnemyVM
         int operand1 = data.Pop();
         data.Push(operand1 - operand2);
     }
+
     private void MUL()
     {
         int operand2 = data.Pop();
         int operand1 = data.Pop();
         data.Push(operand1 * operand2);
     }
+
     private void DIV()
     {
         int operand2 = data.Pop();

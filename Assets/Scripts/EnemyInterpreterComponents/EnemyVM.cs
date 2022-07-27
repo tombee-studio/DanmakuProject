@@ -5,28 +5,14 @@ using UnityEngine;
 
 using VMValueType = System.Int32;
 
-public class EnemyVM
+public partial class EnemyVM
 {
     public class EnemyVMException: Exception {
         public EnemyVMException(string message, EnemyVM vm) : base(message) {
             Debug.Log(vm.data.ToArray());
         }
     };
-
-    public enum Mnemonic
-    {
-        PUSH,
-        ADD,
-        SUB,
-        MUL,
-        DIV
-    };
-    public struct Instruction
-    {
-        public Mnemonic mnemonic;
-        public int argument;
-    }
-    private List<Instruction> instructions;
+    private List<Instruction> instructionSeries;
     private int programCounter;
 
     private Stack<VMValueType> data = new Stack<VMValueType>();
@@ -46,10 +32,13 @@ public class EnemyVM
             return data.Pop();
         }
     }
+    public void appendInstruction(Instruction instruction){
+        instructionSeries.Add(instruction);
+    }
     //TODO: functions (何型?)
 
     public void run(){
-        Instruction instruction = instructions[programCounter];
+        Instruction instruction = instructionSeries[programCounter];
         switch (instruction.mnemonic)
         {
             case Mnemonic.PUSH: PUSH(instruction);

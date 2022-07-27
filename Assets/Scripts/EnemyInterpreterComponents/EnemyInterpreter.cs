@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine; 
 
 public class EnemyInterpreter
 {
@@ -10,18 +10,11 @@ public class EnemyInterpreter
 
     EnemyVM? _vm;
     public EnemyVM vm {get => _vm ??= new EnemyVM(); }
+    public bool IsContinue { get =>  vm.IsContinute; }
+    public bool IsExit {  get => vm.IsExit; }
+    public int ReturnValue { get => vm.ReturnValue; }
 
-    void run(){
-
-    }
-
-    void Update() {
-        while(vm.IsContinute){
-            vm.run();
-        }
-
-        if (vm.IsExit) {
-            Debug.Log(vm.ReturnValue);
-        }
+    public void run(){
+        vm.run();
     }
 }

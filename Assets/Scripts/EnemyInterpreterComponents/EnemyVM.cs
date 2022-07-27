@@ -13,10 +13,9 @@ public class EnemyVM
         }
     };
 
-    private enum Mnemonic
+    public enum Mnemonic
     {
         PUSH,
-        POP,
         ADD,
         SUB,
         MUL,
@@ -25,7 +24,7 @@ public class EnemyVM
     public struct Instruction
     {
         public Mnemonic mnemonic;
-        public int? argument;
+        public int argument;
     }
     private List<Instruction> instructions;
     private int programCounter;
@@ -53,22 +52,45 @@ public class EnemyVM
         Instruction instruction = instructions[programCounter];
         switch (instruction.mnemonic)
         {
-            case Mnemonic.PUSH:
-
+            case Mnemonic.PUSH: PUSH(instruction);
                 break;
-            case Mnemonic.POP:
+            case Mnemonic.ADD:  ADD();
                 break;
-            case Mnemonic.ADD:
+            case Mnemonic.SUB:  SUB();
                 break;
-            case Mnemonic.SUB:
+            case Mnemonic.MUL:  MUL();
                 break;
-            case Mnemonic.MUL:
-                break;
-            case Mnemonic.DIV:
+            case Mnemonic.DIV:  DIV();
                 break;
         }
         programCounter++;
     }
-    
+    public void PUSH(Instruction instruction) => data.Push(instruction.argument);
+    public void ADD()
+    {
+        int operand2 = data.Pop();
+        int operand1 = data.Pop();
+        data.Push(operand1 + operand2);
+    }
+    public void SUB()
+    {
+        // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
+        // スタックからPopされる、オペランドの順番はope2, ope1である。
+        int operand2 = data.Pop();
+        int operand1 = data.Pop();
+        data.Push(operand1 - operand2);
+    }
+    public void MUL()
+    {
+        int operand2 = data.Pop();
+        int operand1 = data.Pop();
+        data.Push(operand1 * operand2);
+    }
+    public void DIV()
+    {
+        int operand2 = data.Pop();
+        int operand1 = data.Pop();
+        data.Push(operand1 / operand2);
+    }
 }
  

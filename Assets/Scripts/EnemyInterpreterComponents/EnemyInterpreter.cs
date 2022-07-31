@@ -33,11 +33,11 @@ public class EnemyInterpreter
         );
         // stack: {11}
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
         );
         // stack: {11, 3}
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB,  0)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB, 0)
         );
         // stack: {8}
         vm.appendInstruction(

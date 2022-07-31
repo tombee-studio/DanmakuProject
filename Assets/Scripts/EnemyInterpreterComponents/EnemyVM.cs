@@ -9,7 +9,7 @@ public class EnemyVM
 {
     public class EnemyVMException: Exception {
         public EnemyVMException(string message, EnemyVM vm) : base(message) {
-            Debug.Log(vm.data.ToArray());
+            Debug.Log(vm.memory);
         }
     };
 
@@ -33,10 +33,14 @@ public class EnemyVM
         DIV
     };
 
+    private static int MEMORY_SIZE = 256;
+
     private List<Instruction> instructionSeries = new List<Instruction>();
     private int programCounter;
+    private int stackPointer = 0;
+    private int basePointer = 0;
 
-    private Stack<VMValueType> data = new Stack<VMValueType>();
+    private VMValueType[] memory = new VMValueType[MEMORY_SIZE];
     private bool isContinue = true;
     private bool isExit = false;  
     private int retVal = 0;
@@ -45,12 +49,12 @@ public class EnemyVM
     public bool IsExit { get => isExit; }
     public int ReturnValue {
         get {
-            if (data.Count == 0) {
+            if (memory.Length == 0) {
                 throw new EnemyVMException(
-                    $"Stack Size must be more than {data.Count}",
+                    $"Memory Size must be more than {memory.Length}",
                     this);
             }
-            return data.Pop();
+            return memory[stackPointer];
         }
     }
     public void appendInstruction(Instruction instruction){
@@ -84,36 +88,59 @@ public class EnemyVM
         isContinue = false;
     }
 
-    private void PUSH(Instruction instruction) => data.Push(instruction.argument);
+    private void PUSH(Instruction instruction) {
+        stackPointer++;
+        memory[stackPointer] = instruction.argument;
+    }
 
     private void ADD()
     {
-        int operand2 = data.Pop();
-        int operand1 = data.Pop();
-        data.Push(operand1 + operand2);
+        int operand2 = memory[stackPointer];
+        stackPointer--;
+
+        int operand1 = memory[stackPointer];
+        stackPointer--;
+
+        stackPointer++;
+        memory[stackPointer] = operand1 + operand2;
     }
 
     private void SUB()
     {
         // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
         // スタックからPopされる、オペランドの順番はope2, ope1である。
-        int operand2 = data.Pop();
-        int operand1 = data.Pop();
-        data.Push(operand1 - operand2);
+        int operand2 = memory[stackPointer];
+        stackPointer--;
+
+        int operand1 = memory[stackPointer];
+        stackPointer--;
+
+        stackPointer++;
+        memory[stackPointer] = operand1 - operand2;
     }
 
     private void MUL()
     {
-        int operand2 = data.Pop();
-        int operand1 = data.Pop();
-        data.Push(operand1 * operand2);
+        int operand2 = memory[stackPointer];
+        stackPointer--;
+
+        int operand1 = memory[stackPointer];
+        stackPointer--;
+
+        stackPointer++;
+        memory[stackPointer] = operand1 * operand2;
     }
 
     private void DIV()
     {
-        int operand2 = data.Pop();
-        int operand1 = data.Pop();
-        data.Push(operand1 / operand2);
+        int operand2 = memory[stackPointer];
+        stackPointer--;
+
+        int operand1 = memory[stackPointer];
+        stackPointer--;
+
+        stackPointer++;
+        memory[stackPointer] = operand1 / operand2;
     }
 }
  

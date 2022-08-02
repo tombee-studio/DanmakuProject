@@ -62,7 +62,6 @@ public class EnemyVM
     }
     //TODO: functions (何型?)
 
-    //TODO: peek関数の実装
     private VMValueType Peek() => memory[stackPointer];
     private VMValueType PopFromStack()
     {

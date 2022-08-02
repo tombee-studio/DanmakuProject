@@ -101,59 +101,39 @@ public class EnemyVM
     }
 
     //TODO: 命名のルールにそって書き換える。
-    //TODO: PUSH関数の再実装
+    
     private void PUSH(Instruction instruction) {
-        
+        pushIntoStack(instruction.argument);
     }
 
     private void ADD()
     {
-        int operand2 = memory[stackPointer];
-        stackPointer--;
-
-        int operand1 = memory[stackPointer];
-        stackPointer--;
-
-        stackPointer++;
-        memory[stackPointer] = operand1 + operand2;
+        int operand2 = popFromStack();
+        int operand1 = popFromStack();
+        pushIntoStack(operand1 + operand2);
     }
 
     private void SUB()
     {
         // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
         // スタックからPopされる、オペランドの順番はope2, ope1である。
-        int operand2 = memory[stackPointer];
-        stackPointer--;
-
-        int operand1 = memory[stackPointer];
-        stackPointer--;
-
-        stackPointer++;
-        memory[stackPointer] = operand1 - operand2;
+        int operand2 = popFromStack();
+        int operand1 = popFromStack();
+        pushIntoStack(operand1 - operand2);
     }
 
     private void MUL()
     {
-        int operand2 = memory[stackPointer];
-        stackPointer--;
-
-        int operand1 = memory[stackPointer];
-        stackPointer--;
-
-        stackPointer++;
-        memory[stackPointer] = operand1 * operand2;
+        int operand2 = popFromStack();
+        int operand1 = popFromStack();
+        pushIntoStack(operand1 * operand2);
     }
 
     private void DIV()
     {
-        int operand2 = memory[stackPointer];
-        stackPointer--;
-
-        int operand1 = memory[stackPointer];
-        stackPointer--;
-
-        stackPointer++;
-        memory[stackPointer] = operand1 / operand2;
+        int operand2 = popFromStack();
+        int operand1 = popFromStack();
+        pushIntoStack(operand1 / operand2);
     }
 }
  

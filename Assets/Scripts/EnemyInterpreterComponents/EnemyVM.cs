@@ -63,12 +63,13 @@ public class EnemyVM
     //TODO: functions (何型?)
 
     //TODO: peek関数の実装
-    private VMValueType popFromStack()
+    private VMValueType Peek() => memory[stackPointer];
+    private VMValueType PopFromStack()
     {
         stackPointer--;
         return memory[stackPointer + 1];
     }
-    private void pushIntoStack(VMValueType pushedValue)
+    private void PushIntoStack(VMValueType pushedValue)
     {
         stackPointer++;
         memory[stackPointer] = pushedValue;
@@ -78,23 +79,23 @@ public class EnemyVM
         Instruction instruction = instructionSeries[programCounter];
         switch (instruction.mnemonic)
         {
-            case Mnemonic.PUSH: PUSH(instruction);
+            case Mnemonic.PUSH: Push(instruction);
                 break;
-            case Mnemonic.ADD:  ADD();
+            case Mnemonic.ADD:  Add();
                 break;
-            case Mnemonic.SUB:  SUB();
+            case Mnemonic.SUB:  Sub();
                 break;
-            case Mnemonic.MUL:  MUL();
+            case Mnemonic.MUL:  Mul();
                 break;
-            case Mnemonic.DIV:  DIV();
+            case Mnemonic.DIV:  Div();
                 break;
         }
         programCounter++;
-        if (instructionSeries.Count == programCounter) finishProcess();
+        if (instructionSeries.Count == programCounter) FinishProcess();
 
 
     }
-    private void finishProcess()
+    private void FinishProcess()
     {
         isExit = true;
         isContinue = false;
@@ -102,38 +103,38 @@ public class EnemyVM
 
     //TODO: 命名のルールにそって書き換える。
     
-    private void PUSH(Instruction instruction) {
-        pushIntoStack(instruction.argument);
+    private void Push(Instruction instruction) {
+        PushIntoStack(instruction.argument);
     }
 
-    private void ADD()
+    private void Add()
     {
-        int operand2 = popFromStack();
-        int operand1 = popFromStack();
-        pushIntoStack(operand1 + operand2);
+        int operand2 = PopFromStack();
+        int operand1 = PopFromStack();
+        PushIntoStack(operand1 + operand2);
     }
 
-    private void SUB()
+    private void Sub()
     {
         // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
         // スタックからPopされる、オペランドの順番はope2, ope1である。
-        int operand2 = popFromStack();
-        int operand1 = popFromStack();
-        pushIntoStack(operand1 - operand2);
+        int operand2 = PopFromStack();
+        int operand1 = PopFromStack();
+        PushIntoStack(operand1 - operand2);
     }
 
-    private void MUL()
+    private void Mul()
     {
-        int operand2 = popFromStack();
-        int operand1 = popFromStack();
-        pushIntoStack(operand1 * operand2);
+        int operand2 = PopFromStack();
+        int operand1 = PopFromStack();
+        PushIntoStack(operand1 * operand2);
     }
 
-    private void DIV()
+    private void Div()
     {
-        int operand2 = popFromStack();
-        int operand1 = popFromStack();
-        pushIntoStack(operand1 / operand2);
+        int operand2 = PopFromStack();
+        int operand1 = PopFromStack();
+        PushIntoStack(operand1 / operand2);
     }
 }
  

@@ -61,7 +61,10 @@ public class EnemyVM
         instructionSeries.Add(instruction);
     }
     //TODO: functions (何型?)
+    public void Pop()
+    {
 
+    }
     public void run(){
         Instruction instruction = instructionSeries[programCounter];
         switch (instruction.mnemonic)
@@ -88,6 +91,7 @@ public class EnemyVM
         isContinue = false;
     }
 
+//TODO: 命名のルールにそって書き換える。
     private void PUSH(Instruction instruction) {
         stackPointer++;
         memory[stackPointer] = instruction.argument;

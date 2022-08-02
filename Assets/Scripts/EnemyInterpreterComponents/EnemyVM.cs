@@ -61,10 +61,19 @@ public class EnemyVM
         instructionSeries.Add(instruction);
     }
     //TODO: functions (何型?)
-    public void Pop()
-    {
 
+    //TODO: peek関数の実装
+    private VMValueType popFromStack()
+    {
+        stackPointer--;
+        return memory[stackPointer + 1];
     }
+    private void pushIntoStack(VMValueType pushedValue)
+    {
+        stackPointer++;
+        memory[stackPointer] = pushedValue;
+    }
+
     public void run(){
         Instruction instruction = instructionSeries[programCounter];
         switch (instruction.mnemonic)
@@ -91,10 +100,10 @@ public class EnemyVM
         isContinue = false;
     }
 
-//TODO: 命名のルールにそって書き換える。
+    //TODO: 命名のルールにそって書き換える。
+    //TODO: PUSH関数の再実装
     private void PUSH(Instruction instruction) {
-        stackPointer++;
-        memory[stackPointer] = instruction.argument;
+        
     }
 
     private void ADD()

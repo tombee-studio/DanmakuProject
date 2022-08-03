@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 public partial class EnemyVM
 {
     public class EnemyVMException : Exception

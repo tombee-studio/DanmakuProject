@@ -42,12 +42,14 @@ public partial class EnemyVMTester
     }
     public void runTests()
     {
-        foreach (MethodInfo method in pickupTestMethods())
+        var testFunctions = pickupTestMethods();
+        foreach (MethodInfo method in testFunctions)
         {
             var target = new EnemyVMTester();
             object[] parametersArray = new object[] { };
             method.Invoke(target, parametersArray);
         }
+        Debug.Log($"✅ Check All {testFunctions.Length} cases.");
     }
     
 }

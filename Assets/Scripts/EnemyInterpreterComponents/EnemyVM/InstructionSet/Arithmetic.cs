@@ -11,8 +11,6 @@ public partial class EnemyVM
 
     private void Sub()
     {
-        // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
-        // スタックからPopされる、オペランドの順番はope2, ope1である。
         int operand1 = PopFromStack();
         int operand2 = PopFromStack();
         PushIntoStack(operand1 - operand2);

@@ -8,12 +8,12 @@ public partial class EnemyVM
     private void Eq()
     {
         int operand = PopFromStack();
-        PushIntoStack(toInt(operand == 0));
+        PushIntoStack(toInt(operand != 0));
     }
     private void Ne()
     {
         int operand = PopFromStack();
-        PushIntoStack(toInt(operand != 0));
+        PushIntoStack(toInt(operand == 0));
     }
     private void Gt()
     {

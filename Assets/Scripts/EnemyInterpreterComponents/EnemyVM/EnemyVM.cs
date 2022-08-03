@@ -51,16 +51,26 @@ public partial class EnemyVM
         Instruction instruction = instructionSeries[programCounter];
         switch (instruction.mnemonic)
         {
-            case Mnemonic.PUSH: Push(instruction);
-                break;
-            case Mnemonic.ADD:  Add();
-                break;
-            case Mnemonic.SUB:  Sub();
-                break;
-            case Mnemonic.MUL:  Mul();
-                break;
-            case Mnemonic.DIV:  Div();
-                break;
+            case Mnemonic.PUSH: Push(instruction); break;
+            case Mnemonic.ADD:  Add(); break;
+            case Mnemonic.SUB:  Sub(); break;
+            case Mnemonic.MUL:  Mul(); break;
+            case Mnemonic.DIV:  Div(); break;
+
+            case Mnemonic.EQ: Eq(); break;
+            case Mnemonic.NE: Ne(); break;
+
+            case Mnemonic.GT: Gt(); break;
+            case Mnemonic.GE: Ge(); break;
+            case Mnemonic.LT: Lt(); break;
+            case Mnemonic.LE: Le(); break;
+
+            case Mnemonic.JMP: Jmp(instruction); break;
+            case Mnemonic.JE: Je(instruction); break;
+            case Mnemonic.JNE: Jne(instruction); break;
+
+
+
         }
         programCounter++;
         if (instructionSeries.Count == programCounter) FinishProcess();

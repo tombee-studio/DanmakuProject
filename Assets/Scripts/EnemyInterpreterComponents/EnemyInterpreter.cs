@@ -37,7 +37,7 @@ public class EnemyInterpreter
         }
     }
 
-    public void test_run_1()
+    public void test_run_ADD()
     {
         //TODO: 命令を追加
         vm.appendInstruction(
@@ -46,36 +46,56 @@ public class EnemyInterpreter
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH,  9)
         );
-        // stack: {2, 9}
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD,   0)
         );
-        // stack: {11}
+        while (!IsExit) run();
+        Assert.AreEqual(11, vm.ReturnValue);
+    }
+    public void test_run_SUB()
+    {
+        //TODO: 命令を追加
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
-        // stack: {11, 3}
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
+        );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB, 0)
         );
-        // stack: {8}
+        while (!IsExit) run();
+        Assert.AreEqual(7, vm.ReturnValue);
+    }
+    public void test_run_MUL()
+    {
+        //TODO: 命令を追加
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
         );
-        // stack: {8, 2, 2}
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0)
         );
-        // stack: {8, 4}
+        while (!IsExit) run();
+        Assert.AreEqual(18, vm.ReturnValue);
+    }
+    public void test_run_DIV()
+    {
+        //TODO: 命令を追加
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 18)
+        );
+        vm.appendInstruction(
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
+        );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 0)
         );
-        // stack: {2}
         while (!IsExit) run();
-        Assert.IsTrue(vm.ReturnValue == 2);
+        Assert.AreEqual(2, vm.ReturnValue);
     }
 
     public void test_run_flag1()

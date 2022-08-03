@@ -14,6 +14,7 @@ public class EnemyComponent : MonoBehaviour
 
     void Start()
     {
+        interpreter.test_run();
         Debug.Log(interpreter.ReturnValue);
     }
 

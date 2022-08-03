@@ -15,7 +15,7 @@ public partial class EnemyVM
     {
         int operand1 = PopFromStack();
         int operand2 = PopFromStack();
-        PushIntoStack(toInt(operand1 == operand2));
+        PushIntoStack(toInt(operand1 != operand2));
     }
     private void Gt()
     {

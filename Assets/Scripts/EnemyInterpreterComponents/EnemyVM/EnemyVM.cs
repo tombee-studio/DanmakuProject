@@ -5,44 +5,8 @@ using UnityEngine;
 
 using VMValueType = System.Int32;
 
-public class EnemyVM
+public partial class EnemyVM
 {
-    public class EnemyVMException: Exception {
-        public EnemyVMException(string message, EnemyVM vm) : base(message) {
-            Debug.Log(vm.memory);
-        }
-    };
-
-    public struct Instruction
-    {
-        public Mnemonic mnemonic;
-        public int argument;
-        public Instruction(Mnemonic mnemonic, int argument)
-        {
-            this.mnemonic = mnemonic;
-            this.argument = argument;
-        }
-    }
-
-    public enum Mnemonic
-    {
-        PUSH,
-        ADD,
-        SUB,
-        MUL,
-        DIV,
-        JMP,
-        JE,
-        JNE,
-        LT,
-        LE,
-        GT,
-        GE,
-        EQ,
-        NE,
-        CALL
-    };
-
     private static int MEMORY_SIZE = 256;
 
     private List<Instruction> instructionSeries = new List<Instruction>();
@@ -67,12 +31,13 @@ public class EnemyVM
             return memory[stackPointer];
         }
     }
+
     public void appendInstruction(Instruction instruction){
         instructionSeries.Add(instruction);
     }
-    //TODO: functions (何型?)
-
+    
     private VMValueType Peek() => memory[stackPointer];
+
     private VMValueType PopFromStack()
     {
         stackPointer--;
@@ -109,40 +74,6 @@ public class EnemyVM
         isExit = true;
         isContinue = false;
     }
-
-
-    private void Push(Instruction instruction) {
-        PushIntoStack(instruction.argument);
-    }
-
-    private void Add()
-    {
-        int operand2 = PopFromStack();
-        int operand1 = PopFromStack();
-        PushIntoStack(operand1 + operand2);
-    }
-
-    private void Sub()
-    {
-        // スタックマシン{push ope1, push ope2, MUL} => push ope1 - ope2
-        // スタックからPopされる、オペランドの順番はope2, ope1である。
-        int operand2 = PopFromStack();
-        int operand1 = PopFromStack();
-        PushIntoStack(operand1 - operand2);
-    }
-
-    private void Mul()
-    {
-        int operand2 = PopFromStack();
-        int operand1 = PopFromStack();
-        PushIntoStack(operand1 * operand2);
-    }
-
-    private void Div()
-    {
-        int operand2 = PopFromStack();
-        int operand1 = PopFromStack();
-        PushIntoStack(operand1 / operand2);
-    }
+    
 }
  

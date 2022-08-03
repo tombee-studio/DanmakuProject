@@ -110,8 +110,7 @@ public class EnemyVM
         isContinue = false;
     }
 
-    //TODO: 命名のルールにそって書き換える。
-    
+
     private void Push(Instruction instruction) {
         PushIntoStack(instruction.argument);
     }

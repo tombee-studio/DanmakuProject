@@ -72,6 +72,8 @@ public partial class EnemyVM
 
 
         }
+        //TODO: programCounter++;を下に持っていく。
+        //TODO: if分の終了条件を上に。
         programCounter++;
         if (instructionSeries.Count == programCounter) FinishProcess();
 

@@ -1,11 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.Assertions;
-
-
 public class EnemyInterpreter
 {
     #nullable enable
@@ -23,16 +15,7 @@ public class EnemyInterpreter
     }
 
     public void test_run() {
-        var tmp_interpreter = new EnemyInterpreter();
-        BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy;
-        flag |= BindingFlags.NonPublic;
-        MethodInfo[] methods = tmp_interpreter.GetType().GetMethods(flag);
-        foreach (MethodInfo method in methods)
-        {
-            if (!Regex.IsMatch(method.Name, "test_run_")) continue;
-            
-            object[] parametersArray = new object[] {};
-            method.Invoke(tmp_interpreter, parametersArray);
-        }
+        var tester = new EnemyVMTester();
+        tester.runTests();
     }
 }

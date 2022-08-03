@@ -30,7 +30,17 @@ public class EnemyVM
         ADD,
         SUB,
         MUL,
-        DIV
+        DIV,
+        JMP,
+        JE,
+        JNE,
+        LT,
+        LE,
+        GT,
+        GE,
+        EQ,
+        NE,
+        CALL
     };
 
     private static int MEMORY_SIZE = 256;

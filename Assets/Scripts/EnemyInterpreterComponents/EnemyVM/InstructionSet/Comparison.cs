@@ -7,32 +7,38 @@ public partial class EnemyVM
     }
     private void Eq()
     {
-        int operand = PopFromStack();
-        PushIntoStack(toInt(operand != 0));
+        int operand1 = PopFromStack();
+        int operand2 = PopFromStack();
+        PushIntoStack(toInt(operand1 == operand2));
     }
     private void Ne()
     {
-        int operand = PopFromStack();
-        PushIntoStack(toInt(operand == 0));
+        int operand1 = PopFromStack();
+        int operand2 = PopFromStack();
+        PushIntoStack(toInt(operand1 == operand2));
     }
     private void Gt()
     {
-        int operand = PopFromStack();
-        PushIntoStack(toInt(operand > 0));
+        int operand1 = PopFromStack();
+        int operand2 = PopFromStack();
+        PushIntoStack(toInt(operand1 > operand2));
     }
     private void Ge()
     {
-        int operand = PopFromStack();
-        PushIntoStack(toInt(operand >= 0));
+        int operand1 = PopFromStack();
+        int operand2 = PopFromStack();
+        PushIntoStack(toInt(operand1 >= operand2));
     }
     private void Lt()
     {
-        int operand = PopFromStack();
-        PushIntoStack(toInt(operand < 0));
+        int operand1 = PopFromStack();
+        int operand2 = PopFromStack();
+        PushIntoStack(toInt(operand1 < operand2));
     }
     private void Le()
     {
-        int operand = PopFromStack();
-        PushIntoStack(toInt(operand <= 0));
+        int operand1 = PopFromStack();
+        int operand2 = PopFromStack();
+        PushIntoStack(toInt(operand1 <= operand2));
     }
 }

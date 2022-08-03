@@ -15,22 +15,22 @@ public partial class EnemyVM
         int operand = PopFromStack();
         PushIntoStack(toInt(operand != 0));
     }
-    private void GT()
+    private void Gt()
     {
         int operand = PopFromStack();
         PushIntoStack(toInt(operand > 0));
     }
-    private void GE()
+    private void Ge()
     {
         int operand = PopFromStack();
         PushIntoStack(toInt(operand >= 0));
     }
-    private void LT()
+    private void Lt()
     {
         int operand = PopFromStack();
         PushIntoStack(toInt(operand < 0));
     }
-    private void LE()
+    private void Le()
     {
         int operand = PopFromStack();
         PushIntoStack(toInt(operand <= 0));

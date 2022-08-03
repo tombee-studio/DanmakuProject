@@ -9,12 +9,13 @@ public partial class EnemyVM
     private List<Instruction> instructionSeries = new List<Instruction>();
     private int programCounter;
     private int stackPointer = 0;
+#pragma warning disable CS0414
     private int basePointer = 0;
+#pragma warning restore CS0414
 
     private VMValueType[] memory = new VMValueType[MEMORY_SIZE];
     private bool isContinue = true;
-    private bool isExit = false;  
-    private int retVal = 0;
+    private bool isExit = false;
 
     public bool IsContinute { get => isContinue; }
     public bool IsExit { get => isExit; }

@@ -77,7 +77,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LT, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(1, vm.ReturnValue);
+        Assert.AreEqual(0, vm.ReturnValue);
     }
 
     public void test_LT2()
@@ -92,7 +92,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LT, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(0, vm.ReturnValue);
+        Assert.AreEqual(1, vm.ReturnValue);
     }
 
 
@@ -108,7 +108,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GT, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(1, vm.ReturnValue);
+        Assert.AreEqual(0, vm.ReturnValue);
     }
 
     public void test_GT2()
@@ -123,7 +123,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GT, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(0, vm.ReturnValue);
+        Assert.AreEqual(1, vm.ReturnValue);
     }
 
 
@@ -154,7 +154,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LE, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(1, vm.ReturnValue);
+        Assert.AreEqual(0, vm.ReturnValue);
     }
 
     public void test_LE3()
@@ -169,7 +169,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LE, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(0, vm.ReturnValue);
+        Assert.AreEqual(1, vm.ReturnValue);
     }
 
 
@@ -200,7 +200,7 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GE, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(0, vm.ReturnValue);
+        Assert.AreEqual(1, vm.ReturnValue);
     }
 
     public void test_GE3()
@@ -215,7 +215,6 @@ public partial class EnemyVMTester
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GE, 0)
         );
         while (!IsExit) run();
-        Assert.AreEqual(1, vm.ReturnValue);
+        Assert.AreEqual(0, vm.ReturnValue);
     }
-
 }

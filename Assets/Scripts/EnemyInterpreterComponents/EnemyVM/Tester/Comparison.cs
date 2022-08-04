@@ -217,5 +217,4 @@ public partial class EnemyVMTester
         while (!IsExit) run();
         Assert.AreEqual(0, vm.ReturnValue);
     }
-
 }

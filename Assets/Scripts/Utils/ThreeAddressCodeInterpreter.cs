@@ -30,10 +30,13 @@ public static class ThreeAddressCodeInterpreter
         var instructionSeries = new List<EnemyVM.Instruction>();
         foreach (var (index, line) in Util_Array.Indexed(code.Split("\n")))
         {
-            if (IsEmptyLine(line)) continue;
-            var strainedLine = simplifyCodeLine(line);
-            var instruction = interpretStarlizedLine(strainedLine, index);
-            instructionSeries.Add(instruction);
+            foreach (var statement in line.Split(";"))
+            {
+                if (IsEmptyLine(statement)) continue;
+                var strainedStatement = simplifyCodeLine(statement);
+                var instruction = interpretStarlizedLine(strainedStatement, index);
+                instructionSeries.Add(instruction);
+            }
         }
         return instructionSeries;
 

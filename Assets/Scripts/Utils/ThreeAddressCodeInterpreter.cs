@@ -33,8 +33,7 @@ public static class ThreeAddressCodeInterpreter
             foreach (var statement in line.Split(";"))
             {
                 if (IsEmptyLine(statement)) continue;
-                var strainedStatement = simplifyCodeLine(statement);
-                var instruction = interpretStarlizedLine(strainedStatement, index);
+                var instruction = interpretStarlizedLine(statement, index);
                 instructionSeries.Add(instruction);
             }
         }
@@ -44,27 +43,20 @@ public static class ThreeAddressCodeInterpreter
 
     private static bool IsEmptyLine(string line)
     {
-        return line.Length == 0 || Regex.IsMatch(line, "^[\\t\\s]*$");
+        return line.Length == 0 || Regex.IsMatch(line, "^\\s*$");
     }
 
-    private static string simplifyCodeLine(string line)
-    {
-        line = Regex.Replace(line, "^[\\t\\s]+", "");
-        line = Regex.Replace(line, "[\\t\\s]+$", "");
-        line = Regex.Replace(line, "\\s+", " ");
-        return line;
-    }
 
-    private static EnemyVM.Instruction interpretStarlizedLine(string line, int lineIndex)
+    private static EnemyVM.Instruction interpretStarlizedLine(string statement, int lineIndex)
     {
-        Regex codeFormat = new Regex("(?<mnemonic>[0-9a-zA-Z]+) (?<argument>[0-9]+)");
-        if (!codeFormat.IsMatch(line))
-            throw new LiteralizedThreeAddressCodeException("Not correct format.", lineIndex, line);
+        Regex codeFormat = new Regex("(?<mnemonic>[0-9a-zA-Z]+)\\s+(?<argument>[0-9]+)");
+        if (!codeFormat.IsMatch(statement))
+            throw new LiteralizedThreeAddressCodeException("Not correct format.", lineIndex, statement);
 
-        Match tokens = codeFormat.Match(line);
+        Match tokens = codeFormat.Match(statement);
         EnemyVM.Mnemonic mnemonic;
         if (!Enum.TryParse(tokens.Groups["mnemonic"].Value, out mnemonic))
-            throw new LiteralizedThreeAddressCodeException($"Mnemonic {tokens.Groups["mnemonic"].Value} is not defined.", lineIndex, line);
+            throw new LiteralizedThreeAddressCodeException($"Mnemonic {tokens.Groups["mnemonic"].Value} is not defined.", lineIndex, statement);
 
         return new EnemyVM.Instruction(mnemonic, int.Parse(tokens.Groups["argument"].Value));
     }

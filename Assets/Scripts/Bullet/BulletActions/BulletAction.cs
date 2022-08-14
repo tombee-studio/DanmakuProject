@@ -7,4 +7,5 @@ public abstract class BulletAction
     int frame;
 
     public abstract bool isEnd();
+    public abstract void run();
 }

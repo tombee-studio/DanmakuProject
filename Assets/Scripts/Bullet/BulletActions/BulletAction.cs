@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class BulletAction
 {
-    int frame;
+    protected int frame = 0;
 
-    public abstract bool isEnd();
-    public abstract void run();
+    public abstract bool IsEnd();
+    public abstract void Run();
 }

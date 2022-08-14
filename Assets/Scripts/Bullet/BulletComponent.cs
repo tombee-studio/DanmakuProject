@@ -9,22 +9,31 @@ public class BulletComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        bulletActions.Enqueue(new BulletMoveLinear(transform, 0.1f, 30));
     }
 
     // Update is called once per frame
     void Update()
     {
-        try{
+        try
+        {
             var bulletAction = bulletActions.Peek();
-            if (bulletAction.isEnd()) { 
+            if (bulletAction.IsEnd())
+            {
+                BulletAction action = // とりあえず
+                    bulletActions.Dequeue(); // これは残す.
                 transform.position = new Vector3(0, 0, 0); // とりあえず
-                bulletActions.Dequeue();
-                bulletActions.Enqueue(new BulletMoveLinear(transform, 0.1f, 30)); // とりあえず
+                EnqueueAction(action); // とりあえず
             }
-            else { bulletAction.run(); }
-        } catch (System.Exception e){
+            else { bulletAction.Run(); }
+        }
+        catch (System.Exception e)
+        {
             Debug.LogError(e);
         }
+    }
+
+    public void EnqueueAction(BulletAction bulletAction)
+    {
+        bulletActions.Enqueue(bulletAction);
     }
 }

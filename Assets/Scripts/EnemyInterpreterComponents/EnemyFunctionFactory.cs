@@ -1,7 +1,7 @@
 ﻿using System;
 public static class EnemyFunctionFactory
 {
-   static void call(
+   public static void call(
        int functionCode,
        EnemyComponent enemyComponent,
        EnemyVM enemyVM

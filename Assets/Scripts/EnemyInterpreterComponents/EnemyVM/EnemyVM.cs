@@ -12,6 +12,7 @@ public partial class EnemyVM
 #pragma warning disable CS0414
     private int basePointer = 0;
 #pragma warning restore CS0414
+    private EnemyComponent enemyComponent;
 
     private VMValueType[] memory = new VMValueType[MEMORY_SIZE];
     private bool isContinue = true;
@@ -28,6 +29,11 @@ public partial class EnemyVM
             }
             return memory[stackPointer];
         }
+    }
+
+    public EnemyVM(EnemyComponent enemyComponent)
+    {
+        this.enemyComponent = enemyComponent;
     }
 
     public void appendInstruction(Instruction instruction){

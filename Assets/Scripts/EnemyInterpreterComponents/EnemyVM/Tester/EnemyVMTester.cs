@@ -7,11 +7,17 @@ using System.Collections.Generic;
 
 public partial class EnemyVMTester
 {
-    //#FIXME
-    public EnemyVM vm = new EnemyVM();
+    
+    public EnemyVM vm;
     public bool IsContinue { get => vm.IsContinute; }
     public bool IsExit { get => vm.IsExit; }
     public int ReturnValue { get => vm.ReturnValue; }
+
+    public EnemyVMTester()
+    {
+        var component = new EnemyComponent();
+        vm = new EnemyVM(component);
+    } 
 
     private void run()
     {

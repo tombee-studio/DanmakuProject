@@ -5,10 +5,16 @@ public class EnemyInterpreter
     public EnemyCompiler compiler {get => _compiler ??= new EnemyCompiler();}
 
     EnemyVM? _vm;
-    public EnemyVM vm {get => _vm ??= new EnemyVM(); }
+    EnemyComponent enemyComponent;
+    public EnemyVM vm {get => _vm ??= new EnemyVM(enemyComponent); }
     public bool IsContinue { get =>  vm.IsContinute; }
     public bool IsExit {  get => vm.IsExit; }
     public int ReturnValue { get => vm.ReturnValue; }
+
+    public EnemyInterpreter(EnemyComponent enemyComponent)
+    {
+        this.enemyComponent = enemyComponent;
+    }
 
     public void run(){
         vm.run();

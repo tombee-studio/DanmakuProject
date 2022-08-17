@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public partial class EnemyVMTester
 {
-
+    //#FIXME
     public EnemyVM vm = new EnemyVM();
     public bool IsContinue { get => vm.IsContinute; }
     public bool IsExit { get => vm.IsExit; }

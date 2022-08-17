@@ -22,14 +22,14 @@ public class BulletMoveLinear : BulletAction
     public override bool IsEnd()
     {
         // 画面端に行ったら終わり
-        Vector3 bottomLeft = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 0));
-        Vector3 topRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        Vector3 max = WindowInformation.DOWN_LEFT;
+        Vector3 min = WindowInformation.UP_RIGHT;
         if (
             false
-            || transform.position.x < bottomLeft.x
-            || transform.position.y < bottomLeft.y
-            || transform.position.x > topRight.x
-            || transform.position.y > topRight.y
+            || transform.position.x < max.x
+            || transform.position.y < max.y
+            || transform.position.x > min.x
+            || transform.position.y > min.y
         ) { return true; }
 
         // デフォルトは false

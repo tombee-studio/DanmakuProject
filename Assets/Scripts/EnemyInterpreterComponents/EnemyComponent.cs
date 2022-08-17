@@ -9,7 +9,7 @@ public class EnemyComponent : MonoBehaviour
     EnemyInterpreter? _interpreter = null;
 
     EnemyInterpreter interpreter{ get => _interpreter ??= new EnemyInterpreter(this); }
-    List<GameObject> bullets = new List<GameObject>(); 
+    List<BulletComponent> bullets = new List<BulletComponent>(); 
     //TODO: source を追加 (何型?)
     [SerializeField] BulletComponent? bulletPrefab;
     void Start()

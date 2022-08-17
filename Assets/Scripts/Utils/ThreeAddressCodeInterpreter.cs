@@ -16,7 +16,8 @@ public static class ThreeAddressCodeInterpreter
     }
     public static void test(string code, int expected)
     {
-        var vm = new EnemyVM();
+        var component = new EnemyComponent();
+        var vm = new EnemyVM(component);
         foreach (var instruction in interpretCode(code)) vm.appendInstruction(instruction);
 
         while (!vm.IsExit) vm.run();

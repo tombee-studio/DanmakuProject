@@ -77,7 +77,8 @@ public partial class EnemyVM
 
             case Mnemonic.CALL: Call(instruction); break;
 
-
+            case Mnemonic.LOAD: Load(); break;
+            case Mnemonic.STORE: Store(); break;
 
         }
         //TODO: programCounter++;を下に持っていく。

@@ -16,12 +16,12 @@ public class EnemyComponent : MonoBehaviour
     {
         interpreter.test_run();
         Debug.Log(interpreter.ReturnValue);
-        GenerateBullets(); // とりあえず
+        GenerateBullets(24); // とりあえず
     }
 
     void Update()
     {
-        MoveRight();  // とりあえずの動き
+        Move(transform.position.x, transform.position.y);  // とりあえずの動き
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -29,56 +29,29 @@ public class EnemyComponent : MonoBehaviour
         Debug.Log(collision);
     }
 
-    // とりあえずの動き
-    private void MoveRight()
+    // 上下左右移動
+    public void Move(float x, float y)
     {
-        // BEGIN: x+1
-        EnemyInterpreter interpreter = new EnemyInterpreter();
-        interpreter.vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, (int)transform.position.x)
-        );
-        interpreter.vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
-        );
-        interpreter.vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD, 0)
-        );
-        while (!interpreter.IsExit) interpreter.run();
-        // END: x+1
-        float x = interpreter.vm.ReturnValue;
+        Vector3 newPosition = transform.position + new Vector3(x, y, 0);
 
-        // とりあえず, 画面端に到達したら x = 0 に戻る
-        float max_x = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0)).x;
-        if (x > max_x) { x = 0; }
-        transform.position = new Vector3(
-                x,
-                transform.position.y,
-                transform.position.z
-            );
+        // とりあえず, 画面端に到達したらそれ以上移動しない
+        Vector3 max = WindowInformation.UP_RIGHT;
+        Vector3 min = WindowInformation.DOWN_LEFT;
+        if (newPosition.x > max.x) { newPosition.x = max.x; }
+        if (newPosition.y > max.y) { newPosition.y = max.y; }
+        if (newPosition.x < min.x) { newPosition.x = min.x; }
+        if (newPosition.y < min.x) { newPosition.y = min.y; }
+        transform.position = new Vector3(newPosition.x, newPosition.y, 0);
     }
-    // とりあえずの動き
-    public void GenerateBullets()
+    // 弾生成 (とりあえず線形移動)
+    public void GenerateBullets(int bulletCount)
     {
         if (bulletPrefab == null) { throw new System.NullReferenceException("Set bullet Prefab from inspector."); }
-        // とりあえず 1 つ生成
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < bulletCount; i++)
         {
             BulletComponent bullet = Instantiate(bulletPrefab, transform);
-            // BEGIN: i*30
-            EnemyInterpreter interpreter = new EnemyInterpreter();
-            interpreter.vm.appendInstruction(
-                new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, i)
-            );
-            interpreter.vm.appendInstruction(
-                new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 30)
-            );
-            interpreter.vm.appendInstruction(
-                new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0)
-            );
-            while (!interpreter.IsExit) interpreter.run();
-            // END: i*30
-            int deg = interpreter.vm.ReturnValue;
-            bullet.EnqueueAction(new BulletMoveLinear(bullet.transform, 0.1f, deg));
+            float deg = i * (360f / bulletCount);
+            bullet.EnqueueAction(new BulletMoveLinear(bullet.transform, 0.1f, deg)); // とりあえず
             bullets.Add(bullet);
         }
     }

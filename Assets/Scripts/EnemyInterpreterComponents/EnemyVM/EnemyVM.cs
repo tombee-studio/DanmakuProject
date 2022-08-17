@@ -75,6 +75,8 @@ public partial class EnemyVM
             case Mnemonic.JE: Je(instruction); break;
             case Mnemonic.JNE: Jne(instruction); break;
 
+            case Mnemonic.CALL: Call(instruction); break;
+
 
 
         }

@@ -3,7 +3,8 @@ public partial class EnemyVM
 {
     void Call(Instruction instruction)
     {
-        //#FIXME
-        EnemyFunctionFactory.call(instruction.argument, )
+        EnemyFunctionFactory
+            .GetInstance()
+            .Call(instruction.argument, enemyComponent, this);
     }
 }

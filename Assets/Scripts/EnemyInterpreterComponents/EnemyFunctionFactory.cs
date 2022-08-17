@@ -1,14 +1,28 @@
 ﻿using System;
+using System.Reflection;
+
 public class EnemyFunctionFactory
 {
-    private EnemyFunctionFactory(){}
+    private MethodInfo[] functions;
+
+    private EnemyFunctionFactory() {
+        BindingFlags flag = BindingFlags.NonPublic;
+        functions = GetType().GetMethods(flag);
+    }
 
     private static EnemyFunctionFactory _singleton;
     private static EnemyFunctionFactory singleton {
         get => _singleton ??= new EnemyFunctionFactory();
     }
 
-    public static EnemyFunctionFactory GetInstance() => _singleton;
+    private static string GetSnakeCase(string str)
+    {
+        var regex = new System.Text.RegularExpressions.Regex("[a-z][A-Z]");
+        return regex.Replace(str, s => $"{s.Groups[0].Value[0]}_{s.Groups[0].Value[1]}").ToUpper();
+    }
+
+    public static EnemyFunctionFactory GetInstance() =>
+        _singleton ??= new EnemyFunctionFactory();
 
     public void Call(
         int functionCode,
@@ -16,5 +30,13 @@ public class EnemyFunctionFactory
         EnemyVM enemyVM
     ){
         throw new Exception("Not implemented.");
+    }
+
+    public int Find(String functionName) =>
+        Array.FindIndex(functions,
+            item => EnemyFunctionFactory.GetSnakeCase(item.Name) == functionName);
+
+    public void test_method() {
+
     }
 }

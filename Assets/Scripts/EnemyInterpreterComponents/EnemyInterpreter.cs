@@ -21,7 +21,10 @@ public class EnemyInterpreter
     }
 
     public void test_run() {
-        var tester = new EnemyVMTester();
-        tester.runTests();
+        var tester1 = new EnemyVMTester();
+        tester1.runTests();
+
+        var tester2 = new EnemyFunctionsFatoryTester();
+        tester2.runTests();
     }
 }

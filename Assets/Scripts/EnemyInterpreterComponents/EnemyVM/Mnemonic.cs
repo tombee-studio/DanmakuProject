@@ -8,15 +8,21 @@ public partial class EnemyVM
         SUB,
         MUL,
         DIV,
+
         JMP,
         JE,
         JNE,
+
         LT,
         LE,
         GT,
         GE,
         EQ,
         NE,
-        CALL
+
+        CALL,
+
+        LOAD,
+        STORE
     };
 }

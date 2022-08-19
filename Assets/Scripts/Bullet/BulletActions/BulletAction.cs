@@ -1,11 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+#nullable enable
 public abstract class BulletAction
 {
-    protected int frame = 0;
-
-    public abstract bool IsEnd();
+    protected BulletComponent bullet;
+    protected int _frame = 0;
+    public int frame { get => _frame; }
+    public bool isEnd { get => IsEnd(); }
+    public BulletAction(BulletComponent bullet)
+    {
+        this.bullet = bullet;
+    }
+    protected abstract bool IsEnd();
     public abstract void Run();
+    public void incrementFrame()
+    {
+        this._frame++;
+    }
 }

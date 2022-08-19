@@ -1,39 +1,49 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#nullable enable
 public class BulletComponent : MonoBehaviour
 {
     Queue<BulletAction> bulletActions = new Queue<BulletAction>();
+    BulletAction bulletAction { get => bulletActions.Peek(); }
+    public Vector3 velocity;
+    bool isActive = false;
 
-    // Start is called before the first frame update
-    void Start()
+    private void FixedUpdate()
     {
+        if (!this.isActive) { return; }
+        transform.position += velocity;
+        bulletAction.incrementFrame();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        try
+        if (!this.isActive) { return; }
+        if (bulletAction.isEnd)
         {
-            var bulletAction = bulletActions.Peek();
-            if (bulletAction.IsEnd())
+            bulletActions.Dequeue();
+            if (bulletActions.Count == 0)
             {
-                BulletAction action = // とりあえず
-                    bulletActions.Dequeue(); // これは残す.
-                transform.position = new Vector3(0, 0, 0); // とりあえず
-                EnqueueAction(action); // とりあえず
+                End();
+                return;
             }
-            else { bulletAction.Run(); }
         }
-        catch (System.Exception e)
-        {
-            Debug.LogError(e);
-        }
+        bulletAction.Run();
     }
 
     public void EnqueueAction(BulletAction bulletAction)
     {
         bulletActions.Enqueue(bulletAction);
+    }
+    public void Activate()
+    {
+        this.isActive = true;
+    }
+    public void Pause()
+    {
+        this.isActive = false;
+    }
+    public void End()
+    {
+        Destroy(gameObject);
     }
 }

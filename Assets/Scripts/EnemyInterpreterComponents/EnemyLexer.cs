@@ -81,44 +81,30 @@ public class EnemyLexer {
         public float float_val;
     };
 
-    List<string> getReservedWords() => convertToList(mapFromTokenTypeToReservedWord.Values);
+    List<string> getReservedWords() => Util_Array.convertToList(mapFromTokenTypeToReservedWord.Values);
 
-    List<T> convertToList<T>(IEnumerable<T> collection)
-    {
-        var list = new List<T>();
-        foreach (T key in collection) list.Add(key);
-        return list;
-    }
+    
 
 
     List<Token> Lex(string code) {
         var tokens = new List<Token>();
 
-        List<string> tokenCandidates = getReservedWords();
+        List<string> possibleTokens = getReservedWords();
         string chainTowardToken = "";
 
         for (int textPointer = 0; textPointer < code.Length; textPointer++) {
             chainTowardToken += code[textPointer];
 
-            // 先頭からトークンを読み進めた際に、現地点であり得ないトークンの可能性を棄却する。
-            foreach (TokenType tokenType in tokenCandidates)
+            // 先頭からトークンを読み進めた際に、現地点であり得ない予約語の可能性を棄却する。
+            foreach (string token in possibleTokens)
             {
-                if (!patternString.StartsWith(chain)) tokenCandidates.Remove(tokenType);
+                if (!token.StartsWith(chainTowardToken)) possibleTokens.Remove(token);
             }
             
             
 
         }
         return tokens;
-    }
-
-    bool IsChainInPatternOf(TokenType tokenType, string chain)
-    {
-        if (tokenType == TokenType.ID) return IsID(chain);
-
-        string patternString;
-        if (mapFromTokenTypeToReservedWord.TryGetValue(tokenType, out patternString)) throw new Exception($"TokenType {tokenType} is not found in mapFromWordToTokenType.Keys.");
-        return ;
     }
 
 }

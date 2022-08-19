@@ -29,14 +29,16 @@ public class EnemyFunctionFactory
         EnemyComponent enemyComponent,
         EnemyVM enemyVM
     ){
-        throw new Exception("Not implemented.");
+        BindingFlags flag = BindingFlags.NonPublic;
+        object[] args = new object[] { enemyComponent, enemyVM };
+        GetType().GetMethods(flag)[functionCode].Invoke(this, args);
     }
 
     public int Find(String functionName) =>
         Array.FindIndex(functions,
             item => EnemyFunctionFactory.GetSnakeCase(item.Name) == functionName);
 
-    public void test_method() {
+    public void TestMethod(EnemyComponent enemy, EnemyVM  vm) {
 
     }
 }

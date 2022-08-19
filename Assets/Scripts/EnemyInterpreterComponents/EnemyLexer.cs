@@ -53,7 +53,7 @@ public class EnemyLexer {
             { TokenType.FLOAT, "float" },
             { TokenType.REPEAT, "repeat" },
             { TokenType.BREAK, "break" },
-            { TokenType.INFINITY, "infinity" },
+            { TokenType.INFINITY, "Infinity" },
             { TokenType.IF, "if" },
             { TokenType.ELSE, "else" },
             { TokenType.AND, "and" },
@@ -93,16 +93,14 @@ public class EnemyLexer {
         string chainTowardToken = "";
 
         for (int textPointer = 0; textPointer < code.Length; textPointer++) {
-            chainTowardToken += code[textPointer];
-
+            var character = code[textPointer];
+            chainTowardToken += character;
+            if ()
             // 先頭からトークンを読み進めた際に、現地点であり得ない予約語の可能性を棄却する。
             foreach (string token in possibleTokens)
             {
                 if (!token.StartsWith(chainTowardToken)) possibleTokens.Remove(token);
             }
-            
-            
-
         }
         return tokens;
     }

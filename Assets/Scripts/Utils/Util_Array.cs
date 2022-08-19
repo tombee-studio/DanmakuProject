@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 public partial class Util_Array
 {
@@ -17,5 +18,11 @@ public partial class Util_Array
         var list = new List<T>();
         foreach (T key in collection) list.Add(key);
         return list;
+    }
+
+    public static bool x_in_collection<T>(T x, IEnumerable<T> collection)
+    {
+        foreach (T element in collection) if (element.Equals(x)) return true;
+        return false;
     }
 }

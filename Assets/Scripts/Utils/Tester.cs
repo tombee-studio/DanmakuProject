@@ -3,6 +3,10 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
+/**
+ * このテスターを継承するとテストを使える。
+ * 継承先のクラスでテスト対象の変数を用意し、test_から始まる関数を活用すると良い。
+ */
 public class Tester
 {
     private MethodInfo[] selectTestMethods(MethodInfo[] methods)

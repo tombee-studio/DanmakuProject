@@ -3,6 +3,6 @@ public partial class EnemyVM
 {
     private void Push(Instruction instruction)
     {
-        PushIntoStack(instruction.argument);
+        PushIntoStack(PrimitiveValue.makeInt(instruction.argument));
     }
 }

@@ -12,4 +12,10 @@ public partial class Util_Array
             
         }
     }
+    public static List<T> convertToList<T>(IEnumerable<T> collection)
+    {
+        var list = new List<T>();
+        foreach (T key in collection) list.Add(key);
+        return list;
+    }
 }

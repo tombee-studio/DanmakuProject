@@ -1,5 +1,6 @@
+using System;
 using System.Collections.Generic;
-
+using System.Text.RegularExpressions;
 
 using TokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer.TokenType, string>;
 
@@ -39,10 +40,10 @@ public class EnemyLexer {
         ASSIGNMENT,
         EQUAL,
         COMMA,
-        ID  //直接対応するトークンなし
+        ID
     };
 
-    readonly TokenDictionary mapFromWordToTokenType = new(){
+    readonly TokenDictionary mapFromTokenTypeToReservedWord = new(){
             { TokenType.BEHAVIOR, "behavior" },
             { TokenType.BULLET, "bullet" },
             { TokenType.ACTION, "action" },
@@ -80,30 +81,44 @@ public class EnemyLexer {
         public float float_val;
     };
 
-    List<string> convertToKeysList(TokenDictionary.ValueCollection collection)
+    List<string> getReservedWords() => convertToList(mapFromTokenTypeToReservedWord.Values);
+
+    List<T> convertToList<T>(IEnumerable<T> collection)
     {
-        var list = new List<string>();
-        foreach (string key in collection) list.Add(key);
+        var list = new List<T>();
+        foreach (T key in collection) list.Add(key);
         return list;
     }
+
 
     List<Token> Lex(string code) {
         var tokens = new List<Token>();
 
-        List<string> AllTokenCandidates = convertToKeysList(mapFromWordToTokenType.Values);
-        List<string> tokenCandidates = convertToKeysList(mapFromWordToTokenType.Values);        
+        List<string> tokenCandidates = getReservedWords();
         string chainTowardToken = "";
 
         for (int textPointer = 0; textPointer < code.Length; textPointer++) {
             chainTowardToken += code[textPointer];
-            foreach (string token in tokenCandidates)
+
+            // 先頭からトークンを読み進めた際に、現地点であり得ないトークンの可能性を棄却する。
+            foreach (TokenType tokenType in tokenCandidates)
             {
-                if (!token.StartsWith(chainTowardToken)) tokenCandidates.Remove(token);
+                if (!patternString.StartsWith(chain)) tokenCandidates.Remove(tokenType);
             }
-            if (tokenCandidates.Count != 1) 
+            
+            
 
         }
         return tokens;
     }
-    
+
+    bool IsChainInPatternOf(TokenType tokenType, string chain)
+    {
+        if (tokenType == TokenType.ID) return IsID(chain);
+
+        string patternString;
+        if (mapFromTokenTypeToReservedWord.TryGetValue(tokenType, out patternString)) throw new Exception($"TokenType {tokenType} is not found in mapFromWordToTokenType.Keys.");
+        return ;
+    }
+
 }

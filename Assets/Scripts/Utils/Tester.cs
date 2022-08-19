@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 /**
- * このテスターを継承するとテストを使える。
- * 継承先のクラスでテスト対象の変数を用意し、test_から始まる関数を活用すると良い。
+ * このテスターを継承するとテスト機能をすぐ使用できる。
+ * 継承先のクラスでテスト対象の変数を用意し、test_から始まる関数を定義すると良い。
  */
 public class Tester
 {

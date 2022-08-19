@@ -52,7 +52,7 @@ public class EnemyComponent : MonoBehaviour
             BulletComponent bullet = Instantiate(bulletPrefab, transform);
             float deg = i * (360f / bulletCount);
             bullet.EnqueueAction(new BulletMoveLinear(bullet.transform, 0.1f, deg)); // とりあえず
-            bullets.Add(bullet);
+            bullets.Add(bullet.gameObject);
         }
     }
 }

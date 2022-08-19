@@ -15,8 +15,9 @@ public class EnemyComponent : MonoBehaviour
     {
         interpreter.test_run();
         Debug.Log(interpreter.ReturnValue);
-
+#pragma warning disable CS0618  // ここではわざと使っているので警告を出さない.
         Toriaezu();
+#pragma warning restore CS0618
     }
     // とりあえず動作させる
     [System.Obsolete("とりあえず用意しただけのメソッドなのでいずれ消します")]

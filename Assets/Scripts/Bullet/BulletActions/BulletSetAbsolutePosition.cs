@@ -5,7 +5,7 @@ public class BulletSetAbsolutePosition : BulletAction
 {
     bool _isEnd = false;
     Vector3 registeredPosition;
-    public BulletSetAbsolutePosition(BulletComponent bullet, Vector3 position, Transform enemyTransform = null) : base(bullet)
+    public BulletSetAbsolutePosition(BulletComponent bullet, Vector3 position) : base(bullet)
     {
         this.registeredPosition = position;
     }

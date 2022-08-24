@@ -169,8 +169,9 @@ public class EnemyLexer {
         {
             // ただ単に正規表現で部分文字列であることは判定できない
             // FLOAT_VALの最後のfなど
-            // 123f142gなど
+            // 1234.143fなど
             // こういうトークンの場合はどうする？
+            // 12
             Regex regexForVariableWords = GetValue(mapFromTokenTypeToVariableWord, tokenType);
             if (!regexForVariableWords.IsMatch(chainTowardToken)) pickedtokens.Add(tokenType);
         }

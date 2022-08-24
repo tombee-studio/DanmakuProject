@@ -6,7 +6,7 @@ using ReservedTokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer
 using VariableTokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer.TokenType, System.Text.RegularExpressions.Regex>;
 public partial class EnemyLexer {
 
-    readonly static ReservedTokenDictionary mapFromTokenTypeToReservedWord = new(){
+    public readonly static ReservedTokenDictionary mapFromTokenTypeToReservedWord = new(){
             { TokenType.BEHAVIOR, "behavior" },
             { TokenType.BULLET, "bullet" },
             { TokenType.ACTION, "action" },
@@ -36,9 +36,9 @@ public partial class EnemyLexer {
             { TokenType.ASSIGNMENT, "=" },
             { TokenType.COMMA, "," }
     };
-    readonly static ReservedTokenDictionary.KeyCollection reservedTokenTypes = mapFromTokenTypeToReservedWord.Keys;
+    public readonly static ReservedTokenDictionary.KeyCollection reservedTokenTypes = mapFromTokenTypeToReservedWord.Keys;
 
-    readonly static VariableTokenDictionary mapFromTokenTypeToVariableWord = new()
+    public readonly static VariableTokenDictionary mapFromTokenTypeToVariableWord = new()
     {
         { TokenType.USER_DEFINED_SYMBOL,    new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$") },
         { TokenType.INT_LITERAL,            new Regex("^[0-9]+$") },
@@ -48,7 +48,7 @@ public partial class EnemyLexer {
      *  
      */
     
-    readonly static VariableTokenDictionary.KeyCollection variableTokenTypes = mapFromTokenTypeToVariableWord.Keys;
+    public readonly static VariableTokenDictionary.KeyCollection variableTokenTypes = mapFromTokenTypeToVariableWord.Keys;
 
 
     public List<Token> Lex(string code) {

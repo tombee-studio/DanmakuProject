@@ -7,7 +7,7 @@ public class EnemyLexerTester : Tester
     {
 
     }
-    List<Token> generateLexerSequence()
+    List<Token> generateLexerSequence(string lexerCode)
     {
 
     }

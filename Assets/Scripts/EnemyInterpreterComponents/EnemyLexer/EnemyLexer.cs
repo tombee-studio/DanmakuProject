@@ -4,48 +4,7 @@ using System.Text.RegularExpressions;
 
 using ReservedTokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer.TokenType, string>;
 using VariableTokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer.TokenType, System.Text.RegularExpressions.Regex>;
-public class EnemyLexer {
-    public enum TokenType
-    {
-        /**
-         * Types of Token
-         */
-        NONE,   
-        BEHAVIOR,
-        BULLET,
-        ACTION,
-        PHASE_NAVIGATOR,
-        ID_NAVIGATOR,
-        INT,
-        FLOAT,
-        REPEAT,
-        BREAK,
-        INFINITY,
-        IF,
-        ELSE,
-        PLUS,
-        SUB,
-        MULTIPLY,
-        DIVIDE,
-        MOD,
-        AND,
-        OR,
-        NOT,
-        GREATER_EQUAL,
-        LESS_EQUAL,
-        GREATER_THAN,
-        LESS_THAN,
-        BRACKETS_LEFT,
-        BRACKETS_RIGHT,
-        ASSIGNMENT,
-        EQUAL,
-        COMMA,
-
-        USER_DEFINED_SYMBOL,
-        INT_LITERAL,
-        FLOAT_LITERAL
-
-    };
+public partial class EnemyLexer {
 
     readonly static ReservedTokenDictionary mapFromTokenTypeToReservedWord = new(){
             { TokenType.BEHAVIOR, "behavior" },
@@ -90,41 +49,6 @@ public class EnemyLexer {
      */
     
     readonly static VariableTokenDictionary.KeyCollection variableTokenTypes = mapFromTokenTypeToVariableWord.Keys;
-
-    public struct Token {
-        public TokenType type;
-        public string user_defined_symbol;
-        public int int_val;
-        public float float_val;
-
-        public static Token GenerateReservedToken(TokenType giventype)
-        {
-            var token = new Token();
-            token.type = giventype;
-            return token;
-        }
-        public static Token GenerateUserDefinedSymbolToken(string given_user_defined_symbol)
-        {
-            var token = new Token();
-            token.type = TokenType.USER_DEFINED_SYMBOL;
-            token.user_defined_symbol = given_user_defined_symbol;
-            return token;
-        }
-        public static Token GenerateIntValToken(string given_int_val)
-        {
-            var token = new Token();
-            token.type = TokenType.USER_DEFINED_SYMBOL;
-            token.int_val = int.Parse(given_int_val);
-            return token;
-        }
-        public static Token GenerateFloatValToken(string given_float_val)
-        {
-            var token = new Token();
-            token.type = TokenType.USER_DEFINED_SYMBOL;
-            token.float_val = float.Parse(given_float_val);
-            return token;
-        }
-    };
 
 
     public List<Token> Lex(string code) {
@@ -212,23 +136,7 @@ public class EnemyLexer {
             throw new Exception($"Key {key} is not found in mapFromTokenTypeToVariableWord.");
         return value;
     }
-    /**
-     * 与えられたトークンの情報から適切にトークンを生成する。
-     */
-    Token generateToken(string snippet, TokenType token)
-    {
-        switch (token)
-        {
-            case TokenType.USER_DEFINED_SYMBOL:
-                return Token.GenerateUserDefinedSymbolToken(snippet);
-            case TokenType.INT_LITERAL:
-                return Token.GenerateIntValToken(snippet);
-            case TokenType.FLOAT_LITERAL:
-                return Token.GenerateIntValToken(snippet);
-            default:
-                return Token.GenerateReservedToken(token);
-        }
-    }
+    
 
 
     

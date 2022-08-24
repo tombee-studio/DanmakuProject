@@ -25,4 +25,8 @@ public partial class Util_Array
         foreach (T element in collection) if (element.Equals(x)) return true;
         return false;
     }
+    public static void deleteFromList<T>(IEnumerable<T> deletedElements, List<T> list)
+    {
+        foreach (T element in deletedElements) list.Remove(element);
+    }
 }

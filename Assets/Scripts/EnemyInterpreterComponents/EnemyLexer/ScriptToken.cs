@@ -79,14 +79,14 @@ public struct ScriptToken
     private static ScriptToken GenerateIntValToken(string given_int_val)
     {
         var token = new ScriptToken();
-        token.type = Type.USER_DEFINED_SYMBOL;
+        token.type = Type.INT_LITERAL;
         token.int_val = int.Parse(given_int_val);
         return token;
     }
     private static ScriptToken GenerateFloatValToken(string given_float_val)
     {
         var token = new ScriptToken();
-        token.type = Type.USER_DEFINED_SYMBOL;
+        token.type = Type.FLOAT_LITERAL;
         var trimmedFloatVal = given_float_val.TrimEnd('f');
         token.float_val = float.Parse(trimmedFloatVal);
         return token;

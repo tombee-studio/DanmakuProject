@@ -6,10 +6,12 @@ public partial class EnemyLexerTester
         assertIsSequenceEqual(@"(", @"(");
 
     }
+    /**
     public void test_easy_error()
     {
         assertIsSequenceEqual(@"+", @"-");
     }
+    */
     public void test_easy2()
     {
         assertIsSequenceEqual(@"+", @"+");

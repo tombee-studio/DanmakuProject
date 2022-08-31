@@ -91,6 +91,7 @@ public partial class EnemyLexerTester : Tester
         var variableWord = devidedLine[1];
         var tokenTypeInEnum = label switch
         {
+            //TODO: symbolIDをsymbolに変えたい
             "symbolID" => ScriptToken.Type.USER_DEFINED_SYMBOL,
             "int" => ScriptToken.Type.INT_LITERAL,
             "float" => ScriptToken.Type.FLOAT_LITERAL,

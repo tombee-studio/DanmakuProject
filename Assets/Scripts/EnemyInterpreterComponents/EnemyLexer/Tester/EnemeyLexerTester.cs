@@ -5,7 +5,7 @@ using System.Linq;
 public class EnemyLexerTester : Tester
 {
     EnemyLexer enemyLexer = new();
-    
+
     void assertIsSequenceEqual(string code, string lexedCode)
     {
         var resultList = enemyLexer.Lex(code);
@@ -27,7 +27,7 @@ public class EnemyLexerTester : Tester
             expected.user_defined_symbol == result.user_defined_symbol &&
             expected.int_val == result.int_val &&
             expected.float_val == result.float_val
-        )   throw new Exception($"Token value mismatched: expected {expected.user_defined_symbol}, {expected.int_val}, {expected.float_val}  -- result {result.user_defined_symbol}, {result.int_val}, {expected.float_val}");
+        ) throw new Exception($"Token value mismatched: expected {expected.user_defined_symbol}, {expected.int_val}, {expected.float_val}  -- result {result.user_defined_symbol}, {result.int_val}, {expected.float_val}");
         return;
     }
     /**
@@ -56,11 +56,11 @@ public class EnemyLexerTester : Tester
                 GetReservedTokenTypeFromValue(tokenTypeStr)
                 ?? GetVariableTokenTypeFromValue(tokenTypeStr)
             );
-            
-            
+
+
         }
         return parsedTokenSequence;
-        
+
     }
     ScriptToken? GetReservedTokenTypeFromValue(string tokenString)
     {
@@ -88,6 +88,6 @@ public class EnemyLexerTester : Tester
             _ => throw new Exception($"Invalid Token Label {label}.")
         };
         return ScriptToken.GenerateToken(variableWord, tokenTypeInEnum);
-        
+
     }
 }

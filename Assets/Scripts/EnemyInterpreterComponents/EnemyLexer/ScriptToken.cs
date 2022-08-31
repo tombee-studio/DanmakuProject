@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 public struct ScriptToken
 {
     public Type type;
@@ -87,7 +87,8 @@ public struct ScriptToken
     {
         var token = new ScriptToken();
         token.type = Type.USER_DEFINED_SYMBOL;
-        token.float_val = float.Parse(given_float_val);
+        var trimmedFloatVal = given_float_val.TrimEnd('f');
+        token.float_val = float.Parse(trimmedFloatVal);
         return token;
     }
     

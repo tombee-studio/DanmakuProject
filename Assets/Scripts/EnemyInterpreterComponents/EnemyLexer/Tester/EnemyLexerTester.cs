@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class EnemyLexerTester : Tester
+public partial class EnemyLexerTester : Tester
 {
     EnemyLexer enemyLexer = new();
 
-    void assertIsSequenceEqual(string code, string lexedCode)
+    public void assertIsSequenceEqual(string code, string lexedCode)
     {
         var resultList = enemyLexer.Lex(code);
         var expectedList = parseTokenSequence(lexedCode);
@@ -34,11 +34,11 @@ public class EnemyLexerTester : Tester
      * 文字列で記述されたトークン列を解釈し、それに該当するTokenの列を生成する。
      * 例:改行を挟んで記述する。 
      * > parseLexerSequence(@"
-     *      ID abd23
+     *      id abd23
      *      (
-     *      Int 3
+     *      int 3
      *      +
-     *      Float 2.3
+     *      float 2.3
      *      )
      * ")
      * 

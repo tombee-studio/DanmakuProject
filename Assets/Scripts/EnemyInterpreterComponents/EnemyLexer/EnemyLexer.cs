@@ -1,73 +1,98 @@
 using System;
 using System.Collections.Generic;
+
 using System.Text.RegularExpressions;
 
-using ReservedTokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer.TokenType, string>;
-using VariableTokenDictionary = System.Collections.Generic.Dictionary<EnemyLexer.TokenType, System.Text.RegularExpressions.Regex>;
-public partial class EnemyLexer {
+using TokenType = ScriptToken.Type;
 
-    public readonly static ReservedTokenDictionary mapFromTokenTypeToReservedWord = new(){
-            { TokenType.BEHAVIOR, "behavior" },
-            { TokenType.BULLET, "bullet" },
-            { TokenType.ACTION, "action" },
-            { TokenType.PHASE_NAVIGATOR, ">>" },
-            { TokenType.ID_NAVIGATOR, "ID" },
-            { TokenType.INT, "int" },
-            { TokenType.FLOAT, "float" },
-            { TokenType.REPEAT, "repeat" },
-            { TokenType.BREAK, "break" },
-            { TokenType.INFINITY, "Infinity" },
-            { TokenType.IF, "if" },
-            { TokenType.ELSE, "else" },
-            { TokenType.AND, "and" },
-            { TokenType.OR, "or" },
-            { TokenType.NOT, "not" },
-            { TokenType.GREATER_EQUAL, ">=" },
-            { TokenType.LESS_EQUAL, "<=" },
-            { TokenType.EQUAL, "==" },
-            { TokenType.PLUS, "+" },
-            { TokenType.SUB, "-" },
-            { TokenType.MULTIPLY, "*" },
-            { TokenType.DIVIDE, "/" },
-            { TokenType.GREATER_THAN, ">" },
-            { TokenType.LESS_THAN, "<" },
-            { TokenType.BRACKETS_LEFT, "(" },
-            { TokenType.BRACKETS_RIGHT, ")" },
-            { TokenType.ASSIGNMENT, "=" },
-            { TokenType.COMMA, "," }
+using ReservedTokenDictionary = System.Collections.Generic.Dictionary<ScriptToken.Type, string>;
+using VariableTokenDictionary = System.Collections.Generic.Dictionary<ScriptToken.Type, System.Func<string, EnemyLexer.MatchResult>>;
+
+public partial class EnemyLexer {
+    public enum MatchResult
+    {
+        Match,
+        PartialMatch,
+        NoMatch
+    }
+    public readonly static ReservedTokenDictionary mapFromTokenTypeToReservedWord = new()
+    {
+        { TokenType.BEHAVIOR, "behavior" },
+        { TokenType.BULLET, "bullet" },
+        { TokenType.ACTION, "action" },
+        { TokenType.PHASE_NAVIGATOR, ">>" },
+        { TokenType.ID_NAVIGATOR, "ID" },
+        { TokenType.INT, "int" },
+        { TokenType.FLOAT, "float" },
+        { TokenType.REPEAT, "repeat" },
+        { TokenType.BREAK, "break" },
+        { TokenType.INFINITY, "Infinity" },
+        { TokenType.IF, "if" },
+        { TokenType.ELSE, "else" },
+        { TokenType.AND, "and" },
+        { TokenType.OR, "or" },
+        { TokenType.NOT, "not" },
+        { TokenType.GREATER_EQUAL, ">=" },
+        { TokenType.LESS_EQUAL, "<=" },
+        { TokenType.EQUAL, "==" },
+        { TokenType.PLUS, "+" },
+        { TokenType.SUB, "-" },
+        { TokenType.MULTIPLY, "*" },
+        { TokenType.DIVIDE, "/" },
+        { TokenType.GREATER_THAN, ">" },
+        { TokenType.LESS_THAN, "<" },
+        { TokenType.BRACKET_LEFT, "(" },
+        { TokenType.BRACKET_RIGHT, ")" },
+        { TokenType.ASSIGNMENT, "=" },
+        { TokenType.COMMA, "," }
     };
     public readonly static ReservedTokenDictionary.KeyCollection reservedTokenTypes = mapFromTokenTypeToReservedWord.Keys;
 
     public readonly static VariableTokenDictionary mapFromTokenTypeToVariableWord = new()
     {
-        { TokenType.USER_DEFINED_SYMBOL,    new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$") },
-        { TokenType.INT_LITERAL,            new Regex("^[0-9]+$") },
-        { TokenType.FLOAT_LITERAL,          new Regex("^[0-9]+(\\.[0-9]+)?f$") }
+        { TokenType.USER_DEFINED_SYMBOL,
+            (str) => 
+                new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$").IsMatch(str)
+                ? MatchResult.Match : MatchResult.NoMatch
+        },
+        { TokenType.INT_LITERAL,
+            (str) =>
+                new Regex("[0-9]+").IsMatch(str)
+                ? MatchResult.Match : MatchResult.NoMatch},
+        { TokenType.FLOAT_LITERAL,
+            (str) =>
+            {
+                bool partialMatchResult = new Regex("[0-9]+(\\.[0-9]+)?").IsMatch(str);
+                if (!partialMatchResult) { return MatchResult.NoMatch; }
+                if (str.EndsWith("f")) { return MatchResult.Match; }
+                else { return MatchResult.PartialMatch; }
+            }
+        }
     };
-    /*
-     *  
-     */
-    
+
     public readonly static VariableTokenDictionary.KeyCollection variableTokenTypes = mapFromTokenTypeToVariableWord.Keys;
 
 
-    public List<Token> Lex(string code) {
+    public List<ScriptToken> Lex(string code) {
 
-        var tokens = new List<Token>();
+        var tokens = new List<ScriptToken>();
 
         string snippet = "";
 
         for (int textPointer = 0; textPointer - 1 < code.Length; textPointer++) {
             snippet += code[textPointer];
-            if (!isThereMatchedTokenWhenLookaheading(snippet, code[textPointer + 1]))
+            if (!existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1]))
             {
                 var matchedTokenType = FindOutMatchedTokenTypeInList(snippet);
-                tokens.Add(generateToken(snippet, matchedTokenType));
+                tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenType));
+                snippet = "";
             }
 
         }
         return tokens;
     }
+
+
     /*
      *  先頭からトークンを読み進めた際に、その地点で当てはまる可能性のある予約語を列挙する。
      *  結果として、新たなリストを返す。
@@ -96,8 +121,12 @@ public partial class EnemyLexer {
             // 1234.143fなど
             // こういうトークンの場合はどうする？
             // 12
-            Regex regexForVariableWords = GetValue(mapFromTokenTypeToVariableWord, tokenType);
-            if (!regexForVariableWords.IsMatch(chainTowardToken)) pickedtokens.Add(tokenType);
+            var matchFunction = GetValue(mapFromTokenTypeToVariableWord, tokenType);
+            var matchResult = matchFunction.Invoke(chainTowardToken);
+            if (
+                matchResult == MatchResult.PartialMatch ||
+                matchResult == MatchResult.Match
+            ) pickedtokens.Add(tokenType);
         }
         return pickedtokens;
     }
@@ -111,10 +140,13 @@ public partial class EnemyLexer {
         foreach (TokenType tokenType in reservedTokenTypes)
         {
             if (targetSnippet != GetValue(mapFromTokenTypeToReservedWord, tokenType)) continue;
+            return tokenType;
         }
         foreach (TokenType tokenType in variableTokenTypes)
         {
-            if (!GetValue(mapFromTokenTypeToVariableWord, tokenType).IsMatch(targetSnippet)) continue;
+            var matchFunction = GetValue(mapFromTokenTypeToVariableWord, tokenType);
+            if (matchFunction.Invoke(targetSnippet) != MatchResult.Match) continue;
+            return tokenType;
         }
         throw new Exception($"未知のトークン{targetSnippet}が見つかりました。");
     }
@@ -122,7 +154,7 @@ public partial class EnemyLexer {
      * 一文字先読みした際に当てはまる可能性のあるトークンが存在するかを調べる。
      * 当てはまる可能性のあるトークンが存在しなかった場合、トークンは少なくともsnippet.length以下の長さであることがわかる。
      */
-    bool isThereMatchedTokenWhenLookaheading(string snippet, char nextChar)
+    bool existPossibleTokenWhenLookaheading(string snippet, char nextChar)
     {
         var snippetInNextChar = snippet + nextChar;
         return PickupPossibleReservedWords(snippetInNextChar).Count != 0

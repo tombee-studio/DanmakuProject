@@ -15,6 +15,6 @@ public partial class EnemyLexerTester
     }
     public void test_easy4()
     {
-        assertIsSequenceEqual(@"1.23f", @"1.23f");
+        assertIsSequenceEqual(@"1.23f", @"float 1.23f");
     }
 }

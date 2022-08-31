@@ -79,7 +79,7 @@ public partial class EnemyLexer {
 
         string snippet = "";
 
-        for (int textPointer = 0; textPointer - 1 < code.Length; textPointer++) {
+        for (int textPointer = 0; textPointer + 1 < code.Length; textPointer++) {
             snippet += code[textPointer];
             if (!existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1]))
             {

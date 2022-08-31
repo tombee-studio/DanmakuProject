@@ -7,7 +7,7 @@ using UnityEngine;
  * このテスターを継承するとテスト機能をすぐ使用できる。
  * 継承先のクラスでテスト対象の変数を用意し、test_から始まる関数を定義すると良い。
  */
-public abstract class Tester<TestTarget>
+public abstract class Tester
 {
     private MethodInfo[] selectTestMethods(MethodInfo[] methods)
     {
@@ -32,7 +32,7 @@ public abstract class Tester<TestTarget>
         MethodInfo[] methods = GetType().GetMethods(flag);
         return selectTestMethods(methods);
     }
-    protected abstract TestTarget cloneThisObject();
+    protected abstract Tester cloneThisObject();
     public void runTests()
     {
         var testFunctions = pickupTestMethods();

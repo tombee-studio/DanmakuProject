@@ -5,7 +5,10 @@ using System.Linq;
 public partial class EnemyLexerTester : Tester
 {
     EnemyLexer enemyLexer = new();
-
+    protected override Tester cloneThisObject()
+    {
+        return new EnemyLexerTester();
+    }
     public void assertIsSequenceEqual(string code, string lexedCode)
     {
         var resultList = enemyLexer.Lex(code);

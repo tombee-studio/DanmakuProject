@@ -79,9 +79,9 @@ public partial class EnemyLexer {
 
         string snippet = "";
 
-        for (int textPointer = 0; textPointer + 1 < code.Length; textPointer++) {
+        for (int textPointer = 0; textPointer < code.Length; textPointer++) {
             snippet += code[textPointer];
-            if (!existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1]))
+            if (textPointer == code.Length - 1 || !existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1]))
             {
                 var matchedTokenType = FindOutMatchedTokenTypeInList(snippet);
                 tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenType));

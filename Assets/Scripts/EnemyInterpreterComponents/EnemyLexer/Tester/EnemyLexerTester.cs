@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public partial class EnemyLexerTester : Tester
 {
@@ -19,7 +20,11 @@ public partial class EnemyLexerTester : Tester
                     result = result,
                     expected = expected
                 });
-        foreach (var element in zippedList) assertIsEqual(element.result, element.expected);
+        foreach (var element in zippedList)
+        {
+            Debug.Log($"{element.result} - {element.expected}");
+            assertIsEqual(element.result, element.expected);
+        }
 
     }
     void assertIsEqual(ScriptToken expected, ScriptToken result)
@@ -55,6 +60,7 @@ public partial class EnemyLexerTester : Tester
         {
             var tokenTypeStr = line.Trim();
             if (tokenTypeStr.Length == 0) continue;
+
             parsedTokenSequence.Add(
                 GetReservedTokenTypeFromValue(tokenTypeStr)
                 ?? GetVariableTokenTypeFromValue(tokenTypeStr)

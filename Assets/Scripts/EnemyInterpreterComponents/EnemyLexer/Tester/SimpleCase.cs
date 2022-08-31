@@ -26,6 +26,9 @@ public partial class EnemyLexerTester
     }
     public void test_simpleExpression1()
     {
+        //FIXME: 未知のトークン" "が見つかりました
+        // 空白の読み飛ばしを実装していなかったので、それを実装する
+        // 空白の読み飛ばしさえできていればコードのLexerの際に前後Trimする必要もないはず
         assertIsSequenceEqual(
             "(1 + 2)",
 

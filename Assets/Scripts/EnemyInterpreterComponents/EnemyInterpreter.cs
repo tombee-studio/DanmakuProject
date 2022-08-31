@@ -26,5 +26,8 @@ public class EnemyInterpreter
 
         var tester2 = new EnemyFunctionsFatoryTester();
         tester2.runTests();
+
+        var tester3 = new EnemyLexerTester();
+        tester3.runTests();
     }
 }

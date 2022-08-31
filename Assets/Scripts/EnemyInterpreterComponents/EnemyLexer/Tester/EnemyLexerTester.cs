@@ -22,19 +22,19 @@ public partial class EnemyLexerTester : Tester
                 });
         foreach (var element in zippedList)
         {
-            Debug.Log($"{element.result} - {element.expected}");
+            Debug.Log($"{element.result.type} - {element.expected.type}");
             assertIsEqual(element.result, element.expected);
         }
 
     }
     void assertIsEqual(ScriptToken expected, ScriptToken result)
     {
-        if (expected.type == result.type)
+        if (expected.type != result.type)
             throw new Exception($"Token Type mismatched: expected {expected.type} -- result {result.type}");
         if (
-            expected.user_defined_symbol == result.user_defined_symbol &&
-            expected.int_val == result.int_val &&
-            expected.float_val == result.float_val
+            expected.user_defined_symbol != result.user_defined_symbol ||
+            expected.int_val != result.int_val ||
+            expected.float_val != result.float_val
         ) throw new Exception($"Token value mismatched: expected {expected.user_defined_symbol}, {expected.int_val}, {expected.float_val}  -- result {result.user_defined_symbol}, {result.int_val}, {expected.float_val}");
         return;
     }

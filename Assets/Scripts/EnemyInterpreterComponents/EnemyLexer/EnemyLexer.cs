@@ -51,20 +51,25 @@ public partial class EnemyLexer {
     public readonly static VariableTokenDictionary mapFromTokenTypeToVariableWord = new()
     {
         { TokenType.USER_DEFINED_SYMBOL,
-            (str) => 
+            (str) =>
+            //TODO: new Regexではなく、Regexに置き換えたい
                 new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$").IsMatch(str)
                 ? MatchResult.Match : MatchResult.NoMatch
         },
         { TokenType.INT_LITERAL,
             (str) =>
-                new Regex("[0-9]+").IsMatch(str)
+            //TODO: new Regexではなく、Regexに置き換えたい
+                new Regex("^[0-9]+$").IsMatch(str)
                 ? MatchResult.Match : MatchResult.NoMatch},
         { TokenType.FLOAT_LITERAL,
             (str) =>
             {
-                bool partialMatchResult = new Regex("[0-9]+(\\.[0-9]+)?").IsMatch(str);
+                //TODO: new Regexではなく、Regexに置き換えたい
+                bool partialMatchResult = new Regex("^[0-9]+(\\.[0-9]*)?f?$").IsMatch(str);
                 if (!partialMatchResult) { return MatchResult.NoMatch; }
-                if (str.EndsWith("f")) { return MatchResult.Match; }
+                if (Regex.IsMatch(str, "^[0-9]+(\\.[0-9]+)?f$")) {
+                    return MatchResult.Match;
+                }
                 else { return MatchResult.PartialMatch; }
             }
         }
@@ -148,7 +153,7 @@ public partial class EnemyLexer {
             if (matchFunction.Invoke(targetSnippet) != MatchResult.Match) continue;
             return tokenType;
         }
-        throw new Exception($"未知のトークン{targetSnippet}が見つかりました。");
+        throw new Exception($"未知のトークン「{targetSnippet}」が見つかりました。");
     }
     /**
      * 一文字先読みした際に当てはまる可能性のあるトークンが存在するかを調べる。

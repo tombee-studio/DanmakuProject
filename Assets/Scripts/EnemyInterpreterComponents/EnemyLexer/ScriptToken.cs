@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 public struct ScriptToken
 {
     public Type type;

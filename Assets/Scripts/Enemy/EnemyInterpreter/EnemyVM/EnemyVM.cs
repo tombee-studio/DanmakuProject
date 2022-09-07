@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-using VMValueType = System.Int32;
+using VMValueType = PrimitiveValue;
 
 public partial class EnemyVM
 {
@@ -20,7 +20,7 @@ public partial class EnemyVM
 
     public bool IsContinute { get => isContinue; }
     public bool IsExit { get => isExit; }
-    public int ReturnValue {
+    public PrimitiveValue ReturnValue {
         get {
             if (memory.Length == 0) {
                 throw new EnemyVMException(

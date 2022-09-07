@@ -84,23 +84,23 @@ public partial class EnemyLexer {
 
     public List<ScriptToken> Lex(string code) {
 
-        var trimmedCode = code.Trim();
-        var actualCodeCharCount = trimmedCode.Length;
+        var codeCharCount = code.Length;
         var tokens = new List<ScriptToken>();
 
         string snippet = "";
 
-        for (int textPointer = 0; textPointer < actualCodeCharCount - 1; textPointer++) {
-            snippet += trimmedCode[textPointer];
+        for (int textPointer = 0; textPointer < codeCharCount - 1; textPointer++) {
+            if (snippet.Length == 0 && code[textPointer] == ' ') continue;
+            snippet += code[textPointer];
             if (
-                !existPossibleTokenWhenLookaheading(snippet, trimmedCode[textPointer + 1])
+                !existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1])
             ){
                 var matchedTokenType = FindOutMatchedTokenTypeInList(snippet);
                 tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenType));
                 snippet = "";
             }
         }
-        snippet += trimmedCode[actualCodeCharCount - 1];
+        snippet += code[codeCharCount - 1];
         var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet);
         tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenTypeInLastChar));
         return tokens;

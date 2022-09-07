@@ -22,7 +22,6 @@ public partial class EnemyLexerTester : Tester
                 });
         foreach (var element in zippedList)
         {
-            Debug.Log($"{element.result.type} - {element.expected.type}");
             assertIsEqual(element.result, element.expected);
         }
 

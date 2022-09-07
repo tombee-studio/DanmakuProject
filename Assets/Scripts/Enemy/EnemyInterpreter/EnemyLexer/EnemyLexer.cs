@@ -22,7 +22,7 @@ public partial class EnemyLexer {
 
         { TokenType.BULLET, "bullet" },
         { TokenType.ACTION, "action" },
-        { TokenType.PHASE_NAVIGATOR, ">>" },
+        { TokenType.PHASE_SEPARATOR, ">>" },
 
         { TokenType.ID_NAVIGATOR, "ID" },
         { TokenType.COLON, ":" },
@@ -62,7 +62,7 @@ public partial class EnemyLexer {
 
     public readonly static VariableTokenDictionary mapFromTokenTypeToVariableWord = new()
     {
-        { TokenType.USER_DEFINED_SYMBOL,
+        { TokenType.SYMBOL_ID,
             (str) =>
             //TODO: new Regexではなく、Regexに置き換えたい
                 new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$").IsMatch(str)

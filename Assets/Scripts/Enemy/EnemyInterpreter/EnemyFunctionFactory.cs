@@ -75,7 +75,7 @@ public class EnemyFunctionFactory
         float speed = vm.PopFromStack();
         enemy.MoveBulletsParallel(id, speed, angleOffset);
     }
-
+    
     public void SetBulletsPositionInCircularPattern(EnemyComponent enemy, EnemyVM vm)
     {
         int id = vm.PopFromStack();

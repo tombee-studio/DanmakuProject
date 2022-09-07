@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 560517c393ccf484f81575e1a0858ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 6386466131013015719, guid: 4c35b83d28fe2f54484c45d675b7e1ea, type: 3}
 --- !u!58 &1517548209
 CircleCollider2D:
   m_ObjectHideFlags: 0

@@ -1,19 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+#nullable enable
 public class BulletDelay : BulletAction
 {
     int waitFrames;
-    BulletDelay(int waitFrames)
+    public BulletDelay(BulletComponent bullet, int waitFrames) : base(bullet)
     {
         this.waitFrames = waitFrames;
     }
-    public override bool IsEnd()
-    {
-        if (this.frame >= waitFrames) { return true; }
-        return false;
-    }
+    protected override bool IsEnd() { return this._frame >= waitFrames; }
     public override void Run()
     {
         // DoNothing();

@@ -4,7 +4,11 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using System.Linq;
 
-public class Tester
+/**
+ * このテスターを継承するとテスト機能をすぐ使用できる。
+ * 継承先のクラスでテスト対象の変数を用意し、test_から始まる関数を定義すると良い。
+ */
+public abstract class Tester
 {
     private MethodInfo[] selectTestMethods(MethodInfo[] methods)
     {
@@ -29,14 +33,15 @@ public class Tester
         MethodInfo[] methods = GetType().GetMethods(flag);
         return selectTestMethods(methods);
     }
+    protected abstract Tester cloneThisObject();
     public void runTests()
     {
         var testFunctions = pickupTestMethods();
         foreach (MethodInfo method in testFunctions)
         {
-            var target = new Tester();
+            var tester = cloneThisObject();
             object[] parametersArray = new object[] { };
-            method.Invoke(target, parametersArray);
+            method.Invoke(tester, parametersArray);
         }
         Debug.Log($"✅ Check All {testFunctions.Length} cases.");
     }

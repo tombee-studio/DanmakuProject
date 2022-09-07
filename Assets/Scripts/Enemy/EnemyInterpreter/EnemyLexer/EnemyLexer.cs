@@ -19,10 +19,14 @@ public partial class EnemyLexer {
     public readonly static ReservedTokenDictionary mapFromTokenTypeToReservedWord = new()
     {
         { TokenType.BEHAVIOR, "behavior" },
+
         { TokenType.BULLET, "bullet" },
         { TokenType.ACTION, "action" },
         { TokenType.PHASE_NAVIGATOR, ">>" },
+
         { TokenType.ID_NAVIGATOR, "ID" },
+        { TokenType.COLON, ":" },
+
         { TokenType.INT, "int" },
         { TokenType.FLOAT, "float" },
         { TokenType.REPEAT, "repeat" },
@@ -47,6 +51,7 @@ public partial class EnemyLexer {
 
         { TokenType.CURLY_BRACKET_LEFT, "{" },
         { TokenType.CURLY_BRACKET_RIGHT, "}" },
+
 
         { TokenType.BRACKET_LEFT, "(" },
         { TokenType.BRACKET_RIGHT, ")" },

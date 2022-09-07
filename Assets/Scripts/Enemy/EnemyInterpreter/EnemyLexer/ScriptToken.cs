@@ -55,8 +55,11 @@ public struct ScriptToken
         BRACKET_LEFT,
         BRACKET_RIGHT,
 
+
         CURLY_BRACKET_LEFT,
         CURLY_BRACKET_RIGHT,
+
+        COLON,
 
         ASSIGNMENT,
         EQUAL,

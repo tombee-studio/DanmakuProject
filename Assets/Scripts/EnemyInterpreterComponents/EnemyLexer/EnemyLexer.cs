@@ -130,11 +130,6 @@ public partial class EnemyLexer {
         var pickedtokens = new List<TokenType>();
         foreach (TokenType tokenType in variableTokenTypes)
         {
-            // ただ単に正規表現で部分文字列であることは判定できない
-            // FLOAT_VALの最後のfなど
-            // 1234.143fなど
-            // こういうトークンの場合はどうする？
-            // 12
             var matchFunction = GetValue(mapFromTokenTypeToVariableWord, tokenType);
             var matchResult = matchFunction.Invoke(chainTowardToken);
             if (

@@ -7,9 +7,39 @@ using UnityEngine.Assertions;
 
 public class EnemyFunctionsFatoryTester
 {
-    public void test_enemyfunctionfactory() {
+    public void test_enemyfunctionfactory001() {
         int index = EnemyFunctionFactory.GetInstance().Find("test_method");
-        Debug.Log(index);
+        Assert.AreNotEqual(index, -1);
+    }
+
+    public void test_enemyfunctionfactory002()
+    {
+        int index = EnemyFunctionFactory.GetInstance().Find("delay_bullets");
+        Assert.AreNotEqual(index, -1);
+    }
+
+    public void test_enemyfunctionfactory003()
+    {
+        int index = EnemyFunctionFactory.GetInstance().Find("set_bullets_position_at_enemy");
+        Assert.AreNotEqual(index, -1);
+    }
+
+    public void test_enemyfunctionfactory004()
+    {
+        int index = EnemyFunctionFactory.GetInstance().Find("move_bullets_parallel");
+        Assert.AreNotEqual(index, -1);
+    }
+
+    public void test_enemyfunctionfactory005()
+    {
+        int index = EnemyFunctionFactory.GetInstance().Find("set_bullets_position_in_circular_pattern");
+        Assert.AreNotEqual(index, -1);
+    }
+
+    public void test_enemyfunctionfactory006()
+    {
+        int index = EnemyFunctionFactory.GetInstance().Find("scatter_bullets_in_circular_pattern");
+        Assert.AreNotEqual(index, -1);
     }
 
     private MethodInfo[] selectTestMethods(MethodInfo[] methods)

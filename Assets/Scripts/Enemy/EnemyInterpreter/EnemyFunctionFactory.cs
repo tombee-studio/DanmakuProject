@@ -1,12 +1,21 @@
 ﻿using System;
 using System.Reflection;
+using System.Linq;
+using System.Globalization;
+using System.Threading;
+using UnityEngine;
 
 public class EnemyFunctionFactory
 {
     private MethodInfo[] functions;
 
     private EnemyFunctionFactory() {
-        BindingFlags flag = BindingFlags.NonPublic;
+        BindingFlags flag =
+            BindingFlags.Public |
+            BindingFlags.Instance |
+            BindingFlags.Static |
+            BindingFlags.FlattenHierarchy |
+            BindingFlags.NonPublic;
         functions = GetType().GetMethods(flag);
     }
 
@@ -15,10 +24,11 @@ public class EnemyFunctionFactory
         get => _singleton ??= new EnemyFunctionFactory();
     }
 
-    private static string GetSnakeCase(string str)
+    private static string GetUpperCamelCase(string str)
     {
-        var regex = new System.Text.RegularExpressions.Regex("[a-z][A-Z]");
-        return regex.Replace(str, s => $"{s.Groups[0].Value[0]}_{s.Groups[0].Value[1]}").ToUpper();
+        CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+        TextInfo textInfo = cultureInfo.TextInfo;
+        return String.Join("", str.Split("_").Select(s => textInfo.ToTitleCase(s)));
     }
 
     public static EnemyFunctionFactory GetInstance() =>
@@ -29,16 +39,55 @@ public class EnemyFunctionFactory
         EnemyComponent enemyComponent,
         EnemyVM enemyVM
     ){
-        BindingFlags flag = BindingFlags.NonPublic;
-        object[] args = new object[] { enemyComponent, enemyVM };
-        GetType().GetMethods(flag)[functionCode].Invoke(this, args);
+        object[] args = new object[] {
+            enemyComponent,
+            enemyVM
+        };
+        functions[functionCode].Invoke(this, args);
     }
 
-    public int Find(String functionName) =>
-        Array.FindIndex(functions,
-            item => EnemyFunctionFactory.GetSnakeCase(item.Name) == functionName);
+    public int Find(String functionName)
+    {
+        return Array.FindIndex(functions,
+            item => EnemyFunctionFactory.GetUpperCamelCase(functionName) == item.Name);
+    }
 
-    public void TestMethod(EnemyComponent enemy, EnemyVM  vm) {
+    public void TestMethod() {
 
+    }
+
+    public void DelayBullets(EnemyComponent enemy, EnemyVM vm) {
+        int id = vm.PopFromStack();
+        int frames = vm.PopFromStack();
+        enemy.DelayBullets(id, frames);
+    }
+
+    public void SetBulletsPositionAtEnemy(EnemyComponent enemy, EnemyVM vm)
+    {
+        int id = vm.PopFromStack();
+        enemy.SetBulletsPositionAtEnemy(id);
+    }
+
+    public void MoveBulletsParallel(EnemyComponent enemy, EnemyVM vm)
+    {
+        int id = vm.PopFromStack();
+        float angleOffset = vm.PopFromStack();
+        float speed = vm.PopFromStack();
+        enemy.MoveBulletsParallel(id, speed, angleOffset);
+    }
+    
+    public void SetBulletsPositionInCircularPattern(EnemyComponent enemy, EnemyVM vm)
+    {
+        int id = vm.PopFromStack();
+        float angleOffset = vm.PopFromStack();
+        enemy.SetBulletsPositionInCircularPattern(id, angleOffset);
+    }
+
+    public void ScatterBulletsInCircularPattern(EnemyComponent enemy, EnemyVM vm)
+    {
+        int id = vm.PopFromStack();
+        float angleOffset = vm.PopFromStack();
+        float speed = vm.PopFromStack();
+        enemy.ScatterBulletsInCircularPattern(id, speed, angleOffset);
     }
 }

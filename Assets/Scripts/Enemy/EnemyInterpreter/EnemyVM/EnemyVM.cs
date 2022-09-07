@@ -42,12 +42,12 @@ public partial class EnemyVM
     
     private VMValueType Peek() => memory[stackPointer];
 
-    private VMValueType PopFromStack()
+    public VMValueType PopFromStack()
     {
         stackPointer--;
         return memory[stackPointer + 1];
     }
-    private void PushIntoStack(VMValueType pushedValue)
+    public void PushIntoStack(VMValueType pushedValue)
     {
         stackPointer++;
         memory[stackPointer] = pushedValue;

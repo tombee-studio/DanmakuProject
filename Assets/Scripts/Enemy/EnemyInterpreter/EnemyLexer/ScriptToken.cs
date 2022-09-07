@@ -54,6 +54,10 @@ public struct ScriptToken
         LESS_THAN,
         BRACKET_LEFT,
         BRACKET_RIGHT,
+
+        CURLY_BRACKET_LEFT,
+        CURLY_BRACKET_RIGHT,
+
         ASSIGNMENT,
         EQUAL,
         COMMA,

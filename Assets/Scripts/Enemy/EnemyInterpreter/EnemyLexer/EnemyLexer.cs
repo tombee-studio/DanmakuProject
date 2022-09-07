@@ -44,6 +44,12 @@ public partial class EnemyLexer {
         { TokenType.LESS_THAN, "<" },
         { TokenType.BRACKET_LEFT, "(" },
         { TokenType.BRACKET_RIGHT, ")" },
+
+        { TokenType.CURLY_BRACKET_LEFT, "{" },
+        { TokenType.CURLY_BRACKET_RIGHT, "}" },
+
+        { TokenType.BRACKET_LEFT, "(" },
+        { TokenType.BRACKET_RIGHT, ")" },
         { TokenType.ASSIGNMENT, "=" },
         { TokenType.COMMA, "," }
     };

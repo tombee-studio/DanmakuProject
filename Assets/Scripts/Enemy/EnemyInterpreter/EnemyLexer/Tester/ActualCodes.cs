@@ -2,13 +2,13 @@
 public partial class EnemyLexerTester
 {
 
-     void testactualCode1()
+    public void test_actualCode1()
     {
         assertIsSequenceEqual(@"
         behavior enemy001 {
           bullet >>
             ID: 0
-              set_in_circle(0, 10, 20...)
+              set_in_circle(0, 10, 20)
               delay(10)
               accel(60, 1/100)
           action >>
@@ -27,7 +27,9 @@ public partial class EnemyLexerTester
               }
             }
         }
-    ", @"
+    ",
+
+        @"
         behavior
         symbolID enemy001
         {

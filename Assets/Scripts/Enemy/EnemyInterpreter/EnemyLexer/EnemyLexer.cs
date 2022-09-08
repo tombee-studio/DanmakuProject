@@ -12,7 +12,14 @@ using UnityEngine;
 public partial class EnemyLexer {
     public class InvalidTokenException : Exception
     {
-        public InvalidTokenException(string message): base(message) { }
+        readonly int lineNumber;
+        readonly string lineSnippet;
+        public InvalidTokenException(string message, int lineNumber, string lineSnippet) :
+            base(message + $"\n line {lineNumber}| {lineSnippet} ...")
+        {
+            this.lineNumber = lineNumber;
+            this.lineSnippet = lineSnippet;
+        }
     }
     public enum MatchResult
     {
@@ -69,25 +76,27 @@ public partial class EnemyLexer {
                 new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$").IsMatch(str)
                 ? MatchResult.Match : MatchResult.NoMatch
         },
+        {
+            TokenType.FLOAT_LITERAL,
+            (str) =>
+            {
+                //TODO: new Regexではなく、Regexに置き換えたい
+                bool partialMatchResult = new Regex("^[0-9]+(\\.[0-9]*)?$").IsMatch(str);
+                if (!partialMatchResult)
+                {
+                    return
+                        (Regex.IsMatch(str, "^[0-9]+(\\.[0-9]+)?f$"))
+                        ? MatchResult.Match : MatchResult.NoMatch;
+                }
+
+                return MatchResult.PartialMatch;
+            }
+        },
         { TokenType.INT_LITERAL,
             (str) =>
             //TODO: new Regexではなく、Regexに置き換えたい
                 new Regex("^[0-9]+$").IsMatch(str)
                 ? MatchResult.Match : MatchResult.NoMatch
-        },
-        { TokenType.FLOAT_LITERAL,
-            (str) =>
-            {
-                //TODO: new Regexではなく、Regexに置き換えたい
-                bool partialMatchResult = new Regex("^[0-9]+(\\.[0-9]*)?$").IsMatch(str);
-                if (!partialMatchResult) {
-                    return
-                        (Regex.IsMatch(str, "^[0-9]+(\\.[0-9]+)?f$"))
-                        ? MatchResult.Match : MatchResult.NoMatch;
-                }
-                
-                return MatchResult.PartialMatch;
-            }
         }
     };
 
@@ -101,25 +110,40 @@ public partial class EnemyLexer {
             return emptyList;
         }
 
-        var codeCharCount = code.Length;
+        var lineCount = 0;
+        var lineSnippet = "";
+
+        var codeCharNumber = code.Length;
         char[] skippedCharacters = { ' ', '\n' };
         var tokens = new List<ScriptToken>();
-
         string snippet = "";
 
-        for (int textPointer = 0; textPointer < codeCharCount - 1; textPointer++) {
-            if (snippet.Length == 0 && Util_Array.x_in_collection(code[textPointer], skippedCharacters)) continue;
+        for (int textPointer = 0; textPointer < codeCharNumber - 1; textPointer++) {
+
+            char currentChar = code[textPointer];
+
+            if (currentChar == '\n')
+            {
+                lineCount++;
+                lineSnippet = "";
+            }
+            lineSnippet += currentChar;
+
+            // 読み飛ばし文字にあたった場合読み飛ばす
+            if (snippet.Length == 0
+                && Util_Array.x_in_collection(currentChar, skippedCharacters)) continue;
+
             snippet += code[textPointer];
             if (
                 !existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1])
             ){
-                var matchedTokenType = FindOutMatchedTokenTypeInList(snippet);
+                var matchedTokenType = FindOutMatchedTokenTypeInList(snippet, lineCount, lineSnippet);
                 tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenType));
                 snippet = "";
             }
         }
-        snippet += code[codeCharCount - 1];
-        var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet);
+        snippet += code[codeCharNumber - 1];
+        var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet, lineCount, lineSnippet);
         tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenTypeInLastChar));
         return tokens;
     }
@@ -162,7 +186,7 @@ public partial class EnemyLexer {
      *  ただし、可変語と予約語のいずれでもあった場合、予約語として解釈する。
      *  発見できなかった場合、エラーを放出する。
      */
-    TokenType FindOutMatchedTokenTypeInList(string targetSnippet)
+    TokenType FindOutMatchedTokenTypeInList(string targetSnippet, int lineCount, string lineSnippet)
     {
         foreach (TokenType tokenType in reservedTokenTypes)
         {
@@ -175,7 +199,7 @@ public partial class EnemyLexer {
             if (matchFunction.Invoke(targetSnippet) != MatchResult.Match) continue;
             return tokenType;
         }
-        throw new InvalidTokenException($"未知のトークン \"{targetSnippet}\" が見つかりました。");
+        throw new InvalidTokenException($"Unknown token \"{targetSnippet}\" is found at", lineCount, lineSnippet);
     }
     /**
      * 一文字先読みした際に当てはまる可能性のあるトークンが存在するかを調べる。

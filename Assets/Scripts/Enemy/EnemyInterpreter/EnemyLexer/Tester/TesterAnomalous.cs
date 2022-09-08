@@ -14,6 +14,6 @@ public partial class EnemyLexerTester
     public void test_unmatchedLiteralValueError()
     {
         assertSequenceThrow<TokenValueMismatchedException>(@"51", @"int 52");
-        assertSequenceThrow<TokenValueMismatchedException>(@"52f", @"int 52");
+        assertSequenceThrow<TokenValueMismatchedException>(@"51f", @"float 52");
     }
 }

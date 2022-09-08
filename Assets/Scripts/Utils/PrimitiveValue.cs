@@ -40,6 +40,10 @@ public struct PrimitiveValue
         }
     }
 
+    public static implicit operator PrimitiveValue(int p){
+        return makeInt(p);
+    }
+
     public static implicit operator float(PrimitiveValue p)
     {
         if (p.type == Type.FLOAT)
@@ -50,6 +54,9 @@ public struct PrimitiveValue
         {
             throw new PrimitiveValueError($"floatにキャストできません: {p}");
         }
+    }
+    public static implicit operator PrimitiveValue(float p){
+        return makeFloat(p);
     }
 
     public static PrimitiveValue operator +(PrimitiveValue p1, PrimitiveValue p2) {

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 public class NumberASTNode : ASTNode
 {
+    class PrimitiveValueError : Exception
+    {
+        public PrimitiveValueError(string message) : base(message) { }
+    }
     PrimitiveValue number;
     // 読み出しトークンの型に応じて呼び出しコンストラクタを変えられるようにしておく
     public NumberASTNode(int intValue) { number = PrimitiveValue.makeInt(intValue); }
@@ -11,19 +15,20 @@ public class NumberASTNode : ASTNode
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
         List<EnemyVM.Instruction> instructions = new List<EnemyVM.Instruction>();
-        instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2));
+        instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, number));
         return instructions;
     }
 
     public override string Print(int tab)
     {
-        try
+        switch (number.type)
         {
-            return $"{(int)number}";
-        }
-        catch (Exception e)
-        {
-            return $"{(float)number}";
+            case PrimitiveValue.Type.INT:
+                return $"{(int)number}";
+            case PrimitiveValue.Type.FLOAT:
+                return $"{(float)number}";
+            default:
+                throw new PrimitiveValueError($"Illegal type {number.type} received.");
         }
     }
 }

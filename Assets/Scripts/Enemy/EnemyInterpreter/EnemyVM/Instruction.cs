@@ -10,5 +10,7 @@ public partial class EnemyVM
             this.mnemonic = mnemonic;
             this.argument = argument;
         }
+
+        public override string ToString() => $"{mnemonic} {argument}";
     }
 }

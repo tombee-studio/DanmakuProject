@@ -9,8 +9,9 @@ public class NumberASTNode : ASTNode
     }
     PrimitiveValue number;
     // 読み出しトークンの型に応じて呼び出しコンストラクタを変えられるようにしておく
-    public NumberASTNode(int intValue) { number = PrimitiveValue.makeInt(intValue); }
-    public NumberASTNode(float floatValue) { number = PrimitiveValue.makeFloat(floatValue); }
+    public NumberASTNode(int value) { number = value; }
+    public NumberASTNode(float value) { number = value; }
+    public NumberASTNode(PrimitiveValue value) { number = value; }
 
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

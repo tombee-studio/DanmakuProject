@@ -103,4 +103,16 @@ public partial class EnemyLexerTester
     {
         assertSequenceThrow<EnemyLexer.InvalidTokenException>(@"0.1312", @"float 0.1312f");
     }
+    public void test_symbolID_error()
+    {
+        assertIsSequenceEqual(
+            "variable + data",
+
+            @"
+            symbolID variable
+            +
+            symbolID unmatchedName
+            "
+        );
+    }
 }

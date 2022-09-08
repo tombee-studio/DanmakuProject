@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 using System.Linq;
-
+using UnityEngine;
 
 public partial class EnemyLexerTester : Tester
 {
@@ -24,7 +24,7 @@ public partial class EnemyLexerTester : Tester
                 });
         foreach (var element in zippedList)
         {
-            assertIsEqual(element.result, element.expected);
+            assertIsEqual(element.expected, element.result);
         }
 
     }
@@ -82,7 +82,6 @@ public partial class EnemyLexerTester : Tester
         {
             var tokenTypeStr = line.Trim();
             if (tokenTypeStr.Length == 0) continue;
-
             parsedTokenSequence.Add(
                 GetReservedTokenTypeFromValue(tokenTypeStr)
                 ?? GetVariableTokenTypeFromValue(tokenTypeStr)

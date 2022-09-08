@@ -110,7 +110,7 @@ public partial class EnemyLexerTester
     }
     public void test_symbolID_error()
     {
-        assertIsSequenceEqual(
+        assertSequenceThrow<TokenValueMismatchedException>(
             "variable + data",
 
             @"

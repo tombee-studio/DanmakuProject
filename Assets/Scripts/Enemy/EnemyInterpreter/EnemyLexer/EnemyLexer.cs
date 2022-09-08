@@ -10,15 +10,25 @@ using VariableTokenDictionary = System.Collections.Generic.Dictionary<ScriptToke
 using UnityEngine;
 
 public partial class EnemyLexer {
+    private readonly char[] skippedCharacters = { ' ', '\n', '\t' };
+
     public class InvalidTokenException : Exception
     {
         readonly int lineNumber;
-        readonly string lineSnippet;
-        public InvalidTokenException(string message, int lineNumber, string lineSnippet) :
-            base(message + $"\nline {lineNumber}| {lineSnippet} ...")
+        public InvalidTokenException(string message, int lineNumber, string allCode) : base(message + $":: at Line {lineNumber}")
         {
             this.lineNumber = lineNumber;
-            this.lineSnippet = lineSnippet;
+            var lines = allCode.Split("\n");
+
+            string errorMsg = "Error Infromation:\n";
+            for (int delta = -3; delta < 4; delta++)
+            {
+                if (lineNumber + delta < 0 || lines.Length <= lineNumber + delta) continue;
+                errorMsg += $"line {lineNumber + delta} >> {lines[lineNumber + delta]}\n";
+                if (delta == 0) errorMsg += "^^^^^^^^ here!\n";
+            }
+
+            Debug.LogError(errorMsg);
         }
     }
     public enum MatchResult
@@ -111,43 +121,48 @@ public partial class EnemyLexer {
         }
 
         var lineCount = 0;
-        var lineSnippet = "";
-
         var codeCharNumber = code.Length;
-        char[] skippedCharacters = { ' ', '\n' };
+        
         var tokens = new List<ScriptToken>();
         string snippet = "";
 
-        for (int textPointer = 0; textPointer < codeCharNumber - 1; textPointer++) {
+        for (int textPointer = 0; textPointer + 1 < codeCharNumber; textPointer++) {
 
             char currentChar = code[textPointer];
-
-            if (currentChar == '\n')
-            {
-                lineCount++;
-                lineSnippet = "";
-            }
-            lineSnippet += currentChar;
-
-            // 読み飛ばし文字にあたった場合読み飛ばす
-            if (snippet.Length == 0
-                && Util_Array.x_in_collection(currentChar, skippedCharacters)) continue;
-
-            snippet += code[textPointer];
-            if (
-                !existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1])
-            ){
-                var matchedTokenType = FindOutMatchedTokenTypeInList(snippet, lineCount, lineSnippet);
-                tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenType));
+            char nextChar = code[textPointer + 1];
+            if (currentChar == '\n') lineCount++;
+            
+            if (shouldSkippedCurrentCharacter(snippet, currentChar)) continue;
+            snippet += currentChar;
+            if (!existPossibleTokenWhenLookaheading(snippet, nextChar)){
+                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code));
                 snippet = "";
             }
         }
+
+        if (shouldSkippedCurrentCharacter(snippet, code[codeCharNumber - 1])) return tokens;
         snippet += code[codeCharNumber - 1];
-        var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet, lineCount, lineSnippet);
-        tokens.Add(ScriptToken.GenerateToken(snippet, matchedTokenTypeInLastChar));
+        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code));
         return tokens;
     }
-
+    /**
+     * 現在の文字列を読み飛ばすべきか判定する
+     */
+    bool shouldSkippedCurrentCharacter(string currentSnippet, char currentCharacter)
+    {
+        
+        return
+            currentSnippet.Length == 0 &&
+            Util_Array.x_in_collection(currentCharacter, skippedCharacters);
+    }
+    /**
+     * snippetに含まれる文字列をトークン列に変換する
+     */
+    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode)
+    {
+        var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet, lineCount, allCode);
+        return ScriptToken.GenerateToken(snippet, matchedTokenTypeInLastChar);
+    }
 
     /*
      *  先頭からトークンを読み進めた際に、その地点で当てはまる可能性のある予約語を列挙する。
@@ -186,7 +201,7 @@ public partial class EnemyLexer {
      *  ただし、可変語と予約語のいずれでもあった場合、予約語として解釈する。
      *  発見できなかった場合、エラーを放出する。
      */
-    TokenType FindOutMatchedTokenTypeInList(string targetSnippet, int lineCount, string lineSnippet)
+    TokenType FindOutMatchedTokenTypeInList(string targetSnippet, int lineCount, string allCode)
     {
         foreach (TokenType tokenType in reservedTokenTypes)
         {
@@ -199,7 +214,7 @@ public partial class EnemyLexer {
             if (matchFunction.Invoke(targetSnippet) != MatchResult.Match) continue;
             return tokenType;
         }
-        throw new InvalidTokenException($"Unknown token \"{targetSnippet}\" is found at", lineCount, lineSnippet);
+        throw new InvalidTokenException($"Unknown token \"{targetSnippet}\" is found", lineCount, allCode);
     }
     /**
      * 一文字先読みした際に当てはまる可能性のあるトークンが存在するかを調べる。
@@ -207,6 +222,7 @@ public partial class EnemyLexer {
      */
     bool existPossibleTokenWhenLookaheading(string snippet, char nextChar)
     {
+        if (Util_Array.x_in_collection(nextChar, skippedCharacters)) return false; 
         var snippetInNextChar = snippet + nextChar;
         return PickupPossibleReservedWords(snippetInNextChar).Count != 0
             || PickupPossibleVariableWords(snippetInNextChar).Count != 0;

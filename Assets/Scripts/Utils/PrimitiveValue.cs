@@ -10,7 +10,7 @@ public struct PrimitiveValue
         INT,
         FLOAT
     }
-    Type type;
+    public Type type { get; private set;  }
     int intValue;
     float floatValue;
 

@@ -29,5 +29,8 @@ public class EnemyInterpreter
 
         var tester3 = new EnemyLexerTester();
         tester3.runTests();
+
+        var tester4 = new EnemyASTNodeTester();
+        tester4.runTests();
     }
 }

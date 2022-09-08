@@ -309,4 +309,16 @@ public struct PrimitiveValue
             throw new PrimitiveValueError($">=演算子は２項の型が一致しなければなりません: {p1.type} != {p2.type}");
         }
     }
+
+    public override string ToString()
+    {
+        switch (type) {
+            case Type.INT:
+                return intValue.ToString();
+            case Type.FLOAT:
+                return floatValue.ToString();
+            default:
+                throw new Exception("Undefined Error");
+        }
+    }
 }

@@ -15,7 +15,7 @@ public partial class EnemyLexer {
         readonly int lineNumber;
         readonly string lineSnippet;
         public InvalidTokenException(string message, int lineNumber, string lineSnippet) :
-            base(message + $"\n line {lineNumber}| {lineSnippet} ...")
+            base(message + $"\nline {lineNumber}| {lineSnippet} ...")
         {
             this.lineNumber = lineNumber;
             this.lineSnippet = lineSnippet;

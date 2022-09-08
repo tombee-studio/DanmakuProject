@@ -28,7 +28,6 @@ public partial class EnemyLexerTester
             }
         }
     ",
-
         @"
         behavior
         symbolID enemy001

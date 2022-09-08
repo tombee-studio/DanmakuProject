@@ -15,21 +15,7 @@ public partial class EnemyLexer {
     public class InvalidTokenException : Exception
     {
         readonly int lineNumber;
-        public InvalidTokenException(string message, int lineNumber, string allCode) : base(message + $":: at Line {lineNumber}")
-        {
-            this.lineNumber = lineNumber;
-            var lines = allCode.Split("\n");
-
-            string errorMsg = "Error Infromation:\n";
-            for (int delta = -3; delta < 4; delta++)
-            {
-                if (lineNumber + delta < 0 || lines.Length <= lineNumber + delta) continue;
-                errorMsg += $"line {lineNumber + delta} >> {lines[lineNumber + delta]}\n";
-                if (delta == 0) errorMsg += "^^^^^^^^ here!\n";
-            }
-
-            Debug.LogError(errorMsg);
-        }
+        public InvalidTokenException(string message, string errorExplanation):base(message + $"\n\nErrorExplanation :\n {errorExplanation}"){}
     }
     public enum MatchResult
     {
@@ -82,16 +68,14 @@ public partial class EnemyLexer {
     {
         { TokenType.SYMBOL_ID,
             (str) =>
-            //TODO: new Regexではなく、Regexに置き換えたい
-                new Regex("^[a-zA-Z_][0-9a-zA-Z_]*$").IsMatch(str)
+                Regex.IsMatch(str, "^[a-zA-Z_][0-9a-zA-Z_]*$")
                 ? MatchResult.Match : MatchResult.NoMatch
         },
         {
             TokenType.FLOAT_LITERAL,
             (str) =>
             {
-                //TODO: new Regexではなく、Regexに置き換えたい
-                bool partialMatchResult = new Regex("^[0-9]+(\\.[0-9]*)?$").IsMatch(str);
+                bool partialMatchResult = Regex.IsMatch(str, "^[0-9]+(\\.[0-9]*)?$");
                 if (!partialMatchResult)
                 {
                     return
@@ -104,8 +88,7 @@ public partial class EnemyLexer {
         },
         { TokenType.INT_LITERAL,
             (str) =>
-            //TODO: new Regexではなく、Regexに置き換えたい
-                new Regex("^[0-9]+$").IsMatch(str)
+                Regex.IsMatch(str, "^[0-9]+$")
                 ? MatchResult.Match : MatchResult.NoMatch
         }
     };
@@ -214,8 +197,12 @@ public partial class EnemyLexer {
             if (matchFunction.Invoke(targetSnippet) != MatchResult.Match) continue;
             return tokenType;
         }
-        throw new InvalidTokenException($"Unknown token \"{targetSnippet}\" is found", lineCount, allCode);
+        throw new InvalidTokenException(
+            $"Unknown token \"{targetSnippet}\" is found",
+            generateLexerErrorExplanation(allCode, lineCount)
+        );
     }
+
     /**
      * 一文字先読みした際に当てはまる可能性のあるトークンが存在するかを調べる。
      * 当てはまる可能性のあるトークンが存在しなかった場合、トークンは少なくともsnippet.length以下の長さであることがわかる。
@@ -230,13 +217,28 @@ public partial class EnemyLexer {
 
     S GetValue<T,S>(Dictionary<T,S> map, T key)
     {
-        S value;
-        if (!map.TryGetValue(key, out value))
+        if (!map.TryGetValue(key, out S value))
             throw new Exception($"Key {key} is not found in mapFromTokenTypeToVariableWord.");
         return value;
     }
     
+    private string generateLexerErrorExplanation(string allCode, int lineNumber)
+    {
+        var lines = allCode.Split("\n");
+        const int delta = 3;
+        string errorMsg = "";
+        for (
+            int lineIndex = Math.Max(0, lineNumber - delta);
+            lineIndex <= Math.Min(lines.Length - 1, lineNumber + delta);
+            lineIndex++
+        ){
+            errorMsg += $"line {lineIndex} >> {lines[lineIndex]}";
+            if (lineIndex == lineNumber) errorMsg += " :: here!";
+            errorMsg += "\n";
+        }
 
+        return errorMsg;
+    }
 
     
 }

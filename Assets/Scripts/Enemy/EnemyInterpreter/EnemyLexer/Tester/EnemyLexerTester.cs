@@ -45,7 +45,10 @@ public partial class EnemyLexerTester : Tester
         }
         catch (Exception error)
         {
-            throw new AssertionException("The expected error wasn't thrown", error.Message);
+            throw new AssertionException(
+                $"Where the actual Error happened\n----\n{error.StackTrace}\n\n",
+                $"The expected error wasn't thrown:: result -- {error.Message}"
+            );
         }
 
     }

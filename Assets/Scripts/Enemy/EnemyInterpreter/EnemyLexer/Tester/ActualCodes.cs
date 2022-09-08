@@ -1,7 +1,8 @@
 ﻿using System;
 public partial class EnemyLexerTester
 {
-    void test_actualCode1()
+    /*
+     void testactualCode1()
     {
         assertIsSequenceEqual(@"
         behavior enemy001 {
@@ -132,4 +133,5 @@ public partial class EnemyLexerTester
         }
         ");
     }
+    */
 }

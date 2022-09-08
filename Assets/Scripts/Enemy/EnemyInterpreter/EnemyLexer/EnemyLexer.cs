@@ -10,6 +10,10 @@ using VariableTokenDictionary = System.Collections.Generic.Dictionary<ScriptToke
 using UnityEngine;
 
 public partial class EnemyLexer {
+    public class InvalidTokenException : Exception
+    {
+        public InvalidTokenException(string message): base(message) { }
+    }
     public enum MatchResult
     {
         Match,
@@ -52,9 +56,6 @@ public partial class EnemyLexer {
         { TokenType.CURLY_BRACKET_LEFT, "{" },
         { TokenType.CURLY_BRACKET_RIGHT, "}" },
 
-
-        { TokenType.BRACKET_LEFT, "(" },
-        { TokenType.BRACKET_RIGHT, ")" },
         { TokenType.ASSIGNMENT, "=" },
         { TokenType.COMMA, "," }
     };
@@ -168,7 +169,7 @@ public partial class EnemyLexer {
             if (matchFunction.Invoke(targetSnippet) != MatchResult.Match) continue;
             return tokenType;
         }
-        throw new Exception($"未知のトークン \"{targetSnippet}\" が見つかりました。");
+        throw new InvalidTokenException($"未知のトークン \"{targetSnippet}\" が見つかりました。");
     }
     /**
      * 一文字先読みした際に当てはまる可能性のあるトークンが存在するかを調べる。

@@ -1,7 +1,7 @@
 ﻿using System;
 public partial class EnemyLexerTester
 {
-    /*
+
      void testactualCode1()
     {
         assertIsSequenceEqual(@"
@@ -133,5 +133,4 @@ public partial class EnemyLexerTester
         }
         ");
     }
-    */
 }

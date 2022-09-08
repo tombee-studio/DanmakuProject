@@ -95,14 +95,20 @@ public partial class EnemyLexer {
 
 
     public List<ScriptToken> Lex(string code) {
+        if (code.Length == 0)
+        {
+            List<ScriptToken> emptyList = new List<ScriptToken>();
+            return emptyList;
+        }
 
         var codeCharCount = code.Length;
+        char[] skippedCharacters = { ' ', '\n' };
         var tokens = new List<ScriptToken>();
 
         string snippet = "";
 
         for (int textPointer = 0; textPointer < codeCharCount - 1; textPointer++) {
-            if (snippet.Length == 0 && code[textPointer] == ' ') continue;
+            if (snippet.Length == 0 && Util_Array.x_in_collection(code[textPointer], skippedCharacters)) continue;
             snippet += code[textPointer];
             if (
                 !existPossibleTokenWhenLookaheading(snippet, code[textPointer + 1])

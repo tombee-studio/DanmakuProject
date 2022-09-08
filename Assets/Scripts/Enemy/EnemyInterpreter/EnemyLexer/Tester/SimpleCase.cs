@@ -82,11 +82,7 @@ public partial class EnemyLexerTester
         );
     }
 
-    public void test_invalidLexedCodeError()
-    {
-        assertSequenceThrow<InvalidTokenSequenceException>(@"", @"52");
-        assertSequenceThrow<InvalidTokenSequenceException>(@"", @"float 0.1352");
-    }
+    
 
 
     public void test_easy_error()
@@ -106,6 +102,5 @@ public partial class EnemyLexerTester
     public void test_throw_on_invalidCode()
     {
         assertSequenceThrow<EnemyLexer.InvalidTokenException>(@"0.1312", @"float 0.1312f");
-
     }
 }

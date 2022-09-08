@@ -15,7 +15,11 @@ public partial class EnemyLexerTester
     {
         assertIsSequenceEqual(@"1", @"int 1");
     }
-    
+    public void test_ignoreNL()
+    {
+        assertIsSequenceEqual(@"1
+        ", @"int 1");
+    }
     public void test_easy4()
     {
         assertIsSequenceEqual(@"1.23f", @"float 1.23f");
@@ -52,6 +56,7 @@ public partial class EnemyLexerTester
             "
         );
     }
+    
     public void test_includingNewLine()
     {
         assertIsSequenceEqual(

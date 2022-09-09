@@ -12,6 +12,6 @@ public class EnemyParser {
             throw new Exception("expected token: <ID>");
         string id = tokens[pos].user_defined_symbol;
         pos++;
-        return new BehaviourASTNode(id);
+        return new BehaviourASTNode(id, null, null);
     }
 }

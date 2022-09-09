@@ -19,17 +19,17 @@ public class EnemyParser {
         var actionAST = ParseActionAST(tokens, ref pos);
         if (tokens[pos].type != ScriptToken.Type.CURLY_BRACKET_RIGHT)
             throw new Exception("expected token: {");
-        return new BehaviourASTNode(id);
+        return new BehaviourASTNode(id, null, null);
     }
 
     public BulletASTNode ParseBulletAST(List<ScriptToken> tokens, ref int pos) {
         pos++;
-        return new BulletASTNode();
+        return null;
     }
 
     public ActionASTNode ParseActionAST(List<ScriptToken> tokens, ref int pos)
     {
         pos++;
-        return new ActionASTNode();
+        return null;
     }
 }

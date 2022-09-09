@@ -33,13 +33,10 @@ public partial class EnemyASTNodeTester : Tester
         var vm = new EnemyVM(null);
         foreach (var instruction in node.Compile(new Dictionary<string, int>()))
         {
-            Debug.Log(instruction);
             vm.appendInstruction(instruction);
         }
         while (!vm.IsExit) { vm.run(); }
-        Debug.Log(vm.ReturnValue);
         Assert.AreEqual(vm.ReturnValue, value);
     }
-
 }
 

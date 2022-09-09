@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public class NumberASTNode : ASTNode
@@ -9,8 +9,6 @@ public class NumberASTNode : ASTNode
     }
     PrimitiveValue number;
     // 読み出しトークンの型に応じて呼び出しコンストラクタを変えられるようにしておく
-    public NumberASTNode(int value) { number = value; }
-    public NumberASTNode(float value) { number = value; }
     public NumberASTNode(PrimitiveValue value) { number = value; }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

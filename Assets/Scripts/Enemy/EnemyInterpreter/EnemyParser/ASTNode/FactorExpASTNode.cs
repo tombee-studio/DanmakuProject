@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class FactorASTNode : ASTNode
+public class FactorExpASTNode : ASTNode
 {
-    private FactorASTNode left;
+    private FactorExpASTNode left;
     private ScriptToken arithmeticOperator;
-    private NumberASTNode right;
+    private UnaryExpASTNode right;
 
-    public FactorASTNode(FactorASTNode left, ScriptToken arithmeticOperator, NumberASTNode right)
+    public FactorExpASTNode(UnaryExpASTNode unaryExp)
+    {
+        this.left = null;
+        this.arithmeticOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        this.right = unaryExp;
+    }
+    public FactorExpASTNode(FactorExpASTNode left, ScriptToken arithmeticOperator, PrimaryExpASTNode right)
     {
         this.left = left;
         this.arithmeticOperator = arithmeticOperator;
         this.right = right;
     }
-    public static implicit operator FactorASTNode(NumberASTNode number){
-        var arithmeticOperator = new ScriptToken();
-        arithmeticOperator.type = ScriptToken.Type.NONE;
-        FactorASTNode factor = new FactorASTNode(null, arithmeticOperator, number);
-        return factor;
+    public static implicit operator FactorExpASTNode(UnaryExpASTNode unaryExp)
+    {
+        return new FactorExpASTNode(unaryExp);
+    }
+
+    public static implicit operator FactorExpASTNode(PrimaryExpASTNode primaryExp)
+    {
+        return new FactorExpASTNode(primaryExp);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
@@ -29,27 +38,17 @@ public class FactorASTNode : ASTNode
             switch (arithmeticOperator.type)
             {
                 case ScriptToken.Type.MULTIPLY:
-                    instructions.Add(
-                        new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 2));
                     break;
                 case ScriptToken.Type.DIVIDE:
-                    instructions.Add(
-                        new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 2));
                     break;
                 case ScriptToken.Type.MOD:
-                    instructions.Add(
-                        new EnemyVM.Instruction(EnemyVM.Mnemonic.MOD, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MOD, 2));
                     break;
                 default:
                     throw new Exception($"Unexpected Operator {arithmeticOperator} reserved");
             }
-        }
-        else if (arithmeticOperator.type == ScriptToken.Type.SUB)
-        {
-            instructions.Add(
-                new EnemyVM.Instruction(
-                    EnemyVM.Mnemonic.PUSH,
-                    PrimitiveValue.makeInt(-1)));
         }
         else
         {
@@ -74,13 +73,6 @@ public class FactorASTNode : ASTNode
                 case ScriptToken.Type.MOD:
                     str += "%";
                     break;
-            }
-        }
-        else
-        {
-            if (arithmeticOperator.type == ScriptToken.Type.SUB)
-            {
-                str += "-";
             }
         }
         str += right.Print(tab);

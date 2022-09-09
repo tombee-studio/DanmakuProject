@@ -20,7 +20,6 @@ public partial class EnemyASTNodeTester: Tester
     }
 
     protected void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode astNode){
-        Debug.Log("checkGeneratedInstructionIsSame called");
         foreach (var instruction in astNode.Compile(null)
             .Zip(testCodes, (i1, i2) => (i1, i2)))
         {

@@ -62,31 +62,7 @@ public partial class EnemyASTNodeTester
         var Term = new TermASTNode(left, arithmeticOperator1, right);
         checkGeneratedInstructionIsSame(testCodes, Term);
     }
-    public void test_TermASTNode_print4()
-    {
-        var arithmeticOperator1 = new ScriptToken();
-        arithmeticOperator1.type = ScriptToken.Type.SUB;
-        var right = new NumberASTNode(1);
-        var Term = new TermASTNode(null, arithmeticOperator1, right);
-        Assert.AreEqual(Term.Print(0), "-1");
-    }
-
-    public void test_TermASTNode_compile4()
-    {
-        string[] testCodes = {
-            "PUSH -1",
-            "PUSH 1",
-            "ADD 2"
-        };
-        var left = new NumberASTNode(-1);
-        var arithmeticOperator1 = new ScriptToken();
-        arithmeticOperator1.type = ScriptToken.Type.PLUS;
-        var right = new NumberASTNode(1);
-        var Term = new TermASTNode(null, arithmeticOperator1, right);
-        checkGeneratedInstructionIsSame(testCodes, Term);
-    }
-
-    public void test_TermASTNode5()
+    public void test_TermASTNode3()
     {
         var arithmeticOperator1 = new ScriptToken();
         arithmeticOperator1.type = ScriptToken.Type.NONE;
@@ -95,7 +71,7 @@ public partial class EnemyASTNodeTester
         Assert.AreEqual(Term.Print(0), "1");
     }
 
-    public void test_TermASTNode_compile5()
+    public void test_TermASTNode_compile3()
     {
         string[] testCodes = {
             "PUSH 1",

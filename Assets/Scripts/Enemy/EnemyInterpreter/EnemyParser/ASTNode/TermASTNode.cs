@@ -44,13 +44,6 @@ public class TermASTNode : ASTNode
                     throw new NotImplementedException("MOD演算子を実装しよう");
             }
         }
-        else if (arithmeticOperator.type == ScriptToken.Type.SUB)
-        {
-            instructions.Add(
-                new EnemyVM.Instruction(
-                    EnemyVM.Mnemonic.PUSH,
-                    PrimitiveValue.makeInt(-1)));
-        }
         else
         {
             instructions.AddRange(right.Compile(vtable));
@@ -75,13 +68,6 @@ public class TermASTNode : ASTNode
                 case ScriptToken.Type.MOD:
                     str += "%";
                     break;
-            }
-        }
-        else
-        {
-            if (arithmeticOperator.type == ScriptToken.Type.SUB)
-            {
-                str += "-";
             }
         }
         str += right.Print(tab);

@@ -8,6 +8,7 @@ public partial class EnemyVM
         SUB,
         MUL,
         DIV,
+        MOD,
 
         JMP,
         JE,

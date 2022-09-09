@@ -62,6 +62,7 @@ public partial class EnemyVM
             case Mnemonic.SUB:  Sub(); break;
             case Mnemonic.MUL:  Mul(); break;
             case Mnemonic.DIV:  Div(); break;
+            case Mnemonic.MOD:  Mod(); break;
 
             case Mnemonic.EQ: Eq(); break;
             case Mnemonic.NE: Ne(); break;

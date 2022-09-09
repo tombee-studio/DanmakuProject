@@ -37,7 +37,11 @@ public class FactorASTNode : ASTNode
                         new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 2));
                     break;
                 case ScriptToken.Type.MOD:
-                    throw new NotImplementedException("MOD演算子を実装しよう");
+                    instructions.Add(
+                        new EnemyVM.Instruction(EnemyVM.Mnemonic.MOD, 2));
+                    break;
+                default:
+                    throw new Exception($"Unexpected Operator {arithmeticOperator} reserved");
             }
         }
         else if (arithmeticOperator.type == ScriptToken.Type.SUB)

@@ -6,7 +6,8 @@ using System.Linq;
 
 public partial class EnemyASTNodeTester
 {
-    public void test_FactorASTNode_print1() {
+    public void test_FactorASTNode_print1()
+    {
         var arithmeticOperator1 = new ScriptToken();
         arithmeticOperator1.type = ScriptToken.Type.MULTIPLY;
 
@@ -85,30 +86,20 @@ public partial class EnemyASTNodeTester
 
     public void test_FactorASTNode_compile3()
     {
-        /**
-         * TODO: MOD演算が実装されたら実装し直してください
-         */
-        try
-        {
-            string[] testCodes = {
-            "PUSH 1",
-            "PUSH 1",
-            "MOD 2"
-        };
-            var arithmeticOperator1 = new ScriptToken();
-            arithmeticOperator1.type = ScriptToken.Type.MOD;
+        string[] testCodes = {
+                "PUSH 1",
+                "PUSH 1",
+                "MOD 2"
+            };
+        var arithmeticOperator1 = new ScriptToken();
+        arithmeticOperator1.type = ScriptToken.Type.MOD;
 
-            var arithmeticOperator2 = new ScriptToken();
-            arithmeticOperator2.type = ScriptToken.Type.NONE;
-            var left = new FactorASTNode(null, arithmeticOperator2, new NumberASTNode(1));
-            var right = new NumberASTNode(1);
-            var factor = new FactorASTNode(left, arithmeticOperator1, right);
-            checkGeneratedInstructionIsSame(testCodes, factor);
-        }
-        catch (NotImplementedException) {
-            return;
-        }
-        Assert.IsTrue(false);
+        var arithmeticOperator2 = new ScriptToken();
+        arithmeticOperator2.type = ScriptToken.Type.NONE;
+        var left = new FactorASTNode(null, arithmeticOperator2, new NumberASTNode(1));
+        var right = new NumberASTNode(1);
+        var factor = new FactorASTNode(left, arithmeticOperator1, right);
+        checkGeneratedInstructionIsSame(testCodes, factor);
     }
 
     public void test_FactorASTNode_print4()

@@ -8,10 +8,28 @@ public class EnemyParser {
         if (tokens[pos].type != ScriptToken.Type.BEHAVIOR)
             throw new Exception("expected token: behaviour");
         pos++;
-        if (tokens[pos].type != ScriptToken.Type.USER_DEFINED_SYMBOL)
+        if (tokens[pos].type != ScriptToken.Type.SYMBOL_ID)
             throw new Exception("expected token: <ID>");
         string id = tokens[pos].user_defined_symbol;
         pos++;
-        return new BehaviourASTNode(id);
+        if (tokens[pos].type != ScriptToken.Type.CURLY_BRACKET_LEFT)
+            throw new Exception("expected token: {");
+        pos++;
+        var bulletAST = ParseBulletAST(tokens, ref pos);
+        var actionAST = ParseActionAST(tokens, ref pos);
+        if (tokens[pos].type != ScriptToken.Type.CURLY_BRACKET_RIGHT)
+            throw new Exception("expected token: {");
+        return new BehaviourASTNode(id, null, null);
+    }
+
+    public BulletASTNode ParseBulletAST(List<ScriptToken> tokens, ref int pos) {
+        pos++;
+        return null;
+    }
+
+    public ActionASTNode ParseActionAST(List<ScriptToken> tokens, ref int pos)
+    {
+        pos++;
+        return null;
     }
 }

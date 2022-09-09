@@ -15,7 +15,7 @@ public struct ScriptToken
     {
         switch (token)
         {
-            case Type.USER_DEFINED_SYMBOL:
+            case Type.SYMBOL_ID:
                 return GenerateUserDefinedSymbolToken(snippet);
             case Type.INT_LITERAL:
                 return GenerateIntValToken(snippet);
@@ -31,7 +31,7 @@ public struct ScriptToken
         BEHAVIOR,
         BULLET,
         ACTION,
-        PHASE_NAVIGATOR,
+        PHASE_SEPARATOR,
         ID_NAVIGATOR,
         INT,
         FLOAT,
@@ -54,11 +54,18 @@ public struct ScriptToken
         LESS_THAN,
         BRACKET_LEFT,
         BRACKET_RIGHT,
+
+
+        CURLY_BRACKET_LEFT,
+        CURLY_BRACKET_RIGHT,
+
+        COLON,
+
         ASSIGNMENT,
         EQUAL,
         COMMA,
 
-        USER_DEFINED_SYMBOL,
+        SYMBOL_ID,
         INT_LITERAL,
         FLOAT_LITERAL
 
@@ -74,7 +81,7 @@ public struct ScriptToken
     private static ScriptToken GenerateUserDefinedSymbolToken(string given_user_defined_symbol)
     {
         var token = new ScriptToken();
-        token.type = Type.USER_DEFINED_SYMBOL;
+        token.type = Type.SYMBOL_ID;
         token.user_defined_symbol = given_user_defined_symbol;
         return token;
     }

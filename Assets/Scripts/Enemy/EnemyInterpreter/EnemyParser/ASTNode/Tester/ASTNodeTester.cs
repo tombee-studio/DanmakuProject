@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 public partial class EnemyASTNodeTester: Tester
@@ -19,8 +20,8 @@ public partial class EnemyASTNodeTester: Tester
         return tabs;
     }
 
-    protected void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode astNode){
-        foreach (var instruction in astNode.Compile(null)
+    private void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode astNode){
+        foreach (var instruction in astNode.Compile(new Dictionary<string, int>())
             .Zip(testCodes, (i1, i2) => (i1, i2)))
         {
             var (i1, i2) = instruction;

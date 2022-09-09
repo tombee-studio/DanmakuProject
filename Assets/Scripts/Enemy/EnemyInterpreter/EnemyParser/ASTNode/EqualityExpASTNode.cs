@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ExpASTNode : ASTNode
+public class EqualityExpASTNode : ASTNode
 {
-    public ExpASTNode(){
+    public EqualityExpASTNode()
+    {
         throw new NotImplementedException();
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)

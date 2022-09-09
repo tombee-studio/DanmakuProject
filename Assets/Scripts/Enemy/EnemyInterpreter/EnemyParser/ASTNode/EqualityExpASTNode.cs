@@ -13,10 +13,10 @@ public class EqualityExpASTNode : ASTNode
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = relationalExp;
     }
-    public EqualityExpASTNode(EqualityExpASTNode left, ScriptToken arithmeticOperator, RelationalExpASTNode right)
+    public EqualityExpASTNode(EqualityExpASTNode left, ScriptToken relationalOperator, RelationalExpASTNode right)
     {
         this.left = left;
-        this.relationOperator = arithmeticOperator;
+        this.relationOperator = relationalOperator;
         this.right = right;
     }
     public static implicit operator EqualityExpASTNode(RelationalExpASTNode node)

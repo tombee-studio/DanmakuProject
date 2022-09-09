@@ -2,110 +2,72 @@ using System;
 using UnityEngine.Assertions;
 public partial class EnemyASTNodeTester
 {
-    public void test_RelationalExpASTNode_print1()
-    {
-        var relationOperator1 = ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_THAN);
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
-
-        Assert.AreEqual(term.Print(0), "1>1");
-    }
-
-    public void test_RelationalExpASTNode_compile1()
+    public void test_GtRelationalExpASTNode()
     {
         string[] testCodes = {
-            "PUSH 1",
-            "PUSH 1",
+            "PUSH 6",
+            "PUSH 4",
             "GT 2"
         };
-        var relationOperator1 = new ScriptToken();
-        relationOperator1.type = ScriptToken.Type.GREATER_THAN;
+        var relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_THAN);
+        var left = new PrimaryExpASTNode(6);
+        var right = new PrimaryExpASTNode(4);
+        var node = new RelationalExpASTNode(left, relationOperator, right);
 
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
-        checkGeneratedInstructionIsSame(testCodes, term);
+        Assert.AreEqual(node.Print(0), "6>4");
+        checkVMReturnValue(node, 6 > 4 ? 1 : 0);
+        checkGeneratedInstructionIsSame(testCodes, node);
     }
-
-    public void test_RelationalExpASTNode_print2()
-    {
-        var relationOperator1 = new ScriptToken();
-        relationOperator1.type = ScriptToken.Type.GREATER_EQUAL;
-
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
-
-        Assert.AreEqual(term.Print(0), "1>=1");
-    }
-
-    public void test_RelationalExpASTNode_compile2()
+    public void test_GeRelationalExpASTNode()
     {
         string[] testCodes = {
-            "PUSH 1",
-            "PUSH 1",
+            "PUSH 6",
+            "PUSH 4",
             "GE 2"
         };
         var relationOperator1 = new ScriptToken();
         relationOperator1.type = ScriptToken.Type.GREATER_EQUAL;
 
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
-        checkGeneratedInstructionIsSame(testCodes, term);
-    }
-    public void test_RelationalExpASTNode_print3()
-    {
-        var relationOperator1 = ScriptToken.GenerateToken("", ScriptToken.Type.LESS_THAN);
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
+        var left = new PrimaryExpASTNode(6);
+        var right = new PrimaryExpASTNode(4);
+        var node = new RelationalExpASTNode(left, relationOperator1, right);
 
-        Assert.AreEqual(term.Print(0), "1<1");
+        Assert.AreEqual(node.Print(0), "6>=4");
+        checkVMReturnValue(node, 6 >= 4 ? 1 : 0);
+        checkGeneratedInstructionIsSame(testCodes, node);
     }
-
-    public void test_RelationalExpASTNode_compile3()
+    public void test_LtRelationalExpASTNode()
     {
         string[] testCodes = {
-            "PUSH 1",
-            "PUSH 1",
+            "PUSH 6",
+            "PUSH 4",
             "LT 2"
         };
-        var relationOperator1 = new ScriptToken();
-        relationOperator1.type = ScriptToken.Type.LESS_THAN;
+        var relationOperator1 = ScriptToken.GenerateToken("", ScriptToken.Type.LESS_THAN);
+        var left = new PrimaryExpASTNode(6);
+        var right = new PrimaryExpASTNode(4);
+        var node = new RelationalExpASTNode(left, relationOperator1, right);
 
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
-        checkGeneratedInstructionIsSame(testCodes, term);
+        Assert.AreEqual(node.Print(0), "6<4");
+        checkVMReturnValue(node, 6 < 4 ? 1 : 0);
+        checkGeneratedInstructionIsSame(testCodes, node);
     }
-
-    public void test_RelationalExpASTNode_print4()
-    {
-        var relationOperator1 = new ScriptToken();
-        relationOperator1.type = ScriptToken.Type.LESS_EQUAL;
-
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
-        var term = new RelationalExpASTNode(left, relationOperator1, right);
-
-        Assert.AreEqual(term.Print(0), "1<=1");
-    }
-
-    public void test_RelationalExpASTNode_compile4()
+    public void test_LeRelationalExpASTNode()
     {
         string[] testCodes = {
-            "PUSH 1",
-            "PUSH 1",
+            "PUSH 6",
+            "PUSH 4",
             "LE 2"
         };
         var relationOperator1 = new ScriptToken();
         relationOperator1.type = ScriptToken.Type.LESS_EQUAL;
 
-        var left = new PrimaryExpASTNode(1);
-        var right = new PrimaryExpASTNode(1);
+        var left = new PrimaryExpASTNode(6);
+        var right = new PrimaryExpASTNode(4);
         var term = new RelationalExpASTNode(left, relationOperator1, right);
+
+        Assert.AreEqual(term.Print(0), "6<=4");
+        checkVMReturnValue(term, 6 <= 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, term);
     }
 }

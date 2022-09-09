@@ -38,7 +38,7 @@ public class UnaryExpASTNode : ASTNode
         if (sign == -1)
         {
             instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, -1));
-            instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0));
+            instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 2));
         }
         return instructions;
     }

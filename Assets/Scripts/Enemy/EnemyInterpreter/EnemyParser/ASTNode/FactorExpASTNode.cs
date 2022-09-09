@@ -23,7 +23,6 @@ public class FactorExpASTNode : ASTNode
     {
         return new FactorExpASTNode(unaryExp);
     }
-
     public static implicit operator FactorExpASTNode(PrimaryExpASTNode primaryExp)
     {
         return new FactorExpASTNode(primaryExp);

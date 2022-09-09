@@ -23,6 +23,10 @@ public class RelationalExpASTNode : ASTNode
     {
         return new RelationalExpASTNode(node);
     }
+    public static implicit operator RelationalExpASTNode(FactorExpASTNode node)
+    {
+        return new RelationalExpASTNode(node);
+    }
     public static implicit operator RelationalExpASTNode(UnaryExpASTNode node)
     {
         return new RelationalExpASTNode(node);

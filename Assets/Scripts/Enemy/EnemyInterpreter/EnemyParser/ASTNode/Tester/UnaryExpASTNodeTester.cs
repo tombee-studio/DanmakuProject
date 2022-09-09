@@ -2,22 +2,18 @@ using System;
 using UnityEngine.Assertions;
 public partial class EnemyASTNodeTester
 {
-    void test_NoneSignUnaryExpCompile()
+    void test_NoneSignUnaryExp()
     {
         int value = 42;
         string[] testCodes = {
             $"PUSH {value}"
         };
         UnaryExpASTNode node = new PrimaryExpASTNode(value);
+        checkVMReturnValue(node, value);
         checkGeneratedInstructionIsSame(testCodes, node);
-    }
-    void test_NoneSignUnaryExpPrint()
-    {
-        int value = 42;
-        UnaryExpASTNode node = new PrimaryExpASTNode(value);
         Assert.AreEqual(node.Print(0), $"{value}");
     }
-    void test_NegativeSignUnaryExpCompile()
+    void test_NegativeSignUnaryExp()
     {
         int value = 42;
         string[] testCodes = {
@@ -27,14 +23,10 @@ public partial class EnemyASTNodeTester
         };
         UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.SUB), new PrimaryExpASTNode(value));
         checkGeneratedInstructionIsSame(testCodes, node);
-    }
-    void test_NegativeSignUnaryExpPrint()
-    {
-        int value = 42;
-        UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.SUB), new PrimaryExpASTNode(value));
+        checkVMReturnValue(node, value);
         Assert.AreEqual(node.Print(0), $"-{value}");
     }
-    void test_PositiveSignUnaryExpCompile()
+    void test_PositiveSignUnaryExp()
     {
         int value = 42;
         string[] testCodes = {
@@ -42,11 +34,7 @@ public partial class EnemyASTNodeTester
         };
         UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.PLUS), new PrimaryExpASTNode(value));
         checkGeneratedInstructionIsSame(testCodes, node);
-    }
-    void test_PositiveSignUnaryExpPrint()
-    {
-        int value = 42;
-        UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.PLUS), new PrimaryExpASTNode(value));
+        checkVMReturnValue(node, value);
         Assert.AreEqual(node.Print(0), $"+{value}");
     }
 }

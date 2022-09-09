@@ -60,11 +60,20 @@ public partial class EnemyASTNodeTester
     }
     public void test_ParenExpCompile()
     {
-        Debug.LogWarning("test_ParenExpCompile is not implemented yet.");
+        int value = 42;
+        ExpASTNode exp = new PrimaryExpASTNode(value);
+        string[] testCodes = {
+            $"PUSH {value}"
+        };
+        var node = new PrimaryExpASTNode(exp);
+        checkGeneratedInstructionIsSame(testCodes, node);
     }
     public void test_ParenExpPrint()
     {
-        Debug.LogWarning("test_ParenExpPrint is not implemented yet.");
+        int value = 42;
+        ExpASTNode exp = new PrimaryExpASTNode(value);
+        var node = new PrimaryExpASTNode(exp);
+        Assert.AreEqual(node.Print(0), $"({value})");
     }
 }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 using System.Linq;
 using UnityEngine;
 
 public partial class EnemyLexerTester : Tester
 {
+    
     EnemyLexer enemyLexer = new();
     protected override Tester cloneThisObject()
     {
@@ -22,26 +24,50 @@ public partial class EnemyLexerTester : Tester
                 });
         foreach (var element in zippedList)
         {
-            assertIsEqual(element.result, element.expected);
+            assertIsEqual(element.expected, element.result);
+        }
+
+    }
+    public void assertSequenceThrow<T>(string code, string lexedCode)
+        where T:Exception
+    {
+        try
+        {
+            assertIsSequenceEqual(code, lexedCode);
+            throw new NoException();
+        }
+        catch (T)
+        {
+        }
+        catch (NoException e)
+        {
+            throw new AssertionException(e.Message, "");
+        }
+        catch (Exception error)
+        {
+            throw new AssertionException(
+                $"Where the actual Error happened\n----\n{error.StackTrace}\n\n",
+                $"The expected error wasn't thrown:: result -- {error.Message}"
+            );
         }
 
     }
     void assertIsEqual(ScriptToken expected, ScriptToken result)
     {
         if (expected.type != result.type)
-            throw new Exception($"Token Type mismatched: expected {expected.type} -- result {result.type}");
+            throw new TokenTypeMismatchedException($"expected {expected.type} -- result {result.type}");
         if (
             expected.user_defined_symbol != result.user_defined_symbol ||
             expected.int_val != result.int_val ||
             expected.float_val != result.float_val
-        ) throw new Exception($"Token value mismatched: expected {expected.user_defined_symbol}, {expected.int_val}, {expected.float_val}  -- result {result.user_defined_symbol}, {result.int_val}, {expected.float_val}");
+        ) throw new TokenValueMismatchedException(result, expected);
         return;
     }
     /**
      * 文字列で記述されたトークン列を解釈し、それに該当するTokenの列を生成する。
      * 例:改行を挟んで記述する。 
      * > parseLexerSequence(@"
-     *      id abd23
+     *      symbolID abd23
      *      (
      *      int 3
      *      +
@@ -59,7 +85,6 @@ public partial class EnemyLexerTester : Tester
         {
             var tokenTypeStr = line.Trim();
             if (tokenTypeStr.Length == 0) continue;
-
             parsedTokenSequence.Add(
                 GetReservedTokenTypeFromValue(tokenTypeStr)
                 ?? GetVariableTokenTypeFromValue(tokenTypeStr)
@@ -84,17 +109,17 @@ public partial class EnemyLexerTester : Tester
     }
     ScriptToken GetVariableTokenTypeFromValue(string tokenLine)
     {
-        if (!tokenLine.Contains(" ")) throw new Exception($"The count of tokens is fewer than two in this line.: {tokenLine}.");
+        if (!tokenLine.Contains(" ")) throw new InvalidTokenSequenceException($"The count of tokens is fewer than two in this line.: {tokenLine}.");
         var devidedLine = tokenLine.Split(" ");
         var label = devidedLine[0];
         var variableWord = devidedLine[1];
         var tokenTypeInEnum = label switch
         {
             //TODO: symbolIDをsymbolに変えたい
-            "symbolID" => ScriptToken.Type.USER_DEFINED_SYMBOL,
+            "symbolID" => ScriptToken.Type.SYMBOL_ID,
             "int" => ScriptToken.Type.INT_LITERAL,
             "float" => ScriptToken.Type.FLOAT_LITERAL,
-            _ => throw new Exception($"Invalid Token Label {label}.")
+            _ => throw new InvalidTokenSequenceException($"Invalid Token Label {label}.")
         };
         return ScriptToken.GenerateToken(variableWord, tokenTypeInEnum);
 

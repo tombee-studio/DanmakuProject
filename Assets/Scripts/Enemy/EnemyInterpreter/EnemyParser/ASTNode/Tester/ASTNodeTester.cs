@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
-public partial class EnemyASTNodeTester: Tester
+public partial class EnemyASTNodeTester : Tester
 {
     protected override Tester cloneThisObject()
     {
@@ -19,8 +19,8 @@ public partial class EnemyASTNodeTester: Tester
         }
         return tabs;
     }
-
-    private void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode astNode){
+    private void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode astNode)
+    {
         foreach (var instruction in astNode.Compile(new Dictionary<string, int>())
             .Zip(testCodes, (i1, i2) => (i1, i2)))
         {
@@ -28,5 +28,18 @@ public partial class EnemyASTNodeTester: Tester
             Assert.AreEqual($"{i1}", i2);
         }
     }
+    private void checkVMReturnValue(ASTNode node, PrimitiveValue value)
+    {
+        var vm = new EnemyVM(null);
+        foreach (var instruction in node.Compile(new Dictionary<string, int>()))
+        {
+            vm.appendInstruction(instruction);
+        }
+        vm.run();
+        Debug.Log(vm.ReturnValue);
+        Debug.Log(value);
+        Assert.AreEqual(vm.ReturnValue, value);
+    }
+
 }
 

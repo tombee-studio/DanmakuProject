@@ -8,7 +8,7 @@ public class EnemyParser {
         if (tokens[pos].type != ScriptToken.Type.BEHAVIOR)
             throw new Exception("expected token: behaviour");
         pos++;
-        if (tokens[pos].type != ScriptToken.Type.USER_DEFINED_SYMBOL)
+        if (tokens[pos].type != ScriptToken.Type.SYMBOL_ID)
             throw new Exception("expected token: <ID>");
         string id = tokens[pos].user_defined_symbol;
         pos++;

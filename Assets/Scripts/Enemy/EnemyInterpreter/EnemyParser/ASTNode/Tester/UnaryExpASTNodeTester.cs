@@ -15,7 +15,7 @@ public partial class EnemyASTNodeTester
     }
     void test_NegativeSignUnaryExp()
     {
-        int value = 42;
+        int value = 91;
         string[] testCodes = {
             $"PUSH {value}",
             $"PUSH {-1}",
@@ -23,12 +23,12 @@ public partial class EnemyASTNodeTester
         };
         UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.SUB), new PrimaryExpASTNode(value));
         checkGeneratedInstructionIsSame(testCodes, node);
-        checkVMReturnValue(node, value);
+        checkVMReturnValue(node, -value);
         Assert.AreEqual(node.Print(0), $"-{value}");
     }
     void test_PositiveSignUnaryExp()
     {
-        int value = 42;
+        int value = 57;
         string[] testCodes = {
             $"PUSH {value}",
         };

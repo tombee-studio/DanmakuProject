@@ -23,26 +23,28 @@ public class EnemyComponent : MonoBehaviour
     [System.Obsolete("とりあえず用意しただけのメソッドなのでいずれ消します")]
     void Toriaezu()
     {
+        /*
         int id;
         id = 0;
         GenerateBullets(id, 24);
         SetBulletsPositionAtEnemy(id);
-        ScatterBulletsInCircularPattern(id, 0.1f);
+        ScatterBulletsInCircularPattern(id, 0.1f, 0f);
         DelayBullets(id, 60);
-        ScatterBulletsInCircularPattern(id, 0.1f, 180);
+        ScatterBulletsInCircularPattern(id, 0.1f, 180f);
         DelayBullets(id, 120);
 
         id = 1;
         GenerateBullets(id, 24);
         DelayBullets(id, 60);
         SetBulletsPositionAtEnemy(id);
-        ScatterBulletsInCircularPattern(id, 0.1f);
+        ScatterBulletsInCircularPattern(id, 0.1f, 0f);
         DelayBullets(id, 60);
-        MoveBulletsParallel(id, 0.1f, 30);
+        MoveBulletsParallel(id, 0.1f, 30f);
         DelayBullets(id, 120);
 
         ActivateBullets(0);
         ActivateBullets(1);
+        //*/
     }
 
     void Update()
@@ -95,13 +97,16 @@ public class EnemyComponent : MonoBehaviour
     }
     public void SetBulletsPositionAtEnemy(int id)
     {
+        foreach(var k in bulletsList.Keys){
+            Debug.Log(k);
+        }
         bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletSetRelativePosition(bullet, Vector3.zero, transform)));
     }
     public void MoveBulletsParallel(int id, float speed, float angleOffset)
     {
         bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletMoveLinear(bullet, speed, angleOffset)));
     }
-    public void SetBulletsPositionInCircularPattern(int id, float angleOffset = 0)
+    public void SetBulletsPositionInCircularPattern(int id, float angleOffset/* = 0*/)
     {
         int i = 0;
         bulletsList[id].ForEach(bullet =>
@@ -112,7 +117,7 @@ public class EnemyComponent : MonoBehaviour
             i++;
         });
     }
-    public void ScatterBulletsInCircularPattern(int id, float speed, float angleOffset = 0)
+    public void ScatterBulletsInCircularPattern(int id, float speed, float angleOffset/* = 0*/)
     {
         int i = 0;
         bulletsList[id].ForEach(bullet =>

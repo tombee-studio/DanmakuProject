@@ -3,22 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 public class CallFuncASTNode : ASTNode
 {
-    private string id;
-    private List<ExpStASTNode> expSts;
+    private int id;
+    private string functionName;
+    private List<ExpASTNode> expSts;
 
-    public CallFuncASTNode(string id, List<ExpStASTNode> expSts)
+    /** @param exps: リストの昇順と引数を左から順に読んだ結果が一致する想定 */
+    public CallFuncASTNode(int id, string functionName, List<ExpASTNode> exps)
     {
         this.id = id;
-        this.expSts = expSts;
+        this.functionName = functionName;
+        this.expSts = exps;
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
-        throw new NotImplementedException("関数呼び出しはまだ実装されていません");
-        return GetInstructionsForAll(expSts, vtable);
+        var instructions = GetInstructionsForAll(expSts, vtable);  // リストの昇順と引数を左から順に読んだ結果が一致する想定
+        instructions.Add(
+            new EnemyVM.Instruction(
+                EnemyVM.Mnemonic.PUSH,
+                id
+            )
+        );
+        instructions.Add(
+            // CALL functionName
+            new EnemyVM.Instruction(
+                EnemyVM.Mnemonic.CALL,
+                EnemyFunctionFactory.GetInstance().Find(functionName)
+            )
+        );
+        return instructions;
     }
-
     public override string Print(int tab)
     {
-        return $"{id}(" + GetMergedString(expSts, tab) + ")\n";
+        return $"{functionName}(" + GetMergedString(expSts, tab, ", ") + ")\n";
     }
 }

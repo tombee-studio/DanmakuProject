@@ -15,15 +15,14 @@ public class AssignStASTNode : ASTNode
     {
         int address = vtable.Count;
         vtable.Add(id, address);
-        List<EnemyVM.Instruction> instructions = new List<EnemyVM.Instruction>();
+        var instructions = exp.Compile(vtable);
         instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, address));
-        instructions.AddRange(exp.Compile(vtable));
         instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.STORE, 0));
         return instructions;
     }
 
     public override string Print(int tab)
     {
-        return $"{id} = " + exp.Print(tab);
+        return $"{id} = " + exp.Print(tab) + "\n";
     }
 }

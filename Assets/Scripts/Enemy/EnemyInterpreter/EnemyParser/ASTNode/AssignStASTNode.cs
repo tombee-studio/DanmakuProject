@@ -13,7 +13,7 @@ public class AssignStASTNode : ASTNode
 
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
-        int address = vtable.Count;
+        int address = vtable[id];
         vtable.Add(id, address);
         var instructions = exp.Compile(vtable);
         instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, address));

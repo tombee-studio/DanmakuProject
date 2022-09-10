@@ -54,7 +54,7 @@ public partial class EnemyASTNodeTester
     }
     public void test_SetBulletsPositionInCircularPatternCallFuncASTNode()
     {
-        TestFunctionByConstantArgument(0, "set_bullets_in_circular_pattern", 7.5f);
+        TestFunctionByConstantArgument(0, "set_bullets_position_in_circular_pattern", 7.5f);
     }
     public void test_ScatterBulletsInCircularPatternCallFuncASTNode()
     {

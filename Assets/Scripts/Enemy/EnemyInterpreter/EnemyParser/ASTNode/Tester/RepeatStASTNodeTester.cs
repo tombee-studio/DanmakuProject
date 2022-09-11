@@ -42,11 +42,6 @@ public partial class EnemyASTNodeTester
                 new PrimaryExpASTNode(5)
             )
         );
-        int i = 0;
-        foreach (var e in node.Compile(new Dictionary<string, int>()))
-        {
-            Debug.Log($"{e}, {i++}");
-        }
         checkGeneratedInstructionIsSame(testCodes, node);
         Assert.AreEqual("repeat(100)3+5\n", node.Print(0));
     }

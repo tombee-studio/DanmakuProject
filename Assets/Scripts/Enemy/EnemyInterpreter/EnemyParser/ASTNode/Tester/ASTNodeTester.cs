@@ -43,8 +43,16 @@ public partial class EnemyASTNodeTester : Tester
     void checkVMReturnValueFromSubProgram(ASTNode node, PrimitiveValue value)
     {
         var vm = new EnemyVM(null);
-        var compiled = node.Compile(new Dictionary<string, int>());
-        var program = compiled.Select((instruction, line) =>
+        var vTable = new Dictionary<string, int>();
+        var subProgram = node.Compile(vTable);
+        var declarations = new List<EnemyVM.Instruction>();
+        for (int i = 0; i < vTable.Count; i++)
+        {
+            declarations.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, int.MaxValue));
+        }
+        var program = declarations
+            .Concat(subProgram)
+            .Select((instruction, line) =>
         {
             switch (instruction.mnemonic)
             {
@@ -57,19 +65,21 @@ public partial class EnemyASTNodeTester : Tester
                     return instruction;
             }
         }).ToList();
-        program.ForEach(instruction => vm.appendInstruction(instruction));
-        while (!vm.IsExit) { vm.run(); }
-        Assert.AreEqual(vm.ReturnValue, value);
+        program
+            .ForEach(instruction => vm.appendInstruction(instruction));
+        while (!vm.IsExit)
+        {
+            vm.run();
+        }
+        Assert.AreEqual(value, vm.ReturnValue);
     }
     private void checkVMReturnValue(ASTNode node, PrimitiveValue value)
     {
         var vm = new EnemyVM(null);
-        var compiled = node.Compile(new Dictionary<string, int>()).ToList();
-        var program = compiled;
+        var program = node.Compile(new Dictionary<string, int>()).ToList();
         program.ForEach(instruction => vm.appendInstruction(instruction));
         while (!vm.IsExit) { vm.run(); }
-        Assert.AreEqual(vm.ReturnValue, value);
+        Assert.AreEqual(value, vm.ReturnValue);
     }
-
 }
 

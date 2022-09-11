@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 public class AssignStASTNode : ASTNode
@@ -13,10 +13,8 @@ public class AssignStASTNode : ASTNode
 
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
-        int address = vtable[id];
-        vtable.Add(id, address);
         var instructions = exp.Compile(vtable);
-        instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, address));
+        instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, vtable[id]));
         instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.STORE, 0));
         return instructions;
     }

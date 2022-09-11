@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Assertions;
@@ -72,7 +72,7 @@ public class RepeatStASTNode : ASTNode
         for (int i = 0; i < body.Count; i++)
         {
             if (body[i].mnemonic != EnemyVM.Mnemonic.BREAK) continue;
-            body[i] = new EnemyVM.Instruction(EnemyVM.Mnemonic.JMP, body.Count - i + loopTail.Count);
+            body[i] = new EnemyVM.Instruction(EnemyVM.Mnemonic.JMP, body.Count - i + loopTail.Count - 1);
         }
 
         return assignment

@@ -13,6 +13,7 @@ public partial class EnemyVM
         JMP,
         JE,
         JNE,
+        BREAK,
 
         LT,
         LE,

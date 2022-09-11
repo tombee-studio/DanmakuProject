@@ -75,6 +75,7 @@ public partial class EnemyVM
             case Mnemonic.JMP: Jmp(instruction); break;
             case Mnemonic.JE: Je(instruction); break;
             case Mnemonic.JNE: Jne(instruction); break;
+            case Mnemonic.BREAK: throw new EnemyVMException("ダミー命令が呼ばれました. BREAK 命令はループ末端へのジャンプ命令へ置換してください.", this);
 
             case Mnemonic.CALL: Call(instruction); break;
 

@@ -5,8 +5,8 @@ using System.Linq;
 public class BulletSectionASTNode : ASTNode
 {
     private int id;
-    private List<CallFuncASTNode> callFuncs;
-    public BulletSectionASTNode(int id, List<CallFuncASTNode> callFuncs)
+    private List<CallFuncStASTNode> callFuncs;
+    public BulletSectionASTNode(int id, List<CallFuncStASTNode> callFuncs)
     {
         this.id = id;
         this.callFuncs = callFuncs;

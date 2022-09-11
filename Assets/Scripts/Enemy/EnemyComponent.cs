@@ -61,94 +61,80 @@ public class EnemyComponent : MonoBehaviour
         /* 上のサンプルに対応する AST の動作を確認する */
         int id;
         id = 0;
-        var nodes = getList(
+        var nodes0 = getList(
             new CallFuncStASTNode(
-                id,
                 "generate_bullets",
                 GetArgsList(24)
             ),
             new CallFuncStASTNode(
-                id,
                 "set_bullets_position_at_enemy",
                 GetArgsList()
             ),
             new CallFuncStASTNode(
-                id,
                 "scatter_bullets_in_circular_pattern",
                 GetArgsList(0.1f, 0f)
             ),
             new CallFuncStASTNode(
-                id,
                 "delay_bullets",
                 GetArgsList(60)
             ),
             new CallFuncStASTNode(
-                id,
                 "scatter_bullets_in_circular_pattern",
                 GetArgsList(0.1f, 180f)
             ),
             new CallFuncStASTNode(
-                id,
                 "delay_bullets",
                 GetArgsList(120)
             ),
             new CallFuncStASTNode(
-                id,
                 "activate_bullets",
                 GetArgsList()
             )
         );
+        nodes0.ForEach(e=>e.id = id);
 
         id = 1;
-        nodes.AddRange(
-            getList(
-                new CallFuncStASTNode(
-                    id,
-                    "generate_bullets",
-                    GetArgsList(24)
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "delay_bullets",
-                    GetArgsList(60)
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "set_bullets_position_at_enemy",
-                    GetArgsList()
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "scatter_bullets_in_circular_pattern",
-                    GetArgsList(0.1f, 0f)
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "delay_bullets",
-                    GetArgsList(60)
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "move_bullets_parallel",
-                    GetArgsList(0.1f, 30f)
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "delay_bullets",
-                    GetArgsList(120)
-                ),
-                new CallFuncStASTNode(
-                    id,
-                    "activate_bullets",
-                    GetArgsList()
-                )
+        var nodes1 = getList(
+            new CallFuncStASTNode(
+                "generate_bullets",
+                GetArgsList(24)
+            ),
+            new CallFuncStASTNode(
+                "delay_bullets",
+                GetArgsList(60)
+            ),
+            new CallFuncStASTNode(
+                "set_bullets_position_at_enemy",
+                GetArgsList()
+            ),
+            new CallFuncStASTNode(
+                "scatter_bullets_in_circular_pattern",
+                GetArgsList(0.1f, 0f)
+            ),
+            new CallFuncStASTNode(
+                "delay_bullets",
+                GetArgsList(60)
+            ),
+            new CallFuncStASTNode(
+                "move_bullets_parallel",
+                GetArgsList(0.1f, 30f)
+            ),
+            new CallFuncStASTNode(
+                "delay_bullets",
+                GetArgsList(120)
+            ),
+            new CallFuncStASTNode(
+                "activate_bullets",
+                GetArgsList()
             )
         );
+        nodes1.ForEach(e=>e.id = id);
 
         var enemy = GameObject.FindObjectOfType<EnemyComponent>();
         var vm = new EnemyVM(enemy);
         var vtable = new Dictionary<string, int>();
-        var instructions = nodes.Select(node => node.Compile(vtable))
+        var instructions = nodes0.Concat(nodes1)
+            .Select(node => node.Compile(vtable))
             .SelectMany(instructions => instructions).ToList();
         instructions.ForEach(instruction => vm.appendInstruction(instruction));
         while (!vm.IsExit)

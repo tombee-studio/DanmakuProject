@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 public class CallFuncStASTNode : ASTNode
 {
-    private int id;
+    public int id;
     private string functionName;
     private List<ExpASTNode> expSts;
 
     /** @param exps: リストの昇順と引数を左から順に読んだ結果が一致する想定 */
-    public CallFuncStASTNode(int id, string functionName, List<ExpASTNode> exps)
+    public CallFuncStASTNode(string functionName, List<ExpASTNode> exps)
     {
-        this.id = id;
         this.functionName = functionName;
         this.expSts = exps;
     }

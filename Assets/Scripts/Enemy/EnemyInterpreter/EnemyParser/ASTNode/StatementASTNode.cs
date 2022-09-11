@@ -32,7 +32,7 @@ public class StatementASTNode : ASTNode
     {
         this.child = statement;
     }
-    public StatementASTNode(BlockASTNode statement)
+    public StatementASTNode(BlockStASTNode statement)
     {
         this.child = statement;
     }
@@ -60,7 +60,7 @@ public class StatementASTNode : ASTNode
     {
         return new StatementASTNode(node);
     }
-    public static implicit operator StatementASTNode(BlockASTNode node)
+    public static implicit operator StatementASTNode(BlockStASTNode node)
     {
         return new StatementASTNode(node);
     }

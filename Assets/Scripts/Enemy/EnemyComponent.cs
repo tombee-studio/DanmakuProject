@@ -97,9 +97,6 @@ public class EnemyComponent : MonoBehaviour
     }
     public void SetBulletsPositionAtEnemy(int id)
     {
-        foreach(var k in bulletsList.Keys){
-            Debug.Log(k);
-        }
         bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletSetRelativePosition(bullet, Vector3.zero, transform)));
     }
     public void MoveBulletsParallel(int id, float speed, float angleOffset)

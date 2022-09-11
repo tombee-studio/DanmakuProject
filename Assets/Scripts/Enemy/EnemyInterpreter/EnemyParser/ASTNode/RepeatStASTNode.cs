@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Assertions;
@@ -42,7 +42,7 @@ public class RepeatStASTNode : ASTNode
             .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, counterAddr))
             .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.LOAD, 0))
             .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1))
-            .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD, 2))
+            .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD, 0))
             .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, counterAddr))
             .Append(new EnemyVM.Instruction(EnemyVM.Mnemonic.STORE, 0))
             //goto :loop_begin

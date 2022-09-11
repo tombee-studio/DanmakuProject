@@ -41,10 +41,10 @@ public class TermExpASTNode : ASTNode
             switch (arithmeticOperator.type)
             {
                 case ScriptToken.Type.PLUS:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD, 0));
                     break;
                 case ScriptToken.Type.SUB:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB, 0));
                     break;
             }
         }

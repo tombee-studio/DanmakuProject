@@ -11,7 +11,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 7",
             "PUSH 13",
-            "MUL 2"
+            "MUL 0"
         };
         var arithmeticOperator1 = ScriptToken.GenerateToken("", ScriptToken.Type.MULTIPLY);
         var left = new PrimaryExpASTNode(7);
@@ -27,7 +27,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 91",
             "PUSH 7",
-            "DIV 2"
+            "DIV 0"
         };
 
         var arithmeticOperator1 = new ScriptToken();
@@ -48,7 +48,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
                 "PUSH 91",
                 "PUSH 13",
-                "MOD 2"
+                "MOD 0"
             };
         var arithmeticOperator1 = new ScriptToken();
         arithmeticOperator1.type = ScriptToken.Type.MOD;

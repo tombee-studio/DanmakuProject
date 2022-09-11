@@ -23,12 +23,12 @@ public partial class EnemyASTNodeTester
             // 3+5
             "PUSH 3",
             "PUSH 5",
-            "ADD 2",
+            "ADD 0",
             // i++
             $"PUSH {counterAddr}",
             "LOAD 0",
             "PUSH 1",
-            "ADD 2",
+            "ADD 0",
             $"PUSH {counterAddr}",
             "STORE 0",
             // goto :loop_begin

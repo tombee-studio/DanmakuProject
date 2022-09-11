@@ -15,7 +15,7 @@ public partial class EnemyASTNodeTester
             "JNE 3",
             $"PUSH {ifBody1}",
             $"PUSH {ifBody2}",
-            "MUL 2",
+            "MUL 0",
         };
         var node = new IfStASTNode(
             new PrimaryExpASTNode(cond),
@@ -40,7 +40,7 @@ public partial class EnemyASTNodeTester
             "JNE 4",
             $"PUSH {ifBody1}",
             $"PUSH {ifBody2}",
-            "MUL 2",
+            "MUL 0",
             "JMP 1",
             $"PUSH {elseBody}",
         };

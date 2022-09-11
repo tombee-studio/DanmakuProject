@@ -7,7 +7,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 6",
             "PUSH 4",
-            "EQ 2"
+            "EQ 0"
         };
         var relationOperator1 = ScriptToken.GenerateToken("", ScriptToken.Type.EQUAL);
         var left = new PrimaryExpASTNode(6);
@@ -24,7 +24,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 6",
             "PUSH 4",
-            "NE 2"
+            "NE 0"
         };
         var relationOperator1 = new ScriptToken();
         relationOperator1.type = ScriptToken.Type.NOT;

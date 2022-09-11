@@ -19,7 +19,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             $"PUSH {value}",
             $"PUSH {-1}",
-            $"MUL {2}"
+            $"MUL 0"
         };
         UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.SUB), new PrimaryExpASTNode(value));
         checkGeneratedInstructionIsSame(testCodes, node);

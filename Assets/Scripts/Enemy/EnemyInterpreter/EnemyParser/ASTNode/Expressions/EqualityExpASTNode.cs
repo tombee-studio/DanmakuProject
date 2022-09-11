@@ -49,10 +49,10 @@ public class EqualityExpASTNode : ASTNode
             switch (relationOperator.type)
             {
                 case ScriptToken.Type.EQUAL:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.EQ, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.EQ, 0));
                     break;
                 case ScriptToken.Type.NOT:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.NE, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.NE, 0));
                     break;
             }
         }

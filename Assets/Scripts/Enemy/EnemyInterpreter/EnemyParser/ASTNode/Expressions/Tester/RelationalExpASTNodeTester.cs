@@ -7,7 +7,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 6",
             "PUSH 4",
-            "GT 2"
+            "GT 0"
         };
         var relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_THAN);
         var left = new PrimaryExpASTNode(6);
@@ -23,7 +23,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 6",
             "PUSH 4",
-            "GE 2"
+            "GE 0"
         };
         var relationOperator1 = new ScriptToken();
         relationOperator1.type = ScriptToken.Type.GREATER_EQUAL;
@@ -41,7 +41,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 6",
             "PUSH 4",
-            "LT 2"
+            "LT 0"
         };
         var relationOperator1 = ScriptToken.GenerateToken("", ScriptToken.Type.LESS_THAN);
         var left = new PrimaryExpASTNode(6);
@@ -57,7 +57,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 6",
             "PUSH 4",
-            "LE 2"
+            "LE 0"
         };
         var relationOperator1 = new ScriptToken();
         relationOperator1.type = ScriptToken.Type.LESS_EQUAL;

@@ -34,17 +34,17 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             "PUSH 7",
             "PUSH -1",
-            "MUL 2",
+            "MUL 0",
             "PUSH 2",
             "PUSH 3",
-            "ADD 2",
-            "MUL 2",
+            "ADD 0",
+            "MUL 0",
             "PUSH 7",
             "PUSH 13",
-            "MUL 2",
-            "GT 2",
+            "MUL 0",
+            "GT 0",
             "PUSH 1",
-            "EQ 2",
+            "EQ 0",
         };
         checkGeneratedInstructionIsSame(testCodes, exp);
         checkVMReturnValueFromSubProgram(exp, (((-7 * (2 + 3) > 7 * 13) ? 1 : 0) == 1) ? 1 : 0);

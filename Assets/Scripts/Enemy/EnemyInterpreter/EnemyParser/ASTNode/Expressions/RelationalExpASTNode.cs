@@ -45,16 +45,16 @@ public class RelationalExpASTNode : ASTNode
             switch (relationOperator.type)
             {
                 case ScriptToken.Type.GREATER_THAN:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.GT, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.GT, 0));
                     break;
                 case ScriptToken.Type.GREATER_EQUAL:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.GE, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.GE, 0));
                     break;
                 case ScriptToken.Type.LESS_THAN:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.LT, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.LT, 0));
                     break;
                 case ScriptToken.Type.LESS_EQUAL:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.LE, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.LE, 0));
                     break;
             }
         }

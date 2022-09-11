@@ -37,13 +37,13 @@ public class FactorExpASTNode : ASTNode
             switch (arithmeticOperator.type)
             {
                 case ScriptToken.Type.MULTIPLY:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0));
                     break;
                 case ScriptToken.Type.DIVIDE:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 0));
                     break;
                 case ScriptToken.Type.MOD:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MOD, 2));
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MOD, 0));
                     break;
                 default:
                     throw new Exception($"Unexpected Operator {arithmeticOperator} reserved");

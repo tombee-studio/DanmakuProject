@@ -63,37 +63,37 @@ public class EnemyComponent : MonoBehaviour
         int id;
         id = 0;
         var nodes = getList(
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "generate_bullets",
                 GetArgsList(24)
             ),
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "set_bullets_position_at_enemy",
                 GetArgsList()
             ),
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "scatter_bullets_in_circular_pattern",
                 GetArgsList(0.1f, 0f)
             ),
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "delay_bullets",
                 GetArgsList(60)
             ),
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "scatter_bullets_in_circular_pattern",
                 GetArgsList(0.1f, 180f)
             ),
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "delay_bullets",
                 GetArgsList(120)
             ),
-            new CallFuncASTNode(
+            new CallFuncStASTNode(
                 id,
                 "activate_bullets",
                 GetArgsList()
@@ -103,42 +103,42 @@ public class EnemyComponent : MonoBehaviour
         id = 1;
         nodes.AddRange(
             getList(
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "generate_bullets",
                     GetArgsList(24)
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "delay_bullets",
                     GetArgsList(60)
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "set_bullets_position_at_enemy",
                     GetArgsList()
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "scatter_bullets_in_circular_pattern",
                     GetArgsList(0.1f, 0f)
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "delay_bullets",
                     GetArgsList(60)
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "move_bullets_parallel",
                     GetArgsList(0.1f, 30f)
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "delay_bullets",
                     GetArgsList(120)
                 ),
-                new CallFuncASTNode(
+                new CallFuncStASTNode(
                     id,
                     "activate_bullets",
                     GetArgsList()

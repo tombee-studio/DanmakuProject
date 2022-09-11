@@ -23,7 +23,7 @@ public partial class EnemyASTNodeTester
                 .Append($"PUSH {id}")
                 .Append($"CALL {funcID}")
         );
-        var node = new CallFuncASTNode(id, functionName, GetArgsList(args));
+        var node = new CallFuncStASTNode(id, functionName, GetArgsList(args));
         /* テスト本体 */
         checkGeneratedInstructionIsSame(testCodesList.ToArray(), node);
         Assert.AreEqual(node.Print(0), $"{functionName}(" + String.Join(", ", args) + ")\n");

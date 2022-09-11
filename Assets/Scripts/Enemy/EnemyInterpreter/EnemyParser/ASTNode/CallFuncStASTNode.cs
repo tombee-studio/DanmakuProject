@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-public class CallFuncASTNode : ASTNode
+public class CallFuncStASTNode : ASTNode
 {
     private int id;
     private string functionName;
     private List<ExpASTNode> expSts;
 
     /** @param exps: リストの昇順と引数を左から順に読んだ結果が一致する想定 */
-    public CallFuncASTNode(int id, string functionName, List<ExpASTNode> exps)
+    public CallFuncStASTNode(int id, string functionName, List<ExpASTNode> exps)
     {
         this.id = id;
         this.functionName = functionName;
@@ -42,6 +42,5 @@ public class CallFuncASTNode : ASTNode
     }
     public override string Print(int tab)
     {
-        return $"{functionName}(" + GetMergedString(expSts, tab, ", ") + ")\n";
     }
 }

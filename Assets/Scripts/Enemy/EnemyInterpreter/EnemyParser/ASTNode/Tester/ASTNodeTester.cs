@@ -26,14 +26,17 @@ public partial class EnemyASTNodeTester : Tester
         }
         return tabs;
     }
-    private void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode astNode)
+    private void checkGeneratedInstructionIsSame(string[] testCodes, ASTNode node)
     {
-        astNode.Compile(new Dictionary<string, int>())
+        node.Compile(new Dictionary<string, int>())
             .Zip(testCodes, (i1, i2) => (i1, i2)).ToList()
             .ForEach(instruction =>
                 {
                     var (i1, i2) = instruction;
-                    Assert.AreEqual($"{i1}", i2);
+                    Assert.AreEqual(i2, $"{i1}");
+                }
+            );
+    }
                 }
             );
     }

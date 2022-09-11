@@ -37,6 +37,15 @@ public partial class EnemyASTNodeTester : Tester
                 }
             );
     }
+    private void checkIsPrintScript(string[] scriptCodes, ASTNode node)
+    {
+        node.Print(0)
+            .Split("\n")
+            .Zip(scriptCodes, (i1, i2) => (i1, i2)).ToList()
+            .ForEach(code =>
+                {
+                    var (i1, i2) = code;
+                    Assert.AreEqual(i2, i1);
                 }
             );
     }
@@ -53,18 +62,18 @@ public partial class EnemyASTNodeTester : Tester
         var program = declarations
             .Concat(subProgram)
             .Select((instruction, line) =>
-        {
-            switch (instruction.mnemonic)
             {
-                case EnemyVM.Mnemonic.JMP:
-                case EnemyVM.Mnemonic.JE:
-                case EnemyVM.Mnemonic.JNE:
-                    instruction.argument += line;
-                    return instruction;
-                default:
-                    return instruction;
-            }
-        }).ToList();
+                switch (instruction.mnemonic)
+                {
+                    case EnemyVM.Mnemonic.JMP:
+                    case EnemyVM.Mnemonic.JE:
+                    case EnemyVM.Mnemonic.JNE:
+                        instruction.argument += line;
+                        return instruction;
+                    default:
+                        return instruction;
+                }
+            }).ToList();
         program
             .ForEach(instruction => vm.appendInstruction(instruction));
         while (!vm.IsExit)

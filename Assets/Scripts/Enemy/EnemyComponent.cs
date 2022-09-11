@@ -10,7 +10,6 @@ public class EnemyComponent : MonoBehaviour
 
     EnemyInterpreter interpreter { get => _interpreter ??= new EnemyInterpreter(this); }
     Dictionary<int, List<BulletComponent>> bulletsList = new Dictionary<int, List<BulletComponent>>();
-    //TODO: source を追加 (何型?)
     [SerializeField] BulletComponent? bulletPrefab;
     void Start()
     {

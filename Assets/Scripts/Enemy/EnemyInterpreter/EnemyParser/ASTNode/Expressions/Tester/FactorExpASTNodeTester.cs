@@ -19,7 +19,7 @@ public partial class EnemyASTNodeTester
         var node = new FactorExpASTNode(left, arithmeticOperator1, right);
 
         Assert.AreEqual(node.Print(0), "7*13");
-        checkVMReturnValue(node, 7 * 13);
+        checkVMReturnValueFromSubProgram(node, 7 * 13);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
     public void test_DivFactorExpASTNode()
@@ -38,7 +38,7 @@ public partial class EnemyASTNodeTester
         var node = new FactorExpASTNode(left, arithmeticOperator1, right);
 
         Assert.AreEqual(node.Print(0), "91/7");
-        checkVMReturnValue(node, 91/7);
+        checkVMReturnValueFromSubProgram(node, 91/7);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
 
@@ -58,7 +58,7 @@ public partial class EnemyASTNodeTester
         var node = new FactorExpASTNode(left, arithmeticOperator1, right);
 
         Assert.AreEqual(node.Print(0), "91%13");
-        checkVMReturnValue(node, 91 % 13);
+        checkVMReturnValueFromSubProgram(node, 91 % 13);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
 }

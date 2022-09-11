@@ -9,7 +9,7 @@ public partial class EnemyASTNodeTester
             $"PUSH {value}"
         };
         UnaryExpASTNode node = new PrimaryExpASTNode(value);
-        checkVMReturnValue(node, value);
+        checkVMReturnValueFromSubProgram(node, value);
         checkGeneratedInstructionIsSame(testCodes, node);
         Assert.AreEqual(node.Print(0), $"{value}");
     }
@@ -23,7 +23,7 @@ public partial class EnemyASTNodeTester
         };
         UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.SUB), new PrimaryExpASTNode(value));
         checkGeneratedInstructionIsSame(testCodes, node);
-        checkVMReturnValue(node, -value);
+        checkVMReturnValueFromSubProgram(node, -value);
         Assert.AreEqual(node.Print(0), $"-{value}");
     }
     void test_PositiveSignUnaryExp()
@@ -34,7 +34,7 @@ public partial class EnemyASTNodeTester
         };
         UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.PLUS), new PrimaryExpASTNode(value));
         checkGeneratedInstructionIsSame(testCodes, node);
-        checkVMReturnValue(node, value);
+        checkVMReturnValueFromSubProgram(node, value);
         Assert.AreEqual(node.Print(0), $"+{value}");
     }
 }

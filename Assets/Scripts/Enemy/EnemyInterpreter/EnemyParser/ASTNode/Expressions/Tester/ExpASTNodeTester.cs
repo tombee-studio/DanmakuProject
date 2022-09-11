@@ -47,7 +47,7 @@ public partial class EnemyASTNodeTester
             "EQ 2",
         };
         checkGeneratedInstructionIsSame(testCodes, exp);
-        checkVMReturnValue(exp, (((-7 * (2 + 3) > 7 * 13) ? 1 : 0) == 1) ? 1 : 0);
+        checkVMReturnValueFromSubProgram(exp, (((-7 * (2 + 3) > 7 * 13) ? 1 : 0) == 1) ? 1 : 0);
         Assert.AreEqual(exp.Print(0), "-7*(2+3)>7*13==1");
     }
 }

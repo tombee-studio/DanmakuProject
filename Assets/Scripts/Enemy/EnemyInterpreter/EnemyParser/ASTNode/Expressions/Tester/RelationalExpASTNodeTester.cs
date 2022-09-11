@@ -15,7 +15,7 @@ public partial class EnemyASTNodeTester
         var node = new RelationalExpASTNode(left, relationOperator, right);
 
         Assert.AreEqual(node.Print(0), "6>4");
-        checkVMReturnValue(node, 6 > 4 ? 1 : 0);
+        checkVMReturnValueFromSubProgram(node, 6 > 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
     public void test_GeRelationalExpASTNode()
@@ -33,7 +33,7 @@ public partial class EnemyASTNodeTester
         var node = new RelationalExpASTNode(left, relationOperator1, right);
 
         Assert.AreEqual(node.Print(0), "6>=4");
-        checkVMReturnValue(node, 6 >= 4 ? 1 : 0);
+        checkVMReturnValueFromSubProgram(node, 6 >= 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
     public void test_LtRelationalExpASTNode()
@@ -49,7 +49,7 @@ public partial class EnemyASTNodeTester
         var node = new RelationalExpASTNode(left, relationOperator1, right);
 
         Assert.AreEqual(node.Print(0), "6<4");
-        checkVMReturnValue(node, 6 < 4 ? 1 : 0);
+        checkVMReturnValueFromSubProgram(node, 6 < 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
     public void test_LeRelationalExpASTNode()
@@ -67,7 +67,7 @@ public partial class EnemyASTNodeTester
         var term = new RelationalExpASTNode(left, relationOperator1, right);
 
         Assert.AreEqual(term.Print(0), "6<=4");
-        checkVMReturnValue(term, 6 <= 4 ? 1 : 0);
+        checkVMReturnValueFromSubProgram(term, 6 <= 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, term);
     }
 }

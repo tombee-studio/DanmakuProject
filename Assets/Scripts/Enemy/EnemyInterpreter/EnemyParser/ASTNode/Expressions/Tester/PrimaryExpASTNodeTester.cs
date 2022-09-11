@@ -13,7 +13,7 @@ public partial class EnemyASTNodeTester
         };
         var node = new PrimaryExpASTNode(value);
         checkGeneratedInstructionIsSame(testCodes, node);
-        checkVMReturnValue(node, value);
+        checkVMReturnValueFromSubProgram(node, value);
         Assert.AreEqual(node.Print(0), $"{value}");
     }
     public void test_floatNumber()
@@ -24,7 +24,7 @@ public partial class EnemyASTNodeTester
         };
         var node = new PrimaryExpASTNode(value);
         checkGeneratedInstructionIsSame(testCodes, node);
-        checkVMReturnValue(node, value);
+        checkVMReturnValueFromSubProgram(node, value);
         Assert.AreEqual(node.Print(0), $"{value}");
     }
     public void test_Variable()
@@ -55,7 +55,7 @@ public partial class EnemyASTNodeTester
         };
         var node = new PrimaryExpASTNode(exp);
         checkGeneratedInstructionIsSame(testCodes, node);
-        checkVMReturnValue(node, value);
+        checkVMReturnValueFromSubProgram(node, value);
         Assert.AreEqual(node.Print(0), $"({value})");
     }
 }

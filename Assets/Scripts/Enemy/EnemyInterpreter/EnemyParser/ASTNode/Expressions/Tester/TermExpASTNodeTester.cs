@@ -16,7 +16,7 @@ public partial class EnemyASTNodeTester
         var node = new TermExpASTNode(left, arithmeticOperator1, right);
 
         Assert.AreEqual(node.Print(0), "13+7");
-        checkVMReturnValue(node, 13+7);
+        checkVMReturnValueFromSubProgram(node, 13+7);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
 
@@ -35,7 +35,7 @@ public partial class EnemyASTNodeTester
         var node = new TermExpASTNode(left, arithmeticOperator1, right);
 
         Assert.AreEqual(node.Print(0), "42-20");
-        checkVMReturnValue(node, 42-20);
+        checkVMReturnValueFromSubProgram(node, 42-20);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
 }

@@ -15,7 +15,7 @@ public partial class EnemyASTNodeTester
         var node = new EqualityExpASTNode(left, relationOperator1, right);
 
         Assert.AreEqual(node.Print(0), "6==4");
-        checkVMReturnValue(node, 6 == 4 ? 1 : 0);
+        checkVMReturnValueFromSubProgram(node, 6 == 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
 
@@ -34,7 +34,7 @@ public partial class EnemyASTNodeTester
         var node = new EqualityExpASTNode(left, relationOperator1, right);
 
         Assert.AreEqual(node.Print(0), "6!=4");
-        checkVMReturnValue(node, 6 != 4 ? 1 : 0);
+        checkVMReturnValueFromSubProgram(node, 6 != 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, node);
     }
 }

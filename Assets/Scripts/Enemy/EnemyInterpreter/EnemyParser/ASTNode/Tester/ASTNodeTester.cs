@@ -37,13 +37,36 @@ public partial class EnemyASTNodeTester : Tester
                 }
             );
     }
-    private void checkVMReturnValue(ASTNode node, PrimitiveValue value)
+    void checkVMReturnValueFromSubProgram(ASTNode node, PrimitiveValue value)
     {
         var vm = new EnemyVM(null);
-        node.Compile(new Dictionary<string, int>())
-            .ForEach(instruction => vm.appendInstruction(instruction));
+        var compiled = node.Compile(new Dictionary<string, int>());
+        var program = compiled.Select((instruction, line) =>
+        {
+            switch (instruction.mnemonic)
+            {
+                case EnemyVM.Mnemonic.JMP:
+                case EnemyVM.Mnemonic.JE:
+                case EnemyVM.Mnemonic.JNE:
+                    instruction.argument += line;
+                    return instruction;
+                default:
+                    return instruction;
+            }
+        }).ToList();
+        program.ForEach(instruction => vm.appendInstruction(instruction));
         while (!vm.IsExit) { vm.run(); }
         Assert.AreEqual(vm.ReturnValue, value);
     }
+    private void checkVMReturnValue(ASTNode node, PrimitiveValue value)
+    {
+        var vm = new EnemyVM(null);
+        var compiled = node.Compile(new Dictionary<string, int>()).ToList();
+        var program = compiled;
+        program.ForEach(instruction => vm.appendInstruction(instruction));
+        while (!vm.IsExit) { vm.run(); }
+        Assert.AreEqual(vm.ReturnValue, value);
+    }
+
 }
 

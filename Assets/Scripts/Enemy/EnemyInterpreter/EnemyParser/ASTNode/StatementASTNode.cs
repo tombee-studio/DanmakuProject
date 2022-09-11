@@ -4,14 +4,72 @@ using System.Collections.Generic;
 public class StatementASTNode : ASTNode
 {
     ASTNode child;
-    public StatementASTNode(ASTNode statement)
+    public StatementASTNode(DeclarationStASTNode statement)
     {
         this.child = statement;
     }
-    public static implicit operator StatementASTNode(ExpStASTNode node){
+    public StatementASTNode(AssignStASTNode statement)
+    {
+        this.child = statement;
+    }
+    public StatementASTNode(ExpStASTNode statement)
+    {
+        this.child = statement;
+    }
+    public StatementASTNode(IfStASTNode statement)
+    {
+        this.child = statement;
+    }
+    public StatementASTNode(RepeatStASTNode statement)
+    {
+        this.child = statement;
+    }
+    public StatementASTNode(BreakStASTNode statement)
+    {
+        this.child = statement;
+    }
+    public StatementASTNode(CallFuncStASTNode statement)
+    {
+        this.child = statement;
+    }
+    public StatementASTNode(BlockASTNode statement)
+    {
+        this.child = statement;
+    }
+    public static implicit operator StatementASTNode(DeclarationStASTNode node)
+    {
         return new StatementASTNode(node);
     }
-    public static implicit operator StatementASTNode(ExpASTNode node){
+    public static implicit operator StatementASTNode(AssignStASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(IfStASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(RepeatStASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(BreakStASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(CallFuncStASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(BlockASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(ExpStASTNode node)
+    {
+        return new StatementASTNode(node);
+    }
+    public static implicit operator StatementASTNode(ExpASTNode node)
+    {
         return new StatementASTNode(node);
     }
     public static implicit operator StatementASTNode(EqualityExpASTNode node)
@@ -42,13 +100,6 @@ public class StatementASTNode : ASTNode
 
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
-        /*
-            List<EnemyVM.Instruction> instructions = new List<EnemyVM.Instruction>();
-            instructions.Add(EnemyVM.Mnemonic.PUSH, 0x7fffffff);  // 明らかにエラーな値をプッシュしておく
-            instructions.AddRange(child.Compile(vtable));
-            instructions.Add(EnemyVM.Mnemonic.POP, 0);  // スタックに入れた値は破棄しておく;
-            return instructions;
-        */
         return child.Compile(vtable);
     }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.Assertions;
 public partial class EnemyASTNodeTester
 {
-    // TODO: 実行テストは block のテストに書いておく
     void test_RepeatStASTNode()
     {
         int counterAddr = 0;

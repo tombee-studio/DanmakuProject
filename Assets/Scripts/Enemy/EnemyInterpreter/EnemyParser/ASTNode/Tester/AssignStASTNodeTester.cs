@@ -23,7 +23,5 @@ public partial class EnemyASTNodeTester
             // DoNothing(); because expected exception thrown.
         }
     }
-    // TODO: 複数行のテストは block の方でやる
-    // 　-> 変数の load, 2 変数以上の宣言が該当
 }
 

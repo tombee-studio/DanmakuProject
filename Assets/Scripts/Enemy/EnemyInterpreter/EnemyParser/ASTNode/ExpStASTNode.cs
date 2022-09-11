@@ -43,6 +43,6 @@ public class ExpStASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        return exp.Print(tab) + GetTabs(tab) + "\n";
+        return GetTabs(tab) + exp.Print(tab) + "\n";
     }
 }

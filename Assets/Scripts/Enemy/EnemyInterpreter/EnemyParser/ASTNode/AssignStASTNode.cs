@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public class AssignStASTNode : ASTNode
@@ -23,6 +23,6 @@ public class AssignStASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        return $"{id} = " + exp.Print(tab) + "\n";
+        return GetTabs(tab) + $"{id} = " + exp.Print(tab) + "\n";
     }
 }

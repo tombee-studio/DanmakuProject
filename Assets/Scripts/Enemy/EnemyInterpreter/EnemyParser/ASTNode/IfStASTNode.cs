@@ -51,12 +51,12 @@ public class IfStASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        var original = "if(" + cond.Print(tab) + ")" + ifBody.Print(tab);
+        var original = GetTabs(tab) + "if(" + cond.Print(tab) + ")" + ifBody.Print(tab);
         if (elseBody != null)
         {
-            return original + " else " + elseBody.Print(tab) + "\n";
+            return original + " else " + elseBody.Print(tab);
         }
 
-        return original + "\n";
+        return original;
     }
 }

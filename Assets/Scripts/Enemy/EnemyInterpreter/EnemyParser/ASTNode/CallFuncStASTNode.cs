@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 public class CallFuncStASTNode : ASTNode
@@ -42,5 +42,6 @@ public class CallFuncStASTNode : ASTNode
     }
     public override string Print(int tab)
     {
+        return GetTabs(tab) + $"{functionName}(" + GetMergedString(expSts, tab, ", ") + ")\n";
     }
 }

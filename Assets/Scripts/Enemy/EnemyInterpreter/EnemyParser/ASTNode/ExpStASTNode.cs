@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public class ExpStASTNode: ASTNode
@@ -41,6 +41,6 @@ public class ExpStASTNode: ASTNode
 
     public override string Print(int tab)
     {
-        return exp.Print(tab) + "\n";
+        return exp.Print(tab) + GetTabs(tab) + "\n";
     }
 }

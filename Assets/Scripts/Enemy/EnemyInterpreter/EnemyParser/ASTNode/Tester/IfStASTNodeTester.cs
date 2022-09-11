@@ -54,7 +54,7 @@ public partial class EnemyASTNodeTester
             new PrimaryExpASTNode(elseBody)
         );
         checkGeneratedInstructionIsSame(testCodes, node);
-        Assert.AreEqual(node.Print(0), $"if({cond}){ifBody1}*{ifBody2} else {elseBody}\n");
+        Assert.AreEqual(node.Print(0), $"if({cond}){ifBody1}*{ifBody2}\n else {elseBody}\n");
         checkVMReturnValueFromSubProgram(node, cond != 0 ? ifBody1 * ifBody2 : elseBody);
     }
 }

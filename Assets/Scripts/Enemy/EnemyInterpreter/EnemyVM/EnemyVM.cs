@@ -54,6 +54,10 @@ public partial class EnemyVM
     }
 
     public void run(){
+        if (programCounter >= instructionSeries.Count) {
+            FinishProcess();
+            return;
+        }
         Instruction instruction = instructionSeries[programCounter];
         switch (instruction.mnemonic)
         {
@@ -83,12 +87,7 @@ public partial class EnemyVM
             case Mnemonic.STORE: Store(); break;
 
         }
-        //TODO: programCounter++;を下に持っていく。
-        //TODO: if分の終了条件を上に。
         programCounter++;
-        if (instructionSeries.Count == programCounter) FinishProcess();
-
-
     }
     private void FinishProcess()
     {

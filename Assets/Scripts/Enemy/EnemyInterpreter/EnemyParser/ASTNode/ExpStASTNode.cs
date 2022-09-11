@@ -1,13 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-public class ExpStASTNode: ASTNode
+public class ExpStASTNode : ASTNode
 {
     ExpASTNode exp;
-    public ExpStASTNode(ExpASTNode exp){
+    public ExpStASTNode(ExpASTNode exp)
+    {
         this.exp = exp;
     }
-    public static implicit operator ExpStASTNode(ExpASTNode node){
+    public static implicit operator ExpStASTNode(ExpASTNode node)
+    {
         return new ExpStASTNode(node);
     }
     public static implicit operator ExpStASTNode(EqualityExpASTNode node)

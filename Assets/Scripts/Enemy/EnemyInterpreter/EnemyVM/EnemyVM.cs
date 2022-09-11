@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using VMValueType = PrimitiveValue;
 
@@ -20,9 +22,12 @@ public partial class EnemyVM
 
     public bool IsContinute { get => isContinue; }
     public bool IsExit { get => isExit; }
-    public PrimitiveValue ReturnValue {
-        get {
-            if (memory.Length == 0) {
+    public PrimitiveValue ReturnValue
+    {
+        get
+        {
+            if (memory.Length == 0)
+            {
                 throw new EnemyVMException(
                     $"Memory Size must be more than {memory.Length}",
                     this);
@@ -30,13 +35,41 @@ public partial class EnemyVM
             return memory[stackPointer];
         }
     }
+    public VMValueType[] StackTrace
+    {
+        get
+        {
+            if (memory.Length == 0)
+            {
+                throw new EnemyVMException(
+                    $"Memory Size must be more than {memory.Length}",
+                    this);
+            }
+            var memoryList = memory.ToList();
+            int maxIndex = memoryList.FindLastIndex(e =>
+            {
+                switch (e.type)
+                {
+                    case PrimitiveValue.Type.INT:
+                        return e != 0;
+                    case PrimitiveValue.Type.FLOAT:
+                        return e != 0f;
+                    default:
+                        throw new NotImplementedException($"Unexpected type {e.type} reserved");
+                }
+            });
+            return memoryList.GetRange(0, maxIndex + 1).ToArray();
+        }
+    }
+
 
     public EnemyVM(EnemyComponent enemyComponent)
     {
         this.enemyComponent = enemyComponent;
     }
 
-    public void appendInstruction(Instruction instruction){
+    public void appendInstruction(Instruction instruction)
+    {
         instructionSeries.Add(instruction);
     }
     
@@ -53,8 +86,10 @@ public partial class EnemyVM
         memory[stackPointer] = pushedValue;
     }
 
-    public void run(){
-        if (programCounter >= instructionSeries.Count) {
+    public void run()
+    {
+        if (programCounter >= instructionSeries.Count)
+        {
             FinishProcess();
             return;
         }
@@ -62,11 +97,11 @@ public partial class EnemyVM
         switch (instruction.mnemonic)
         {
             case Mnemonic.PUSH: Push(instruction); break;
-            case Mnemonic.ADD:  Add(); break;
-            case Mnemonic.SUB:  Sub(); break;
-            case Mnemonic.MUL:  Mul(); break;
-            case Mnemonic.DIV:  Div(); break;
-            case Mnemonic.MOD:  Mod(); break;
+            case Mnemonic.ADD: Add(); break;
+            case Mnemonic.SUB: Sub(); break;
+            case Mnemonic.MUL: Mul(); break;
+            case Mnemonic.DIV: Div(); break;
+            case Mnemonic.MOD: Mod(); break;
 
             case Mnemonic.EQ: Eq(); break;
             case Mnemonic.NE: Ne(); break;

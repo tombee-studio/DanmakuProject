@@ -62,6 +62,25 @@ public partial class EnemyVM
         }
     }
 
+    public List<string> InstructionsTrace
+    {
+        get
+        {
+            return instructionSeries.Select((e, i) =>
+            {
+                string msg;
+                if (i == programCounter) {
+                    msg = "--> ";
+                }
+                else{
+                    msg = "    ";
+                }
+                msg += $"{i}: {e}";
+                return msg;
+            }).ToList();
+        }
+    }
+
 
     public EnemyVM(EnemyComponent enemyComponent)
     {
@@ -72,7 +91,7 @@ public partial class EnemyVM
     {
         instructionSeries.Add(instruction);
     }
-    
+
     private VMValueType Peek() => memory[stackPointer];
 
     public VMValueType PopFromStack()
@@ -129,6 +148,5 @@ public partial class EnemyVM
         isExit = true;
         isContinue = false;
     }
-    
+
 }
- 

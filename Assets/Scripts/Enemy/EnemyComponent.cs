@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D))]
@@ -19,32 +20,142 @@ public class EnemyComponent : MonoBehaviour
         Toriaezu();
 #pragma warning restore CS0618
     }
+    private List<ExpASTNode> GetArgsList(params PrimitiveValue[] args)
+    {
+        return new List<ExpASTNode>(
+            args.Select(e => (ExpASTNode)new PrimaryExpASTNode(e))
+        );
+    }
+    [System.Obsolete("とりあえず用意しただけのメソッドに紐づいているメソッドなのでいずれ消します")]
+    private List<T> getList<T>(params T[] elements)
+    {
+        return elements.ToList();
+    }
     // とりあえず動作させる
     [System.Obsolete("とりあえず用意しただけのメソッドなのでいずれ消します")]
     void Toriaezu()
     {
+        /* サンプルプログラム */
         /*
+            bullet >>
+            ID: 0;
+            generate_bullets(24);
+            set_bullets_position_at_enemy(id);
+            scatter_bullets_in_circular_pattern(0.1f, 0f);
+            delay_bullets(60);
+            scatter_bullets_in_circular_pattern(0.1f, 180f);
+            delay_bullets(120);
+
+            ID: 1;
+            generate_bullets(24);
+            delay_bullets(60);
+            set_bullets_position_at_enemy(id);
+            scatter_bullets_in_circular_pattern(0.1f, 0f);
+            delay_bullets(60);
+            move_bullets_parallel(0.1f, 30f);
+            delay_bullets(120);
+
+            action >>
+            activate_bullets(0);
+            activate_bullets(1);
+        */
+        /* 上のサンプルに対応する AST の動作を確認する */
         int id;
         id = 0;
-        GenerateBullets(id, 24);
-        SetBulletsPositionAtEnemy(id);
-        ScatterBulletsInCircularPattern(id, 0.1f, 0f);
-        DelayBullets(id, 60);
-        ScatterBulletsInCircularPattern(id, 0.1f, 180f);
-        DelayBullets(id, 120);
+        var nodes = getList(
+            new CallFuncASTNode(
+                id,
+                "generate_bullets",
+                GetArgsList(24)
+            ),
+            new CallFuncASTNode(
+                id,
+                "set_bullets_position_at_enemy",
+                GetArgsList()
+            ),
+            new CallFuncASTNode(
+                id,
+                "scatter_bullets_in_circular_pattern",
+                GetArgsList(0.1f, 0f)
+            ),
+            new CallFuncASTNode(
+                id,
+                "delay_bullets",
+                GetArgsList(60)
+            ),
+            new CallFuncASTNode(
+                id,
+                "scatter_bullets_in_circular_pattern",
+                GetArgsList(0.1f, 180f)
+            ),
+            new CallFuncASTNode(
+                id,
+                "delay_bullets",
+                GetArgsList(120)
+            ),
+            new CallFuncASTNode(
+                id,
+                "activate_bullets",
+                GetArgsList()
+            )
+        );
 
         id = 1;
-        GenerateBullets(id, 24);
-        DelayBullets(id, 60);
-        SetBulletsPositionAtEnemy(id);
-        ScatterBulletsInCircularPattern(id, 0.1f, 0f);
-        DelayBullets(id, 60);
-        MoveBulletsParallel(id, 0.1f, 30f);
-        DelayBullets(id, 120);
+        nodes.AddRange(
+            getList(
+                new CallFuncASTNode(
+                    id,
+                    "generate_bullets",
+                    GetArgsList(24)
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "delay_bullets",
+                    GetArgsList(60)
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "set_bullets_position_at_enemy",
+                    GetArgsList()
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "scatter_bullets_in_circular_pattern",
+                    GetArgsList(0.1f, 0f)
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "delay_bullets",
+                    GetArgsList(60)
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "move_bullets_parallel",
+                    GetArgsList(0.1f, 30f)
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "delay_bullets",
+                    GetArgsList(120)
+                ),
+                new CallFuncASTNode(
+                    id,
+                    "activate_bullets",
+                    GetArgsList()
+                )
+            )
+        );
 
-        ActivateBullets(0);
-        ActivateBullets(1);
-        //*/
+        var enemy = GameObject.FindObjectOfType<EnemyComponent>();
+        var vm = new EnemyVM(enemy);
+        var vtable = new Dictionary<string, int>();
+        var instructions = nodes.Select(node => node.Compile(vtable))
+            .SelectMany(instructions => instructions).ToList();
+        instructions.ForEach(instruction => vm.appendInstruction(instruction));
+        while (!vm.IsExit)
+        {
+            vm.run();
+        }
     }
 
     void Update()

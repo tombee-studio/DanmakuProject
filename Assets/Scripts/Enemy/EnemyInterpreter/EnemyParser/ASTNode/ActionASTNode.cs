@@ -16,7 +16,7 @@ public class ActionASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        return "action >> \n"
-        + string.Join("", statements.Select(e => e.Print(tab)));
+        return "action >>\n"
+            + GetMergedString(statements, tab);
     }
 }

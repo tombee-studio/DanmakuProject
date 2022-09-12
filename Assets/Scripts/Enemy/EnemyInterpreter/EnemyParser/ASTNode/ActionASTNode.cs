@@ -16,7 +16,7 @@ public class ActionASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        return "action >>\n"
+        return GetTabs(tab) + "action >>\n"
             + GetMergedString(statements, tab);
     }
 }

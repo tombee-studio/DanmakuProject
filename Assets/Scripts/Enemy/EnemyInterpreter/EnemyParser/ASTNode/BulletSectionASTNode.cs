@@ -20,7 +20,7 @@ public class BulletSectionASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        return $"ID: {id}\n"
+        return GetTabs(tab) + $"ID: {id}\n"
             + GetMergedString(callFuncs, tab);
     }
 }

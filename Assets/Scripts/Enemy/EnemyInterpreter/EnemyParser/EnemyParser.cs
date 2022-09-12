@@ -19,8 +19,8 @@ using UnityEngine;
  *  #TokenStreamValidation flow_capturedInt(ScriptToken.Type type, out int capturedInt)
  *  #TokenStreamValidation flow_capturedFloat(ScriptToken.Type type, out float capturedFloat)
  *  #TokenStreamValidation flow_capturedSymbolID(ScriptToken.Type type, out string capturedSymbolID)
- *  #N needRecipient<N>(Function<TokenStreamObserver, N> , out N astNode) where N:
- *  #isValidatedForm : 
+ *  #N needRecipient<N>(Function<TokenStreamObserver, N> func, out N astNode) where N:
+ *  #bool isValidated 
  * 分岐 | | 
  * 文法の場合分け +, -, *, /
  * 

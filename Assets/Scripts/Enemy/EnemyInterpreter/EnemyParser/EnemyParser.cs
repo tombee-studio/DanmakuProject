@@ -3,6 +3,65 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * ロードマップ
+ * TokenStream
+ *  #Consume
+ *  
+ *  非終端
+        EXP 
+        := EQUALITY_EXP
+
+        EQUALITY_EXP 
+        := RELATIONAL_EXP
+        | EQUALITY_EXP [==|!=] RELATIONAL_EXP
+
+        RELATIONAL_EXP 
+        := TERM_EXP
+        | RELATIONAL_EXP [<|>|<=|>=] TERM
+
+        TERM_EXP
+        := FACTOR_EXP
+        | TERM [+|-] TERM_EXP
+
+        FACTOR_EXP
+        := UNARY_EXP
+        | FACTOR_EXP [*|/|%] UNARY_EXP
+
+        UNARY_EXP
+        := -? PRIMARY_EXP
+
+        PRIMARY_EXP
+        := IDENTIFIER
+        | PrimitiveValue
+        | (EXP)
+ * 
+ * ParsePrimaryExp()
+     * return TokenStream.lookahead()
+     * .maybeIdentifier()
+     * .maybePrimitiveValue()
+     * .maybeNonterminal(ParseExpression);
+ * 
+ * 
+ * 
+ * 分岐 | | 
+ * 文法の場合分け +, -, *, /
+ * 0回以上の繰り返し *
+ * 
+ * TokenStream
+ * .startsWith("behaviour")
+ * .then_SymbolID(out string id)
+ * .then("{")
+ * .then_Multiple("{")
+ * .then_Optional("}")
+ * .then("}")
+ * .then("/")
+ * .then(",")
+ * [x] Inversed(dictionary)
+ * [ ] 
+ *
+ */
+
 public class EnemyParser {
     public BehaviourASTNode ParseBehaviour(List<ScriptToken> tokens, ref int pos) {
         if (tokens[pos].type != ScriptToken.Type.BEHAVIOR)
@@ -31,5 +90,11 @@ public class EnemyParser {
     {
         pos++;
         return null;
+    }
+    public class TokenStream
+    {
+        List<ScriptToken> tokens;
+        int tokenPointer;
+
     }
 }

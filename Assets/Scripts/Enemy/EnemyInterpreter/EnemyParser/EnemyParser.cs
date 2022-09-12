@@ -5,60 +5,26 @@ using UnityEngine;
 
 /*
  * ロードマップ
- * TokenStream
- *  #Consume
- *  
- *  非終端
-        EXP 
-        := EQUALITY_EXP
-
-        EQUALITY_EXP 
-        := RELATIONAL_EXP
-        | EQUALITY_EXP [==|!=] RELATIONAL_EXP
-
-        RELATIONAL_EXP 
-        := TERM_EXP
-        | RELATIONAL_EXP [<|>|<=|>=] TERM
-
-        TERM_EXP
-        := FACTOR_EXP
-        | TERM [+|-] TERM_EXP
-
-        FACTOR_EXP
-        := UNARY_EXP
-        | FACTOR_EXP [*|/|%] UNARY_EXP
-
-        UNARY_EXP
-        := -? PRIMARY_EXP
-
-        PRIMARY_EXP
-        := IDENTIFIER
-        | PrimitiveValue
-        | (EXP)
+ * TokenStream(List<ScriptToken> tokens)
+ *  #proceed()         -> 読み進める
+ *  #lookahead()    -> トークンを先読み
  * 
- * ParsePrimaryExp()
-     * return TokenStream.lookahead()
-     * .maybeIdentifier()
-     * .maybePrimitiveValue()
-     * .maybeNonterminal(ParseExpression);
+ * TokenStreamObserver(TokenStream stream)
+ *  #should():TokenStreamValidation
+ *  #case():TokenStreamValidation
+ *  #tokenStream
  * 
- * 
- * 
+ * TokenStreamValidation
+ *  #TokenStreamValidation flow(string token) -> 指定した予約語トークンが流れてくるという条件
+ *  #TokenStreamValidation flow_capturedInt(ScriptToken.Type type, out int capturedInt)
+ *  #TokenStreamValidation flow_capturedFloat(ScriptToken.Type type, out float capturedFloat)
+ *  #TokenStreamValidation flow_capturedSymbolID(ScriptToken.Type type, out string capturedSymbolID)
+ *  #N needRecipient<N>(Function<TokenStreamObserver, N> , out N astNode) where N:
+ *  #isValidatedForm : 
  * 分岐 | | 
  * 文法の場合分け +, -, *, /
- * 0回以上の繰り返し *
  * 
- * TokenStream
- * .startsWith("behaviour")
- * .then_SymbolID(out string id)
- * .then("{")
- * .then_Multiple("{")
- * .then_Optional("}")
- * .then("}")
- * .then("/")
- * .then(",")
- * [x] Inversed(dictionary)
- * [ ] 
+ * 0回以上の繰り返し *
  *
  */
 

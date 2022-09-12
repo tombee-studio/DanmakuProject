@@ -16,7 +16,7 @@ public class BulletASTNode : ASTNode
 
     public override string Print(int tab)
     {
-        return GetTabs(tab) + "bullet >> \n"
+        return GetTabs(tab) + "bullet >>\n"
             + GetMergedString(bulletSections, tab);
     }
 }

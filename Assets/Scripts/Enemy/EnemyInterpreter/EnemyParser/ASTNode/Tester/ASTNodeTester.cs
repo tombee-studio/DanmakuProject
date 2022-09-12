@@ -37,7 +37,7 @@ public partial class EnemyASTNodeTester : Tester
                 }
             );
     }
-    private void checkIsPrintScript(string[] scriptCodes, ASTNode node)
+    private void checkPrintScript(string[] scriptCodes, ASTNode node)
     {
         node.Print(0)
             .Split("\n")
@@ -54,12 +54,12 @@ public partial class EnemyASTNodeTester : Tester
         var vm = new EnemyVM(null);
         var vTable = new Dictionary<string, int>();
         var subProgram = node.Compile(vTable);
-        var declarations = new List<EnemyVM.Instruction>();
+        var stackAllocation = new List<EnemyVM.Instruction>();
         for (int i = 0; i < vTable.Count; i++)
         {
-            declarations.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, int.MaxValue));
+            stackAllocation.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, int.MaxValue));
         }
-        var program = declarations
+        var program = stackAllocation
             .Concat(subProgram)
             .Select((instruction, line) =>
             {

@@ -176,7 +176,7 @@ public partial class EnemyASTNodeTester
             .Append(new PrimaryExpASTNode("sum"))
             .ToList()
         );
-        checkIsPrintScript(scriptCodes, node);
+        checkPrintScript(scriptCodes, node);
         checkGeneratedInstructionIsSame(testCodes, node);
         checkVMReturnValueFromSubProgram(node, 55);
     }
@@ -294,7 +294,7 @@ public partial class EnemyASTNodeTester
             .Append(new PrimaryExpASTNode("sum"))
             .ToList()
         );
-        checkIsPrintScript(scriptCodes, node);
+        checkPrintScript(scriptCodes, node);
         checkGeneratedInstructionIsSame(testCodes, node);
         checkVMReturnValueFromSubProgram(node, 21);
     }

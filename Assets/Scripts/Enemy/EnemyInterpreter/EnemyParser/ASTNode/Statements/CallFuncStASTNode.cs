@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#nullable enable
 public class CallFuncStASTNode : ASTNode
 {
-    public int id;
+    public int? id;
     private string functionName;
     private List<ExpASTNode> expSts;
 
@@ -22,12 +23,14 @@ public class CallFuncStASTNode : ASTNode
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
         var instructions = GetInstructionsForAll(expSts, vtable);  // リストの昇順と引数を左から順に読んだ結果が一致する想定
-        instructions.Add(
-            new EnemyVM.Instruction(
-                EnemyVM.Mnemonic.PUSH,
-                id
-            )
-        );
+        if(id!=null){
+            instructions.Add(
+                new EnemyVM.Instruction(
+                    EnemyVM.Mnemonic.PUSH,
+                    (int)id
+                )
+            );
+        }
         var funcID = EnemyFunctionFactory.GetInstance().Find(functionName);
         if (funcID == -1) { throw new FunctionIDNotFoundException($"function {functionName} not found in function list of EnemyFunctionsFactory"); }
         instructions.Add(

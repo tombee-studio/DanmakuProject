@@ -37,26 +37,26 @@ public class EnemyComponent : MonoBehaviour
         /* サンプルプログラム */
         /*
             bullet >>
-            ID: 0;
-            generate_bullets(24);
-            set_bullets_position_at_enemy(id);
-            scatter_bullets_in_circular_pattern(0.1f, 0f);
-            delay_bullets(60);
-            scatter_bullets_in_circular_pattern(0.1f, 180f);
-            delay_bullets(120);
+            ID: 0
+            generate_bullets(24)
+            set_bullets_position_at_enemy()
+            scatter_bullets_in_circular_pattern(0.1f, 0f)
+            delay_bullets(60)
+            scatter_bullets_in_circular_pattern(0.1f, 180f)
+            delay_bullets(120)
 
-            ID: 1;
-            generate_bullets(24);
-            delay_bullets(60);
-            set_bullets_position_at_enemy(id);
-            scatter_bullets_in_circular_pattern(0.1f, 0f);
-            delay_bullets(60);
-            move_bullets_parallel(0.1f, 30f);
-            delay_bullets(120);
+            ID: 1
+            generate_bullets(24)
+            delay_bullets(60)
+            set_bullets_position_at_enemy()
+            scatter_bullets_in_circular_pattern(0.1f, 0f)
+            delay_bullets(60)
+            move_bullets_parallel(0.1f, 30f)
+            delay_bullets(120)
 
             action >>
-            activate_bullets(0);
-            activate_bullets(1);
+            activate_bullets(0)
+            activate_bullets(1)
         */
         /* 上のサンプルに対応する AST の動作を確認する */
         int id;

@@ -21,10 +21,10 @@ public partial class EnemyVMTester
     public void test_EQ2()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.EQ, 0)
@@ -37,10 +37,10 @@ public partial class EnemyVMTester
     public void test_NE1()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.NE, 0)
@@ -68,10 +68,10 @@ public partial class EnemyVMTester
     public void test_LT1()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LT, 0)
@@ -83,10 +83,10 @@ public partial class EnemyVMTester
     public void test_LT2()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LT, 0)
@@ -99,10 +99,10 @@ public partial class EnemyVMTester
     public void test_GT1()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GT, 0)
@@ -114,10 +114,10 @@ public partial class EnemyVMTester
     public void test_GT2()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GT, 0)
@@ -145,10 +145,10 @@ public partial class EnemyVMTester
     public void test_LE2()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LE, 0)
@@ -160,10 +160,10 @@ public partial class EnemyVMTester
     public void test_LE3()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.LE, 0)
@@ -191,10 +191,10 @@ public partial class EnemyVMTester
     public void test_GE2()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 1)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GE, 0)
@@ -206,10 +206,10 @@ public partial class EnemyVMTester
     public void test_GE3()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 3)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.GE, 0)

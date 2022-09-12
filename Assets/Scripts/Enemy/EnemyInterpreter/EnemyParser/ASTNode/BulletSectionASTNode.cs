@@ -14,6 +14,7 @@ public class BulletSectionASTNode : ASTNode
 
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
+        callFuncs.ForEach(e => e.id = id);  // id を登録
         return GetInstructionsForAll(callFuncs, vtable);
     }
 

@@ -10,7 +10,7 @@ public struct PrimitiveValue
         INT,
         FLOAT
     }
-    Type type;
+    public Type type { get; private set;  }
     int intValue;
     float floatValue;
 
@@ -40,6 +40,10 @@ public struct PrimitiveValue
         }
     }
 
+    public static implicit operator PrimitiveValue(int p){
+        return makeInt(p);
+    }
+
     public static implicit operator float(PrimitiveValue p)
     {
         if (p.type == Type.FLOAT)
@@ -50,6 +54,9 @@ public struct PrimitiveValue
         {
             throw new PrimitiveValueError($"floatにキャストできません: {p}");
         }
+    }
+    public static implicit operator PrimitiveValue(float p){
+        return makeFloat(p);
     }
 
     public static PrimitiveValue operator +(PrimitiveValue p1, PrimitiveValue p2) {
@@ -300,6 +307,18 @@ public struct PrimitiveValue
         else
         {
             throw new PrimitiveValueError($">=演算子は２項の型が一致しなければなりません: {p1.type} != {p2.type}");
+        }
+    }
+
+    public override string ToString()
+    {
+        switch (type) {
+            case Type.INT:
+                return intValue.ToString();
+            case Type.FLOAT:
+                return floatValue.ToString();
+            default:
+                throw new Exception("Undefined Error");
         }
     }
 }

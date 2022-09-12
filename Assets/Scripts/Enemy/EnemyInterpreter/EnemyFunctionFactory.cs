@@ -56,6 +56,17 @@ public class EnemyFunctionFactory
 
     }
 
+    public void GenerateBullets(EnemyComponent enemy, EnemyVM vm){
+        int id = vm.PopFromStack();
+        int bulletsCount = vm.PopFromStack();
+        enemy.GenerateBullets(id, bulletsCount);
+    }
+
+    public void ActivateBullets(EnemyComponent enemy, EnemyVM vm){
+        int id = vm.PopFromStack();
+        enemy.ActivateBullets(id);
+    }
+
     public void DelayBullets(EnemyComponent enemy, EnemyVM vm) {
         int id = vm.PopFromStack();
         int frames = vm.PopFromStack();

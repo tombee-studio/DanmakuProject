@@ -5,10 +5,10 @@ public partial class EnemyVMTester
     public void test_ADD()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.ADD, 0)
@@ -19,10 +19,10 @@ public partial class EnemyVMTester
     public void test_SUB()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.SUB, 0)
@@ -33,10 +33,10 @@ public partial class EnemyVMTester
     public void test_MUL()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 9)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0)
@@ -47,10 +47,10 @@ public partial class EnemyVMTester
     public void test_DIV1()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 18)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 18)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 0)
@@ -62,10 +62,10 @@ public partial class EnemyVMTester
     public void test_DIV2()
     {
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 7)
         );
         vm.appendInstruction(
-            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 7)
+            new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, 2)
         );
         vm.appendInstruction(
             new EnemyVM.Instruction(EnemyVM.Mnemonic.DIV, 0)

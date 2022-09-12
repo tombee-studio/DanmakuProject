@@ -22,11 +22,7 @@ public abstract class ASTNode
     }
     protected List<EnemyVM.Instruction> GetInstructionsForAll<T>(IEnumerable<T> astNodes, Dictionary<string, int> vtable) where T: ASTNode
     {
-        List<EnemyVM.Instruction> instructions = new List<EnemyVM.Instruction>();
-        foreach (var e in astNodes)
-        {
-            instructions.AddRange(e.Compile(vtable));
-        }
+        var instructions = astNodes.SelectMany(e=>e.Compile(vtable)).ToList();
         return instructions;
     }
 }

@@ -5,21 +5,32 @@ using UnityEngine;
 
 /*
  * ロードマップ
- * TokenStream(List<ScriptToken> tokens)
- *  #proceed()         -> 読み進める
- *  #lookahead()    -> トークンを先読み
  * 
- * TokenStreamObserver(TokenStream stream)
+ * EnemyParser
+ *  
+ * NonterminalSymbolParser(インタフェース)
+ *  #?check(TokenStream stream) -> TokenStreamの現在の位置から先に該当の非終端記号に該当するものが存在するかを調べる。
+ *  #parse(TokenStream stream)  -> 読み進め、トークンから情報を抽出する。
+ * 
+ * TokenStream(List<ScriptToken> tokens)
+ *  private proceed()      -> 読み進める
+ *  private lookahead()    -> トークンを先読み
  *  #should():TokenStreamValidation
- *  #case():TokenStreamValidation
+ *  #maybe():TokenStreamValidation
  *  #tokenStream
  * 
  * TokenStreamValidation
- *  #TokenStreamValidation flow(string token) -> 指定した予約語トークンが流れてくるという条件
- *  #TokenStreamValidation flow_capturedInt(ScriptToken.Type type, out int capturedInt)
- *  #TokenStreamValidation flow_capturedFloat(ScriptToken.Type type, out float capturedFloat)
- *  #TokenStreamValidation flow_capturedSymbolID(ScriptToken.Type type, out string capturedSymbolID)
- *  #N needRecipient<N>(Function<TokenStreamObserver, N> func, out N astNode) where N:
+ *  #TokenStreamValidation expectReserved(string token) -> 読み進め、指定されたトークンが流れてくることを条件に設定する。
+ *  #TokenStreamValidation expectVariable(out ScriptToken capturedSymbolID)
+ *  #TokenStreamValidation expectSymbolID(out string capturedSymbolID)
+ *  #TokenStreamValidation confront<N>(
+ *      Func<TokenStreamObserver, N> parser,
+ *      out N astNode
+ *  ) where N:TokenStreamobserver
+ *  #TokenStreamValidation case<N>(
+ *      NonterminalSymbolParser parser
+ *      out N astNode
+ *      ) where N:TokenStreamObserver
  *  #bool isValidated 
  * 分岐 | | 
  * 文法の場合分け +, -, *, /

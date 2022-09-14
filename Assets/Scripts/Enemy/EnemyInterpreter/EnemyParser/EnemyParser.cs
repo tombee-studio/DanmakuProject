@@ -1,10 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 /*
  * ロードマップ
+ * 
+ * 各非終端記号に対応したパーサーを定義する
+ * 
+ * 
  * 
  * EnemyParser
  *  

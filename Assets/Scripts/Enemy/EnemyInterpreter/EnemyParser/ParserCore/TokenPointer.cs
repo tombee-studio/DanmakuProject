@@ -9,7 +9,7 @@ public class TokenStreamPointer
     public TokenStreamPointer(List<ScriptToken> target, int pointer = 0)
     {
         sequence = target;
-        if (pointer + 1 > sequence.Count) throw ParseException.Information("Can not make TokenPointer pointing to the area out of sequence.", pointer);
+        if (pointer + 1 > sequence.Count) throw ParseException.Information("Can not make TokenPointer pointing to the area out of sequence.", this);
         index = pointer;
     }
     /// <summary>
@@ -20,7 +20,7 @@ public class TokenStreamPointer
     public ScriptToken Access(int delta = 0)
     {
         var actualPointer = index + delta;
-        if (actualPointer > sequence.Count) throw ParseException.Information($"try to access ${actualPointer} but failed because the token sequence's length is {sequence.Count}.", actualPointer);
+        if (actualPointer > sequence.Count) throw ParseException.Information($"try to access ${actualPointer} but failed because the token sequence's length is {sequence.Count}.", this);
         return sequence[actualPointer];
     }
 

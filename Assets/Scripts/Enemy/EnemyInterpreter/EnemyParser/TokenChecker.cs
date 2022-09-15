@@ -12,8 +12,10 @@ public class TokenStreamChecker
         if (reservedWordMap.TryGetValue(type, out string reservedWords)) throw new Exception($"The type `{type}` is not defined as Token.");
         return reservedWords;
     }
-    private static string CompareToken(ScriptToken tokenA, string tokenBInString)
-        => ConvertToString(tokenA).Equals(tokenInString);
+
+    private static bool TheSameTokens(ScriptToken tokenA, string tokenBInString)
+        => ConvertToString(tokenA.type).Equals(tokenBInString);
+
     private static readonly ScriptToken.Type[] allowedTokenTypeList = {
             ScriptToken.Type.SYMBOL_ID,
             ScriptToken.Type.INT_LITERAL,
@@ -40,35 +42,20 @@ public class TokenStreamChecker
     public TokenStreamChecker Expect(string tokenInString)
     {
         var nextToken = target.Read();
-        if (!) RecognizeFailed($"expected `{tokenInString}` but `{ConvertToString(nextToken.type)}` is coming.");
+        if (!TheSameTokens(nextToken, tokenInString)) RecognizeFailed($"expected `{tokenInString}` but `{ConvertToString(nextToken.type)}` is coming.");
         return this;
     }
 
     public TokenStreamChecker Maybe(string tokenInString)
     {
-        var nextToken = target.Lookahead();
-        if (ConvertToString(nextToken.type).Equals(tokenInString)) target.Read();
+        if (TheSameTokens(target.Lookahead(), tokenInString)) target.Read();
         return this;
     }
-    //TODO 0個以上連続するトークンに対するアサーションを作成する。
-    // ExpectMulti, MaybeMulti
-    // ExpectMultiVariable, ExpectMultiSymbolID, ExpectMultiConsumedBy
-    // MaybeMultiVariable, MaybeMultiSymbolID, MaybeMultiConsumedBy
     public TokenStreamChecker ExpectMulti(string tokenInString)
     {
-        while (ConvertToString(target.Lookahead()))
-        
-        
-    }
-
-    public TokenStreamChecker MaybeMulti(string tokenInString)
-    {
-        var nextToken = target.Lookahead();
-        if (ConvertToString(nextToken.type).Equals(tokenInString)) target.Read();
+        while (TheSameTokens(target.Lookahead(), tokenInString)) target.Read();
         return this;
     }
-
-
 
     public TokenStreamChecker ExpectVariable(out ScriptToken captured)
     {
@@ -110,6 +97,18 @@ public class TokenStreamChecker
         target.Read();
         return this;
     }
+
+    public TokenStreamChecker ExpectMultiSymbolID(out List<string> captured)
+    {
+        captured = new();
+        while (true)
+        {
+            MaybeSymbolID(out string? result);
+            if (result == null) break;
+            captured.Add(result ?? throw new Exception());
+        }
+        return this;
+    }
     public TokenStreamChecker MaybeVariable(out ScriptToken? captured)
     {
         var nextToken = target.Lookahead();
@@ -122,6 +121,17 @@ public class TokenStreamChecker
         target.Read();
         return this;
     }
+    public TokenStreamChecker ExpectMultiVariable(out List<ScriptToken> captured)
+    {
+        captured = new();
+        while (true)
+        {
+            MaybeVariable(out ScriptToken? result);
+            if (result == null) break;
+            captured.Add(result ?? throw new Exception());
+        }
+        return this;
+    }
     public TokenStreamChecker MaybeConsumedBy<N>(ParserFunction<N> parser, out N? captured) where N : notnull
     {
         var parseResult =
@@ -129,6 +139,16 @@ public class TokenStreamChecker
             .Invoke(target.CurrentPointer)
             .ApplyIfSucceeded(ref target);
         captured = parseResult.ParsedNodeNullable;
+        return this;
+    }
+    public TokenStreamChecker ExpectMultiComsumer<N>(ParserFunction<N> parser, out List<N> captured) where N : notnull
+    {
+        captured = new();
+        while (true) {
+            MaybeConsumedBy(parser, out N? result);
+            if (result == null) break;
+            captured.Add(result ?? throw new Exception());
+        }
         return this;
     }
 }

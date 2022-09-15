@@ -1,35 +1,64 @@
-﻿using System;
+﻿#nullable enable
+using System;
 
-public struct ParseResult<N>
+
+public struct ParseResult<N> where N:notnull
 {
-    enum State
+    public enum State
     {
         Succeeded, Failed
     };
-    private State _state;
-    private N _parsedNode;
-    private TokenPointer _pointWhenParseCompleted;
+    private readonly State _state;
+    private readonly string? failedReason;
+    private readonly string? parserName;
+    private readonly N? _parsed;
+    private readonly TokenStreamPointer _pointerWhenParseFinished;    
 
 
     public bool IsSucceeded()
     {
         return _state == State.Succeeded;
     }
-    public N ParsedNode
+    public N ParsedNode => _parsed ??
+        throw new Exception("This ParseResult is not in Succeeded state, so any result is not contained in this object.");
+
+    public N? ParsedNodeNullable => _parsed;
+
+    public TokenStreamPointer pointerWhenParseFinished
+        =>  _pointerWhenParseFinished ??
+        throw new Exception("This ParseResult is not in Succeeded state, so any result is not contained in this object.");
+
+    public ParseResult(State state, string? failedReason, string parserName, N? parsedNode, TokenStreamPointer currentPointer)
     {
-        get => IsSucceeded() ? _parsedNode : throw new Exception("This ParseResult is not in Succeeded state, so any result is not contained in this object.");
-    }
-    public TokenPointer pointer
-    {
-        get => IsSucceeded() ? _pointWhenParseCompleted : throw new Exception("This ParseResult is not in Succeeded state, so any result is not contained in this object.");
+        _state = state;
+        this.parserName = parserName;
+        this.failedReason = failedReason;
+        _parsed = parsedNode;
+        _pointerWhenParseFinished = currentPointer;
     }
 
-
-    public ParseResult(N parsedNode, TokenPointer currentPointer)
+    public ParseResult(N parsedNode, TokenStreamPointer currentPointer)
     {
         _state = State.Succeeded;
-        _parsedNode = parsedNode;
-        _pointWhenParseCompleted = currentPointer;
+        failedReason = null;
+        parserName = null;
+        _parsed = parsedNode;
+        _pointerWhenParseFinished = currentPointer;
     }
-    public static ParseResult<N> Failed() => new() { _state = State.Failed };
+
+    public ParseResult<N> ApplyIfSucceeded(ref TokenStream stream)
+    {
+        if (IsSucceeded()) stream = TokenStream.FromPointer(pointerWhenParseFinished);
+        return this;
+    }
+    public ParseResult<N> ShouldSucceed()
+    {
+        if (!IsSucceeded()) throw ParseException.Information($"The parse {parserName} should succeed but it's failed.\nreason: {failedReason}", pointerWhenParseFinished);
+        return this;
+    }
+    public static ParseResult<N> Failed(string reason, string parserName, TokenStreamPointer position)
+    {
+        var Null = default(N);
+        return new(State.Failed, reason, parserName, Null, position);
+    }
 }

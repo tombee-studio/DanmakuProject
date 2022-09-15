@@ -1,6 +1,6 @@
 #nullable enable
 
-public class EnemyParser {
+public partial class EnemyParser {
 
     public ParseResult<BehaviourASTNode> ParseBehaviour(TokenStreamPointer pointer) {
         var stream = pointer.StartStream();
@@ -19,12 +19,4 @@ public class EnemyParser {
             );
     }
 
-    public ParseResult<BulletASTNode> ParseBulletAST(TokenStreamPointer pointer) {
-        
-    }
-
-    public ParseResult<ActionASTNode> ParseActionAST(TokenStreamPointer pointer)
-    {
-        
-    }
 }

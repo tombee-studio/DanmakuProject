@@ -59,6 +59,8 @@ public class TokenStreamChecker
         return this;
     }
 
+    // TODO: maybeから呼び出した時ここがnullableになる恐れがある。
+    // しかし、nullableにするといちいちnullチェックを挟む必要があり、可用性が落ちる。どうしよう...？
     public TokenStreamChecker ExpectVariable(out ScriptToken captured)
     {
         var nextToken = target.Read();
@@ -151,6 +153,14 @@ public class TokenStreamChecker
             if (result == null) break;
             captured.Add(result ?? throw new Exception());
         }
+        return this;
+    }
+    public TokenStreamChecker ExpectMultiComsumerAtLeast1<N>(ParserFunction<N> parser, out List<N> captured) where N : notnull
+    {
+        ExpectConsumedBy(parser, out N firstOne);
+        ExpectMultiComsumer(parser, out List<N> successor);
+        successor.Prepend(firstOne);
+        captured = successor;
         return this;
     }
 }

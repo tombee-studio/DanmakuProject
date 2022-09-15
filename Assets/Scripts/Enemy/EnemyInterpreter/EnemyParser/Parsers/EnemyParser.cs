@@ -21,12 +21,10 @@ public class EnemyParser {
 
     public ParseResult<BulletASTNode> ParseBulletAST(TokenStreamPointer pointer) {
         
-        return null;
     }
 
     public ParseResult<ActionASTNode> ParseActionAST(TokenStreamPointer pointer)
     {
-        pos++;
-        return null;
+        
     }
 }

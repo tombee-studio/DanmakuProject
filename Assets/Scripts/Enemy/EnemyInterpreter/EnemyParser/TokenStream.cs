@@ -19,5 +19,7 @@ public class TokenStream
     public ScriptToken Read() => sequence[index++];
     public ScriptToken Lookahead() => sequence[index];
 
+    public TokenStreamChecker should => new(this, true);
+    public TokenStreamChecker maybe => new(this, false);
 
 }

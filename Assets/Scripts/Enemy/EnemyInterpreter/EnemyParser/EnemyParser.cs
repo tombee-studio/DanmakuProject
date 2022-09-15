@@ -1,27 +1,20 @@
-using System;
-using System.Collections.Generic;
+#nullable enable
 
 public class EnemyParser {
-    
+
     public ParseResult<BehaviourASTNode> ParseBehaviour(TokenStreamPointer pointer) {
         var stream = TokenStream.FromPointer(pointer);
-        stream
+
+        stream.should
             .Expect("behaviour")
             .ExpectSymbolID(out string id)
-            .Expect("{");
+            .Expect("{")
+            .MaybeConsumedBy(ParseBulletAST, out BulletASTNode? bulletASTNode)
+            .ExpectConsumedBy(ParseActionAST, out ActionASTNode actionASTNode)
+            .Expect("}");
 
-        var bulletASTResult = ParseBulletAST(stream.CurrentPointer).ApplyIfSucceeded(ref stream);
-        var actionASTResult = ParseActionAST(stream.CurrentPointer).ApplyIfSucceeded(ref stream).ShouldSucceed();
-
-        stream.Expect("}");
-
-        var behaviourASTNode = new BehaviourASTNode(
-            id,
-            bulletASTResult.ParsedNodeNullable,
-            actionASTResult.ParsedNode
-            );
         return new ParseResult<BehaviourASTNode>(
-            behaviourASTNode,
+            new BehaviourASTNode(id, bulletASTNode, actionASTNode),
             stream.CurrentPointer
             );
     }

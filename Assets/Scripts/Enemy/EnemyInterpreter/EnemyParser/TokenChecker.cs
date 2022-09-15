@@ -26,6 +26,8 @@ public class TokenStreamChecker
     private bool shouldBeSatisfied;
     private ParseException? parseException;
 
+    public bool IsSatisfied => isSatisfiedInTheConditionSequence;
+
     public TokenStreamChecker(TokenStream target, bool shouldBeSatisfied)
     {
         this.target = target;

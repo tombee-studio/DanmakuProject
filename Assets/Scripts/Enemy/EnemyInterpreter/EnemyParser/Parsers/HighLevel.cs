@@ -3,7 +3,7 @@
 public class EnemyParser {
 
     public ParseResult<BehaviourASTNode> ParseBehaviour(TokenStreamPointer pointer) {
-        var stream = TokenStream.FromPointer(pointer);
+        var stream = pointer.StartStream();
 
         stream.should
             .Expect("behaviour")

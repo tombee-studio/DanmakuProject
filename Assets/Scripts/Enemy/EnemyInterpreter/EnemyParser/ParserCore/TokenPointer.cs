@@ -28,5 +28,9 @@ public class TokenStreamPointer
     {
         return new TokenStreamPointer(sequence, index + 1);
     }
+    public TokenStream StartStream()
+    {
+        return new TokenStream(sequence, index);
+    }
     
 }

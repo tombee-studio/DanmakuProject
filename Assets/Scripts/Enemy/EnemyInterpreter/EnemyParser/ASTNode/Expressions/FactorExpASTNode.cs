@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class FactorExpASTNode : ASTNode
+public class FactorExpASTNode : ExpASTNode
 {
     private FactorExpASTNode left;
     private ScriptToken arithmeticOperator;

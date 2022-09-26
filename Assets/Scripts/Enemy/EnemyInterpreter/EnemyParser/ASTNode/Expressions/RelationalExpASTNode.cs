@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class RelationalExpASTNode : ASTNode
+public class RelationalExpASTNode : ExpASTNode
 {
     private RelationalExpASTNode left;
     private ScriptToken relationOperator;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class UnaryExpASTNode : ASTNode
+public class UnaryExpASTNode : ExpASTNode
 {
     int sign;
     PrimaryExpASTNode primaryExp;

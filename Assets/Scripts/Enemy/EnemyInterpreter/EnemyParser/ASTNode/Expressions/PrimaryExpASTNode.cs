@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class PrimaryExpASTNode : ASTNode
+public class PrimaryExpASTNode : ExpASTNode
 {
     class PrimaryValueException : Exception
     {

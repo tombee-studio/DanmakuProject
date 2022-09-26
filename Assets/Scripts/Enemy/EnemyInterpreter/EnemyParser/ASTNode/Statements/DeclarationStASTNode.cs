@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DeclarationStASTNode : ASTNode
+public class DeclarationStASTNode : StatementASTNode
 {
     PrimitiveValue.Type type;
     string type_str;

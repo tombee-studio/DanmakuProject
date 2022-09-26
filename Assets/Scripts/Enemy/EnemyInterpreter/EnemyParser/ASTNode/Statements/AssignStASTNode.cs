@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class AssignStASTNode : ASTNode
+public class AssignStASTNode : StatementASTNode
 {
     string id;
     ExpASTNode exp;

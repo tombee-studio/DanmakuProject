@@ -4,6 +4,9 @@ using System.Collections.Generic;
 public class StatementASTNode : ASTNode
 {
     ASTNode child;
+
+    public StatementASTNode() {
+    }
     public StatementASTNode(DeclarationStASTNode statement)
     {
         this.child = statement;

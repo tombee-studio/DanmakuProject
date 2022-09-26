@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class BlockStASTNode : ASTNode
+public class BlockStASTNode : StatementASTNode
 {
     List<StatementASTNode> statements;
     public BlockStASTNode(List<StatementASTNode> statements)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ExpStASTNode : ASTNode
+public class ExpStASTNode : StatementASTNode
 {
     ExpASTNode exp;
     public ExpStASTNode(ExpASTNode exp)

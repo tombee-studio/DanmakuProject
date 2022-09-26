@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class BreakStASTNode : ASTNode
+public class BreakStASTNode : StatementASTNode
 {
     public BreakStASTNode(){}
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)

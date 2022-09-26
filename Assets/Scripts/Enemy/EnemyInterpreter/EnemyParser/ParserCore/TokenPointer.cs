@@ -6,14 +6,14 @@ using System.Collections.Generic;
 public class TokenStreamPointer
 {
     public readonly List<ScriptToken> sequence;
-    // TokenStream中のポインタを表す。`0 <= index <= sequence.length`を満たす。
-    // index == sequence.lengthの時はsequence外にあるポインタとなるが、
+    // TokenStream中のポインタを表す。`0 <= index <= sequence.Count`を満たす。
+    // index == sequence.Countの時はsequence外にあるポインタとなるが、
     // このときこのポインタがTokenStreamを読み終えたものであることを表す。これを終端ポインタと呼ぶことにする。
     public readonly int index;
     public TokenStreamPointer(List<ScriptToken> target, int pointer = 0)
     {
         sequence = target;
-        if (pointer > sequence.Count || index < pointer) throw ParseException.Information("Can not make TokenPointer pointing to the area out of sequence.", this);
+        if (pointer < 0 || sequence.Count < pointer) throw ParseException.Information("Can not make TokenPointer pointing to the area out of sequence.", this);
         index = pointer;
     }
     /// <summary>

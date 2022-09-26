@@ -18,6 +18,7 @@ public class TokenStreamBranch<ResultType> where ResultType:notnull
         var parseResult = parseFunction.Invoke(target.CurrentPointer);
         if (!parseResult.IsSucceeded()) return this;
         _result = parseResult.ParsedNode;
+        parseResult.ApplyIfSucceeded(ref target);
         return this;
     }
 }

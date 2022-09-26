@@ -21,5 +21,9 @@ public class TokenStream
 
     public TokenStreamChecker should => new(this, true);
     public TokenStreamChecker maybe => new(this, false);
+    public TokenStreamBranch<BasedNodeType> match<BasedNodeType>()
+    {
+        return new TokenStreamBranch<BasedNodeType>(this);
+    }
 
 }

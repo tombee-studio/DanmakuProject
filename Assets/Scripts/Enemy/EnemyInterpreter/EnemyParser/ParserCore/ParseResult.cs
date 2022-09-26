@@ -56,6 +56,7 @@ public struct ParseResult<N> where N:notnull
         if (!IsSucceeded()) throw ParseException.Information($"The parse {parserName} should succeed but it's failed.\nreason: {failedReason}", pointerWhenParseFinished);
         return this;
     }
+    //TODO: 名前を変える。
     public static ParseResult<N> Failed(string reason, string parserName, TokenStreamPointer position)
     {
         var Null = default(N);

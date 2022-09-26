@@ -1,7 +1,13 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 public partial class EnemyParser
 {
+    /**
+     * <ID> ((EXP,)* EXP?)の部分。
+     * ECP
+     * 
+     */
     public ParseResult<CallFuncStASTNode> ParseCallFuncStASTNode(TokenStreamPointer pointer)
     {
         if (!TestCallFuncStASTNode(pointer))
@@ -9,25 +15,35 @@ public partial class EnemyParser
         var stream = pointer.StartStream();
         stream.should
             .ExpectSymbolID(out string functionID)
-            .Expect("(");
-
-        var expList = new List<ExpASTNode>();
-        while (
-            stream.maybe
-                .MaybeConsumedBy(ParseExpASTNode, out ExpASTNode expASTNode)
-                .Maybe(",")
-                .IsSatisfied
-        ){ expList.Add(expASTNode); }
-
-        stream.maybe
-            .MaybeConsumedBy(ParseExpASTNode, out ExpASTNode expASTNode1);
-        if (expASTNode1 is ExpASTNode) expList.Add(expASTNode1);
+            .Expect("(")
+            .ExpectMultiComsumer(partialParseOneArg, out List<ExpASTNode> expASTNodes)
+            .MaybeConsumedBy(ParseExpASTNode, out var expASTNodeNullable);
+        if (expASTNodeNullable != null) expASTNodes.Add(expASTNodeNullable);
 
         return new(
-                new CallFuncStASTNode(functionID, expList),
+                new CallFuncStASTNode(functionID, expASTNodes),
                 stream.CurrentPointer
         );
     }
+
+    /**
+     * (EXP,) の部分
+     */
+    private ParseResult<ExpASTNode> partialParseOneArg(TokenStreamPointer pointer)
+    {
+        var stream = pointer.StartStream();
+        if (
+            !stream.maybe
+                .ExpectConsumedBy(ParseExpASTNode, out var exp)
+                .Expect(",")
+                .IsSatisfied
+        ) { return ParseResult<ExpASTNode>.Failed("Arg sequence is finished.", "partialParseOneArg", pointer); }
+        return new(
+                exp,
+                stream.CurrentPointer
+        );
+    }
+
     public ParseResult<ExpASTNode> ParseExpASTNode(TokenStreamPointer pointer)
     {
         throw new NotImplementedException();

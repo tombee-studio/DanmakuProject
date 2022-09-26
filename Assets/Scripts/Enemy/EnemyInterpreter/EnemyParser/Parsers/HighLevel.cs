@@ -16,7 +16,7 @@ public partial class EnemyParser {
         return new ParseResult<BehaviourASTNode>(
             new BehaviourASTNode(id, bulletASTNode, actionASTNode),
             stream.CurrentPointer
-            );
+        );
     }
 
 }

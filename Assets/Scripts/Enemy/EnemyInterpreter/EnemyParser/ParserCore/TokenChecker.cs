@@ -59,13 +59,16 @@ public class TokenStreamChecker
         return this;
     }
 
-    // TODO: maybeから呼び出した時ここがnullableになる恐れがある。
-    // しかし、nullableにするといちいちnullチェックを挟む必要があり、可用性が落ちる。どうしよう...？
+    /// <summary>
+    /// 次のトークンが可変語であることを期待します。
+    /// </summary>
+    /// <param name="captured">次のトークン</param>
+    /// <returns></returns>
     public TokenStreamChecker ExpectVariable(out ScriptToken captured)
     {
         var nextToken = target.Read();
         if (!allowedTokenTypeList.Contains(nextToken.type)) RecognizeFailed($"expected something of variable tokens but `{nextToken.type}` is coming.");
-        captured = nextToken;
+        captured = nextToken; 
         return this;
     }
     public TokenStreamChecker ExpectSymbolID(out string captured)

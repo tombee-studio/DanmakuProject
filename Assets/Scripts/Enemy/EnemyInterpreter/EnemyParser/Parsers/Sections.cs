@@ -36,7 +36,7 @@ public partial class EnemyParser
         stream.should
             .Expect("action")
             .Expect(">>")
-            .ExpectMultiComsumerAtLeast1(ParseStatementAST, out var statementASTNodes);
+            .ExpectMultiComsumerAtLeast1(ParseStatement, out var statementASTNodes);
         return new(
             new ActionASTNode(statementASTNodes),
             stream.CurrentPointer

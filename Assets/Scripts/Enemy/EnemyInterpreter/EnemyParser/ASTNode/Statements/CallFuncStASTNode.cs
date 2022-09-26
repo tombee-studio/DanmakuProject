@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 #nullable enable
-public class CallFuncStASTNode : ASTNode
+public class CallFuncStASTNode : StatementASTNode
 {
     public int? id;
     private string functionName;

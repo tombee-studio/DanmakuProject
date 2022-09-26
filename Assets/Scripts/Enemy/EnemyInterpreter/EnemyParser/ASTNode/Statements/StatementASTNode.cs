@@ -39,38 +39,6 @@ public class StatementASTNode : ASTNode
     {
         this.child = statement;
     }
-    public static implicit operator StatementASTNode(DeclarationStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(AssignStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(IfStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(RepeatStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(BreakStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(CallFuncStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(BlockStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(ExpStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
     public static implicit operator StatementASTNode(ExpASTNode node)
     {
         return new StatementASTNode(node);

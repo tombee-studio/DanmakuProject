@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class TokenStream
 {
@@ -16,7 +17,11 @@ public class TokenStream
     public TokenStreamPointer CurrentPointer =>  new(sequence, index);
 
 
-    public ScriptToken Read() => sequence[index++];
+    public ScriptToken Read()
+    {
+        if (CurrentPointer.OnTerminal()) throw new Exception("This Pointer is on the terminal. Therefore you can't proceed with the pointer any longer.");
+        return sequence[index++];
+    }
     public ScriptToken Lookahead() => sequence[index];
 
     public TokenStreamChecker should => new(this, true);

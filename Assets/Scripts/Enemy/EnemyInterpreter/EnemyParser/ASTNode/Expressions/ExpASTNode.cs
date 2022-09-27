@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ExpASTNode : ASTNode
+public class ExpASTNode : ExpASTNodeBase
 {
-    EqualityExpASTNode equalityExp;
-    public ExpASTNode(){
-        this.equalityExp = null;
-    }
-    public ExpASTNode(EqualityExpASTNode equalityExp){
+    EqualityExpASTNodeBase equalityExp;
+    public ExpASTNode(EqualityExpASTNodeBase equalityExp){
         this.equalityExp = equalityExp;
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)

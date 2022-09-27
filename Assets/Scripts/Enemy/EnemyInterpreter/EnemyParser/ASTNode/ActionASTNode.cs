@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-public class ActionASTNode : ASTNode
+public class ActionASTNode : ActionASTNodeBase
 {
-    List<StatementASTNode> statements;
-    public ActionASTNode(List<StatementASTNode> statements)
+    List<StatementASTNodeBase> statements;
+    public ActionASTNode(List<StatementASTNodeBase> statements)
     {
         this.statements = statements;
     }

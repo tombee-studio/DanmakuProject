@@ -8,7 +8,7 @@ public partial class EnemyASTNodeTester
         string[] testCodes = {
             $"PUSH {value}"
         };
-        UnaryExpASTNode node = new PrimaryExpASTNode(value);
+        UnaryExpASTNodeBase node = new PrimaryExpASTNode(value);
         checkVMReturnValueFromSubProgram(node, value);
         checkGeneratedInstructionIsSame(testCodes, node);
         Assert.AreEqual(node.Print(0), $"{value}");

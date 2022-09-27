@@ -1,43 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class EqualityExpASTNode : ExpASTNode
+public class EqualityExpASTNode : EqualityExpASTNodeBase
 {
-    private EqualityExpASTNode left;
+    private EqualityExpASTNodeBase left;
     private ScriptToken relationOperator;
-    private RelationalExpASTNode right;
+    private RelationalExpASTNodeBase right;
 
-    public EqualityExpASTNode(RelationalExpASTNode relationalExp)
+    public EqualityExpASTNode(RelationalExpASTNodeBase relationalExp)
     {
         this.left = null;
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = relationalExp;
     }
-    public EqualityExpASTNode(EqualityExpASTNode left, ScriptToken relationalOperator, RelationalExpASTNode right)
+    public EqualityExpASTNode(EqualityExpASTNodeBase left, ScriptToken relationalOperator, RelationalExpASTNodeBase right)
     {
         this.left = left;
         this.relationOperator = relationalOperator;
         this.right = right;
-    }
-    public static implicit operator EqualityExpASTNode(RelationalExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(TermExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(FactorExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(UnaryExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(PrimaryExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

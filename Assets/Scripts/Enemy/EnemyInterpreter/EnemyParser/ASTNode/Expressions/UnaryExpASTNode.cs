@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-public class UnaryExpASTNode : ExpASTNode
+public class UnaryExpASTNode : UnaryExpASTNodeBase
 {
     int sign;
-    PrimaryExpASTNode primaryExp;
-    public UnaryExpASTNode(PrimaryExpASTNode primaryExp)
+    PrimaryExpASTNodeBase primaryExp;
+    public UnaryExpASTNode(PrimaryExpASTNodeBase primaryExp)
     {
         this.sign = 0;
         this.primaryExp = primaryExp;
     }
-    public UnaryExpASTNode(ScriptToken sign, PrimaryExpASTNode primaryExp)
+    public UnaryExpASTNode(ScriptToken sign, PrimaryExpASTNodeBase primaryExp)
     {
         this.primaryExp = primaryExp;
         switch (sign.type)
@@ -27,10 +27,6 @@ public class UnaryExpASTNode : ExpASTNode
             default:
                 throw new Exception("Unexpected Token received.");
         }
-    }
-    public static implicit operator UnaryExpASTNode(PrimaryExpASTNode node)
-    {
-        return new UnaryExpASTNode(node);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

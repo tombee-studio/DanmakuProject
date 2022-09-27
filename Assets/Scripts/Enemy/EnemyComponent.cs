@@ -19,10 +19,10 @@ public class EnemyComponent : MonoBehaviour
         Toriaezu();
 #pragma warning restore CS0618
     }
-    private List<ExpASTNode> GetArgsList(params PrimitiveValue[] args)
+    private List<ExpASTNodeBase> GetArgsList(params PrimitiveValue[] args)
     {
-        return new List<ExpASTNode>(
-            args.Select(e => (ExpASTNode)new PrimaryExpASTNode(e))
+        return new List<ExpASTNodeBase>(
+            args.Select(e => (ExpASTNodeBase)new PrimaryExpASTNode(e))
         );
     }
     [System.Obsolete("とりあえず用意しただけのメソッドに紐づいているメソッドなのでいずれ消します")]

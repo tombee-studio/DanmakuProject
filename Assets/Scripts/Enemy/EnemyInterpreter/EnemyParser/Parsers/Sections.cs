@@ -13,7 +13,7 @@ public partial class EnemyParser
             stream.CurrentPointer
         );
     }
-    public ParseResult<BulletSectionASTNode> ParseBulletSectionAST(TokenStreamPointer pointer)
+    public ParseResult<BulletSectionASTNodeBase> ParseBulletSectionAST(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
         stream.should
@@ -29,7 +29,7 @@ public partial class EnemyParser
             
     } 
 
-    public ParseResult<ActionASTNode> ParseActionAST(TokenStreamPointer pointer)
+    public ParseResult<ActionASTNodeBase> ParseActionAST(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
 

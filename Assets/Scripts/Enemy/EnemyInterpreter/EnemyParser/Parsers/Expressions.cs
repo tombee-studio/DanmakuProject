@@ -8,15 +8,15 @@ public partial class EnemyParser
      * ECP
      * 
      */
-    public ParseResult<CallFuncStASTNode> ParseCallFuncStASTNode(TokenStreamPointer pointer)
+    public ParseResult<CallFuncStASTNodeBase> ParseCallFuncStASTNode(TokenStreamPointer pointer)
     {
         if (!TestCallFuncStASTNode(pointer))
-            return ParseResult<CallFuncStASTNode>.Failed("This token's line is not function.", "CallFuncStASTNode", pointer);
+            return ParseResult<CallFuncStASTNodeBase>.Failed("This token's line is not function.", "CallFuncStASTNode", pointer);
         var stream = pointer.StartStream();
         stream.should
             .ExpectSymbolID(out string functionID)
             .Expect("(")
-            .ExpectMultiComsumer(partialParseOneArg, out List<ExpASTNode> expASTNodes)
+            .ExpectMultiComsumer(partialParseOneArg, out List<ExpASTNodeBase> expASTNodes)
             .MaybeConsumedBy(ParseExpASTNode, out var expASTNodeNullable);
         if (expASTNodeNullable != null) expASTNodes.Add(expASTNodeNullable);
 
@@ -29,7 +29,7 @@ public partial class EnemyParser
     /**
      * (EXP,) の部分
      */
-    private ParseResult<ExpASTNode> partialParseOneArg(TokenStreamPointer pointer)
+    private ParseResult<ExpASTNodeBase> partialParseOneArg(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
         if (
@@ -37,14 +37,14 @@ public partial class EnemyParser
                 .ExpectConsumedBy(ParseExpASTNode, out var exp)
                 .Expect(",")
                 .IsSatisfied
-        ) { return ParseResult<ExpASTNode>.Failed("Arg sequence is finished.", "partialParseOneArg", pointer); }
+        ) { return ParseResult<ExpASTNodeBase>.Failed("Arg sequence is finished.", "partialParseOneArg", pointer); }
         return new(
                 exp,
                 stream.CurrentPointer
         );
     }
 
-    public ParseResult<ExpASTNode> ParseExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<ExpASTNodeBase> ParseExpASTNode(TokenStreamPointer pointer)
     {
         throw new NotImplementedException();
     }

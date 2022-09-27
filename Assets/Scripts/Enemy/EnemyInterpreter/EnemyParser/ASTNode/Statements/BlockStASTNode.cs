@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class BlockStASTNode : StatementASTNode
+// TODO: 設定は反映しない
+public class BlockStASTNode : BlockStASTNodeBase
 {
-    List<StatementASTNode> statements;
-    public BlockStASTNode(List<StatementASTNode> statements)
+    List<StatementASTNodeBase> statements;
+    public BlockStASTNode(List<StatementASTNodeBase> statements)
     {
         this.statements = statements;
     }

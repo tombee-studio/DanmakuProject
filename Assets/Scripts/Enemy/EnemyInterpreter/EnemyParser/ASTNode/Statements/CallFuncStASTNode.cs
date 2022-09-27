@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 #nullable enable
-public class CallFuncStASTNode : StatementASTNode
+
+// TODO: 設定は反映しない
+public class CallFuncStASTNode : CallFuncStASTNodeBase
 {
     public int? id;
     private string functionName;
-    private List<ExpASTNode> expSts;
+    private List<ExpASTNodeBase> expSts;
 
     /** @param exps: リストの昇順と引数を左から順に読んだ結果が一致する想定 */
-    public CallFuncStASTNode(string functionName, List<ExpASTNode> exps)
+    public CallFuncStASTNode(string functionName, List<ExpASTNodeBase> exps)
     {
         this.functionName = functionName;
         this.expSts = exps;

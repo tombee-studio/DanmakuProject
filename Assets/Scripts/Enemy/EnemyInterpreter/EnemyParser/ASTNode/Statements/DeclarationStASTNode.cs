@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class DeclarationStASTNode : StatementASTNode
+// TODO: 設定は反映しない
+public class DeclarationStASTNode : DeclarationStASTNodeBase
 {
     PrimitiveValue.Type type;
     string type_str;

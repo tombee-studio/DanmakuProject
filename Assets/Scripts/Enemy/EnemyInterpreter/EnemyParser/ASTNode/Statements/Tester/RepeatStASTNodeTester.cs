@@ -35,10 +35,12 @@ public partial class EnemyASTNodeTester
             // :end_loop
         };
         var node = new RepeatStASTNode(100,
-            new TermExpASTNode(
-                new PrimaryExpASTNode(3),
-                ScriptToken.GenerateToken("", ScriptToken.Type.PLUS),
-                new PrimaryExpASTNode(5)
+            new ExpStASTNode(
+                new TermExpASTNode(
+                    new PrimaryExpASTNode(3),
+                    ScriptToken.GenerateToken("", ScriptToken.Type.PLUS),
+                    new PrimaryExpASTNode(5)
+                )
             )
         );
         checkGeneratedInstructionIsSame(testCodes, node);

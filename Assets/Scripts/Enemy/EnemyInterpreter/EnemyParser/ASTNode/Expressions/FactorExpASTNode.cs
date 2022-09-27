@@ -1,31 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class FactorExpASTNode : ExpASTNode
+public class FactorExpASTNode : FactorExpASTNodeBase
 {
-    private FactorExpASTNode left;
+    private FactorExpASTNodeBase left;
     private ScriptToken arithmeticOperator;
-    private UnaryExpASTNode right;
+    private UnaryExpASTNodeBase right;
 
-    public FactorExpASTNode(UnaryExpASTNode unaryExp)
+    public FactorExpASTNode(UnaryExpASTNodeBase unaryExp)
     {
         this.left = null;
         this.arithmeticOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = unaryExp;
     }
-    public FactorExpASTNode(FactorExpASTNode left, ScriptToken arithmeticOperator, PrimaryExpASTNode right)
+    public FactorExpASTNode(FactorExpASTNodeBase left, ScriptToken arithmeticOperator, PrimaryExpASTNodeBase right)
     {
         this.left = left;
         this.arithmeticOperator = arithmeticOperator;
         this.right = right;
-    }
-    public static implicit operator FactorExpASTNode(UnaryExpASTNode unaryExp)
-    {
-        return new FactorExpASTNode(unaryExp);
-    }
-    public static implicit operator FactorExpASTNode(PrimaryExpASTNode primaryExp)
-    {
-        return new FactorExpASTNode(primaryExp);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

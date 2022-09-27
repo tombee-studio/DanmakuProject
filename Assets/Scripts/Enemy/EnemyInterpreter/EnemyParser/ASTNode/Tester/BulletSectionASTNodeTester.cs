@@ -23,17 +23,17 @@ public partial class EnemyASTNodeTester
         };
         var node = new BulletSectionASTNode(
             0,
-            new List<CallFuncStASTNode>()
+            new List<CallFuncStASTNodeBase>()
                 .Append(new CallFuncStASTNode(
                     "generate_bullets", 
-                    new List<ExpASTNode>()
+                    new List<ExpASTNodeBase>()
                         .Append(new PrimaryExpASTNode(24))
                         .ToList()
                     )
                 )
                 .Append(new CallFuncStASTNode(
                     "scatter_bullets_in_circular_pattern",
-                    new List<ExpASTNode>()
+                    new List<ExpASTNodeBase>()
                         .Append(new PrimaryExpASTNode(0.1f))
                         .Append(new PrimaryExpASTNode(0f))
                         .ToList()

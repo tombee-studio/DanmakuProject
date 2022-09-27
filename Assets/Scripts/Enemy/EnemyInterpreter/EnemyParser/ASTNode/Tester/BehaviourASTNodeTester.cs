@@ -45,32 +45,32 @@ public partial class EnemyASTNodeTester
         var node = new BehaviourASTNode(
             "BulletAndActionJointTest",
             new BulletASTNode(
-                new List<BulletSectionASTNode>()
+                new List<BulletSectionASTNodeBase>()
                 .Append(new BulletSectionASTNode(0,
-                    new List<CallFuncStASTNode>()
+                    new List<CallFuncStASTNodeBase>()
                         .Append(new CallFuncStASTNode(
                             "generate_bullets", 
-                            new List<ExpASTNode>()
+                            new List<ExpASTNodeBase>()
                                 .Append(new PrimaryExpASTNode(24))
                                 .ToList()
                         ))
                         .Append(new CallFuncStASTNode(
                             "set_bullets_position_at_enemy",
-                            new List<ExpASTNode>()
+                            new List<ExpASTNodeBase>()
                         ))
                         .ToList()
                 ))
                 .Append(new BulletSectionASTNode(1,
-                    new List<CallFuncStASTNode>()
+                    new List<CallFuncStASTNodeBase>()
                         .Append(new CallFuncStASTNode(
                             "generate_bullets", 
-                            new List<ExpASTNode>()
+                            new List<ExpASTNodeBase>()
                                 .Append(new PrimaryExpASTNode(48))
                                 .ToList()
                         ))
                         .Append(new CallFuncStASTNode(
                             "scatter_bullets_in_circular_pattern",
-                            new List<ExpASTNode>()
+                            new List<ExpASTNodeBase>()
                                 .Append(new PrimaryExpASTNode(0.1f))
                                 .Append(new PrimaryExpASTNode(0f))
                                 .ToList()
@@ -80,16 +80,16 @@ public partial class EnemyASTNodeTester
                 .ToList()
             ),
             new ActionASTNode(
-                new List<StatementASTNode>()
+                new List<StatementASTNodeBase>()
                 .Append(new CallFuncStASTNode(
                     "activate_bullets",
-                    new List<ExpASTNode>()
+                    new List<ExpASTNodeBase>()
                     .Append(new PrimaryExpASTNode(0))
                     .ToList()
                     ))
                 .Append(new CallFuncStASTNode(
                     "activate_bullets",
-                    new List<ExpASTNode>()
+                    new List<ExpASTNodeBase>()
                     .Append(new PrimaryExpASTNode(1))
                     .ToList()
                     ))
@@ -186,13 +186,13 @@ public partial class EnemyASTNodeTester
         };
         var node = new BehaviourASTNode("VMRunTest",
             new ActionASTNode(
-                new List<StatementASTNode>()
+                new List<StatementASTNodeBase>()
                 .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "i"))
                 .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "sum"))
                 .Append(new AssignStASTNode("i", new PrimaryExpASTNode(1)))
                 .Append(new AssignStASTNode("sum", new PrimaryExpASTNode(0)))
                 .Append(new RepeatStASTNode(10, new BlockStASTNode(
-                    new List<StatementASTNode>()
+                    new List<StatementASTNodeBase>()
                     .Append(new IfStASTNode(
                         new RelationalExpASTNode(
                             new PrimaryExpASTNode("i"),
@@ -217,7 +217,11 @@ public partial class EnemyASTNodeTester
                     ))
                     .ToList()
                 )))
-                .Append(new PrimaryExpASTNode("sum"))
+                .Append(
+                    new ExpStASTNode(
+                        new PrimaryExpASTNode("sum")
+                    )
+                )
                 .ToList()
             )
         );

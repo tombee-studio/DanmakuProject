@@ -4,23 +4,23 @@ using System.Collections.Generic;
 
 public partial class EnemyParser
 {
-    public ParseResult<BreakStASTNode> ParseBreakSt(TokenStreamPointer pointer)
+    public ParseResult<BreakStASTNodeBase> ParseBreakSt(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
         if (stream.maybe.Expect("break").IsSatisfied) {
-            return ParseResult<BreakStASTNode>.Failed(
+            return ParseResult<BreakStASTNodeBase>.Failed(
                 "expected break",
-                "BreakStASTNode",
+                "BreakStASTNodeBase",
                 stream.CurrentPointer);
         }
-        return new ParseResult<BreakStASTNode>(
+        return new ParseResult<BreakStASTNodeBase>(
             new BreakStASTNode(),
             stream.CurrentPointer);
     }
 
-    public ParseResult<StatementASTNode> ParseStatement(TokenStreamPointer pointer) {
+    public ParseResult<StatementASTNodeBase> ParseStatement(TokenStreamPointer pointer) {
         var stream = pointer.StartStream();
-        var result = stream.match<StatementASTNode>()
+        var result = stream.match<StatementASTNodeBase>()
             .Try(ParseBlockSt)
             .Try(ParseCallFuncStASTNode)
             .Try(ParseRepeatSt)
@@ -32,86 +32,86 @@ public partial class EnemyParser
             throw new ParseException("Undefined Exception");
         }
         else {
-            return new ParseResult<StatementASTNode>(
+            return new (
                 result,
                 stream.CurrentPointer);
         }
     }
 
-    public ParseResult<BlockStASTNode> ParseBlockSt(TokenStreamPointer pointer) {
+    public ParseResult<BlockStASTNodeBase> ParseBlockSt(TokenStreamPointer pointer) {
         var stream = pointer.StartStream();
-        if (!TestBlockStASTNode(pointer)) {
-            return ParseResult<BlockStASTNode>.Failed(
+        if (!TestBlockStASTNodeBase(pointer)) {
+            return ParseResult<BlockStASTNodeBase>.Failed(
                 "expected {",
-                "BlockStASTNode",
+                "BlockStASTNodeBase",
                 stream.CurrentPointer);
         }
         pointer.StartStream().should
             .Expect("{")
             .ExpectMultiComsumer(ParseStatement,
-                out List<StatementASTNode> statements)
+                out List<StatementASTNodeBase> statements)
             .Expect("}");
-        return new ParseResult<BlockStASTNode>(
+        return new ParseResult<BlockStASTNodeBase>(
             new BlockStASTNode(statements),
             stream.CurrentPointer);
     }
 
-    public ParseResult<IfStASTNode> ParseIfSt(TokenStreamPointer pointer)
+    public ParseResult<IfStASTNodeBase> ParseIfSt(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
-        if (!TestBlockStASTNode(pointer))
+        if (!TestBlockStASTNodeBase(pointer))
         {
-            return ParseResult<IfStASTNode>.Failed(
+            return ParseResult<IfStASTNodeBase>.Failed(
                 "expected {",
-                "BlockStASTNode",
+                "BlockStASTNodeBase",
                 stream.CurrentPointer);
         }
         pointer.StartStream().should
             .Expect("if")
             .Expect("(")
-            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNode cond)
+            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase cond)
             .Expect(")")
-            .ExpectConsumedBy(ParseStatement, out StatementASTNode statement);
-        if (TestElseStASTNode(pointer))
+            .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase statement);
+        if (TestElseStASTNodeBase(pointer))
         {
             pointer.StartStream().should
                 .Expect("else")
-                .ExpectConsumedBy(ParseStatement, out StatementASTNode elseStatement);
-            return new ParseResult<IfStASTNode>(
+                .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase elseStatement);
+            return new ParseResult<IfStASTNodeBase>(
                 new IfStASTNode(cond, statement, elseStatement),
                 stream.CurrentPointer);
         }
         else {
-            return new ParseResult<IfStASTNode>(
+            return new ParseResult<IfStASTNodeBase>(
                 new IfStASTNode(cond, statement),
                 stream.CurrentPointer);
         }
     }
 
-    public ParseResult<AssignStASTNode> ParseAssignSt(TokenStreamPointer pointer)
+    public ParseResult<AssignStASTNodeBase> ParseAssignSt(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
-        if (!TestAssignStASTNode(pointer))
+        if (!TestAssignStASTNodeBase(pointer))
         {
-            return ParseResult<AssignStASTNode>.Failed(
+            return ParseResult<AssignStASTNodeBase>.Failed(
                 "expected <ID>",
-                "AssignStASTNode",
+                "AssignStASTNodeBase",
                 stream.CurrentPointer);
         }
         stream.should.ExpectSymbolID(out string id)
             .Expect("=")
-            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNode exp);
-        return new ParseResult<AssignStASTNode>(
+            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase exp);
+        return new (
             new AssignStASTNode(id, exp),
             stream.CurrentPointer);
     }
 
-    public ParseResult<RepeatStASTNode> ParseRepeatSt(TokenStreamPointer pointer) {
+    public ParseResult<RepeatStASTNodeBase> ParseRepeatSt(TokenStreamPointer pointer) {
         var stream = pointer.StartStream();
-        if (!TestRepeatStASTNode(pointer)) {
-            return ParseResult<RepeatStASTNode>.Failed(
+        if (!TestRepeatStASTNodeBase(pointer)) {
+            return ParseResult<RepeatStASTNodeBase>.Failed(
                 "expected repeat",
-                "RepeatStASTNode",
+                "RepeatStASTNodeBase",
                 stream.CurrentPointer);
         }
         pointer.StartStream().should
@@ -119,46 +119,46 @@ public partial class EnemyParser
             .Expect("(")
             .ExpectVariable(out ScriptToken token)
             .Expect(")")
-            .ExpectConsumedBy(ParseStatement, out StatementASTNode statement);
-        return new ParseResult<RepeatStASTNode>(
+            .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase statement);
+        return new (
             new RepeatStASTNode(
                 token.int_val,
                 statement),
             stream.CurrentPointer);
     }
 
-    public bool TestIfStASTNode(TokenStreamPointer pointer)
+    public bool TestIfStASTNodeBase(TokenStreamPointer pointer)
     {
         return pointer.StartStream().maybe
             .Expect("if")
             .Expect("(")
-            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNode cond)
+            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase cond)
             .Expect(")")
-            .ExpectMultiComsumer(ParseStatement, out List<StatementASTNode> statements)
+            .ExpectMultiComsumer(ParseStatement, out List<StatementASTNodeBase> statements)
             .Expect("}")
             .IsSatisfied;
 
     }
 
-    public bool TestElseStASTNode(TokenStreamPointer pointer)
+    public bool TestElseStASTNodeBase(TokenStreamPointer pointer)
     {
         return pointer.StartStream().maybe
             .Expect("else")
-            .ExpectConsumedBy(ParseStatement, out StatementASTNode statement)
+            .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase statement)
             .IsSatisfied;
     }
 
-    public bool TestBlockStASTNode(TokenStreamPointer pointer)
+    public bool TestBlockStASTNodeBase(TokenStreamPointer pointer)
     {
         return pointer.StartStream().maybe
             .Expect("{")
-            .ExpectMultiComsumer(ParseStatement, out List<StatementASTNode> statements)
+            .ExpectMultiComsumer(ParseStatement, out List<StatementASTNodeBase> statements)
             .Expect("}")
             .IsSatisfied;
 
     }
 
-    public bool TestRepeatStASTNode(TokenStreamPointer pointer) {
+    public bool TestRepeatStASTNodeBase(TokenStreamPointer pointer) {
         return pointer.StartStream().maybe
             .Expect("repeat")
             .Expect("(")
@@ -168,10 +168,10 @@ public partial class EnemyParser
 
     }
 
-    public bool TestAssignStASTNode(TokenStreamPointer pointer) {
+    public bool TestAssignStASTNodeBase(TokenStreamPointer pointer) {
         return pointer.StartStream().maybe.ExpectSymbolID(out string id)
             .Expect("=")
-            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNode exp)
+            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase exp)
             .IsSatisfied;
     }
 }

@@ -1,4 +1,5 @@
 #nullable enable
+using System.IO;
 using System;
 using System.Collections.Generic;
 public partial class EnemyParser
@@ -53,23 +54,43 @@ public partial class EnemyParser
 
     public ParseResult<ExpASTNodeBase> ParseExpASTNode(TokenStreamPointer pointer)
     {
-        throw new NotImplementedException();
+        var stream = pointer.StartStream();
+        return new(
+            ParseEqualityExpASTNode(pointer).ParsedNode,
+            stream.CurrentPointer
+        );
     }
     public ParseResult<EqualityExpASTNodeBase> ParseEqualityExpASTNode(TokenStreamPointer pointer)
     {
-        throw new NotImplementedException();
+        var stream = pointer.StartStream();
+        return new(
+            ParseRelationalExpASTNode(pointer).ParsedNode,
+            stream.CurrentPointer
+        );
     }
     public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {
-        throw new NotImplementedException();
+        var stream = pointer.StartStream();
+        return new(
+            ParseTermExpASTNode(pointer).ParsedNode,
+            stream.CurrentPointer
+        );
     }
     public ParseResult<TermExpASTNodeBase> ParseTermExpASTNode(TokenStreamPointer pointer)
     {
-        throw new NotImplementedException();
+        var stream = pointer.StartStream();
+        return new(
+            ParseFactorExpASTNode(pointer).ParsedNode,
+            stream.CurrentPointer
+        );
     }
     public ParseResult<FactorExpASTNodeBase> ParseFactorExpASTNode(TokenStreamPointer pointer)
     {
-        throw new NotImplementedException();
+        var stream = pointer.StartStream();
+        return new(
+            ParseUnaryExpASTNode(pointer).ParsedNode,
+            stream.CurrentPointer
+        );
     }
     public ParseResult<UnaryExpASTNodeBase> ParseUnaryExpASTNode(TokenStreamPointer pointer)
     {

@@ -46,6 +46,24 @@ public partial class EnemyParser
 
     public ParseResult<ExpASTNode> ParseExpASTNode(TokenStreamPointer pointer)
     {
+        throw new NotImplementedException();
+    }
+    public ParseResult<EqualityExpASTNode> ParseEqualityExpASTNode(TokenStreamPointer pointer)
+    {
+        throw new NotImplementedException();
+    }
+    public ParseResult<RelationalExpASTNode> ParseRelationalExpASTNode(TokenStreamPointer pointer)
+    {
+        throw new NotImplementedException();
+    }
+    public ParseResult<TermExpASTNode> ParseTermExpASTNode(TokenStreamPointer pointer)
+    {
+        throw new NotImplementedException();
+    }
+    public ParseResult<FactorExpASTNode> ParseFactorExpASTNode(TokenStreamPointer pointer)
+    {
+        throw new NotImplementedException();
+    }
     public ParseResult<UnaryExpASTNode> ParseUnaryExpASTNode(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();

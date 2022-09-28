@@ -48,31 +48,30 @@ public partial class EnemyParser
     {
         throw new NotImplementedException();
     }
-    public ParseResult<EqualityExpASTNode> ParseEqualityExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<EqualityExpASTNodeBase> ParseEqualityExpASTNode(TokenStreamPointer pointer)
     {
         throw new NotImplementedException();
     }
-    public ParseResult<RelationalExpASTNode> ParseRelationalExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {
         throw new NotImplementedException();
     }
-    public ParseResult<TermExpASTNode> ParseTermExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<TermExpASTNodeBase> ParseTermExpASTNode(TokenStreamPointer pointer)
     {
         throw new NotImplementedException();
     }
-    public ParseResult<FactorExpASTNode> ParseFactorExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<FactorExpASTNodeBase> ParseFactorExpASTNode(TokenStreamPointer pointer)
     {
         throw new NotImplementedException();
     }
-    public ParseResult<UnaryExpASTNode> ParseUnaryExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<UnaryExpASTNodeBase> ParseUnaryExpASTNode(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
-        PrimaryExpASTNode captured;
         if (!stream.should
             .Expect("-")
-            .ExpectConsumedBy(ParsePrimaryExpASTNode, out captured)
+            .ExpectConsumedBy(ParsePrimaryExpASTNode, out PrimaryExpASTNodeBase captured)
             .IsSatisfied
-        ) { return ParseResult<UnaryExpASTNode>.Failed("unaryExp.", "partialParseOneArg", pointer); }
+        ) { return ParseResult<UnaryExpASTNodeBase>.Failed("unaryExp.", "partialParseOneArg", pointer); }
         return new(
             new UnaryExpASTNode(captured),
             stream.CurrentPointer
@@ -80,7 +79,7 @@ public partial class EnemyParser
 
         throw new NotImplementedException();
     }
-    public ParseResult<PrimaryExpASTNode> ParsePrimaryExpASTNode(TokenStreamPointer pointer)
+    public ParseResult<PrimaryExpASTNodeBase> ParsePrimaryExpASTNode(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
         ScriptToken capturedToken;
@@ -116,7 +115,7 @@ public partial class EnemyParser
                     stream.CurrentPointer
                 );
         }
-        return ParseResult<PrimaryExpASTNode>.Failed("This token's line is not primary expression.", "PrimaryExpASTNode", pointer);
+        return ParseResult<PrimaryExpASTNodeBase>.Failed("This token's line is not primary expression.", "PrimaryExpASTNode", pointer);
     }
     private bool TestCallFuncStASTNode(TokenStreamPointer pointer)
     {

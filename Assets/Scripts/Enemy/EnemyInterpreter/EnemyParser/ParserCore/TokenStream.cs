@@ -12,9 +12,8 @@ public class TokenStream
         index = pointer;
     }
 
-
     public static TokenStream FromPointer(TokenStreamPointer pointer) => new(pointer.sequence, pointer.index);
-    public TokenStreamPointer CurrentPointer =>  new(sequence, index);
+    public TokenStreamPointer CurrentPointer => new(sequence, index);
 
 
     public ScriptToken Read()
@@ -24,8 +23,12 @@ public class TokenStream
     }
     public ScriptToken Lookahead() => sequence[index];
 
-    public TokenStreamChecker should => new(this, true);
-    public TokenStreamChecker maybe => new(this, false);
+    public TokenStreamChecker should => new(this, true, index);
+    public TokenStreamChecker maybe => new(this, false, index);
+    public void RecoverPointer(int initialPointer)
+    {
+        this.index = initialPointer;
+    }
     public TokenStreamBranch<BasedNodeType> match<BasedNodeType>()
     {
         return new TokenStreamBranch<BasedNodeType>(this);

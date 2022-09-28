@@ -1,4 +1,4 @@
-#nullable enable
+﻿#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,27 +37,30 @@ public class TokenStreamChecker
     private TokenStream target;
     private bool isSatisfiedInTheConditionSequence = true;
     private bool shouldBeSatisfied;
+    private int initialPointer;
     private ParseException? parseException;
 
     public bool IsSatisfied => isSatisfiedInTheConditionSequence;
 
-    public TokenStreamChecker(TokenStream target, bool shouldBeSatisfied)
+    public TokenStreamChecker(TokenStream target, bool shouldBeSatisfied, int initialPointer)
     {
         this.target = target;
         this.shouldBeSatisfied = shouldBeSatisfied;
+        this.initialPointer = initialPointer;
     }
 
     private void RecognizeFailed(string reason)
     {
         isSatisfiedInTheConditionSequence = false;
         parseException = ParseException.Information(reason, target.CurrentPointer);
+        target.RecoverPointer(initialPointer);
         if (shouldBeSatisfied) throw parseException;
     }
 
     public TokenStreamChecker Expect(string tokenInString)
     {
         var nextToken = target.Read();
-        if (!TheSameTokens(nextToken, tokenInString)) RecognizeFailed($"expected `{tokenInString}` but `{ConvertToString(nextToken.type)}` is coming.");
+        if (!TheSameTokens(nextToken, tokenInString)) RecognizeFailed($"expected `{tokenInString}` but `{ConvertToString(nextToken)}` is coming.");
         return this;
     }
 

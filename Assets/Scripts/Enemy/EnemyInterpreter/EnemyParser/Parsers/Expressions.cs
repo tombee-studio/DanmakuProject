@@ -84,7 +84,6 @@ public partial class EnemyParser
     {
         var stream = pointer.StartStream();
         ScriptToken capturedToken;
-        ExpASTNode capturedExp;
         if (stream.maybe
             .ExpectVariable(out capturedToken)
             .IsSatisfied)
@@ -109,7 +108,7 @@ public partial class EnemyParser
             }
         }
         else if (stream.maybe
-            .ExpectConsumedBy(ParseExpASTNode, out capturedExp)
+            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase capturedExp)
             .IsSatisfied)
         {
             return new(

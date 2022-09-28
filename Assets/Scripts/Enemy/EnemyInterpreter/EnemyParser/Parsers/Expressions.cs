@@ -25,6 +25,13 @@ public partial class EnemyParser
                 stream.CurrentPointer
         );
     }
+    private bool TestCallFuncStASTNode(TokenStreamPointer pointer)
+    {
+        return pointer.StartStream().maybe
+            .ExpectSymbolID(out string _tmp)
+            .Expect("(")
+            .IsSatisfied;
+    }
 
     /**
      * (EXP,) の部分
@@ -116,12 +123,5 @@ public partial class EnemyParser
                 );
         }
         return ParseResult<PrimaryExpASTNodeBase>.Failed("This token's line is not primary expression.", "PrimaryExpASTNode", pointer);
-    }
-    private bool TestCallFuncStASTNode(TokenStreamPointer pointer)
-    {
-        return pointer.StartStream().maybe
-            .ExpectSymbolID(out string _tmp)
-            .Expect("(")
-            .IsSatisfied;
     }
 }

@@ -46,6 +46,20 @@ public partial class EnemyParser
 
     public ParseResult<ExpASTNode> ParseExpASTNode(TokenStreamPointer pointer)
     {
+    public ParseResult<UnaryExpASTNode> ParseUnaryExpASTNode(TokenStreamPointer pointer)
+    {
+        var stream = pointer.StartStream();
+        PrimaryExpASTNode captured;
+        if (!stream.should
+            .Expect("-")
+            .ExpectConsumedBy(ParsePrimaryExpASTNode, out captured)
+            .IsSatisfied
+        ) { return ParseResult<UnaryExpASTNode>.Failed("unaryExp.", "partialParseOneArg", pointer); }
+        return new(
+            new UnaryExpASTNode(captured),
+            stream.CurrentPointer
+        );
+
         throw new NotImplementedException();
     }
     public ParseResult<PrimaryExpASTNode> ParsePrimaryExpASTNode(TokenStreamPointer pointer)

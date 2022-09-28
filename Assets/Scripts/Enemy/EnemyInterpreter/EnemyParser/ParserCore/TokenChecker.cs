@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +9,25 @@ public class TokenStreamChecker
     public delegate ParseResult<N> ParserFunction<N>(TokenStreamPointer pointer) where N:notnull;
 
     private static Dictionary<ScriptToken.Type, string> reservedWordMap = EnemyLexer.mapFromTokenTypeToReservedWord;
-    private static string ConvertToString(ScriptToken.Type type)
+    private static string ConvertTypeToString(ScriptToken.Type type)
     {
         if (!reservedWordMap.TryGetValue(type, out string reservedWords)) {
             throw new Exception($"The type `{type}` is not defined as Token.");
         }
         return reservedWords;
     }
+    private static string ConvertToString(ScriptToken token){
+        switch(token.type){
+            case ScriptToken.Type.INT_LITERAL:
+            case ScriptToken.Type.FLOAT_LITERAL:
+            case ScriptToken.Type.SYMBOL_ID:
+                return token.ToString();
+        }
+        return ConvertTypeToString(token.type);
+    }
 
     private static bool TheSameTokens(ScriptToken tokenA, string tokenBInString)
-        => ConvertToString(tokenA.type).Equals(tokenBInString);
+        => ConvertToString(tokenA).Equals(tokenBInString);
 
     private static readonly ScriptToken.Type[] allowedTokenTypeList = {
             ScriptToken.Type.SYMBOL_ID,

@@ -32,5 +32,8 @@ public class EnemyInterpreter
 
         var tester4 = new EnemyASTNodeTester();
         tester4.runTests();
+
+        var tester5 = new EnemyParserTester();
+        tester5.runTests();
     }
 }

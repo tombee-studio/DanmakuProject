@@ -1,7 +1,9 @@
 #nullable enable
+using System.Net.Http;
 using System.IO;
 using System;
 using System.Collections.Generic;
+
 public partial class EnemyParser
 {
     /**
@@ -13,8 +15,8 @@ public partial class EnemyParser
     {
         if (!TestCallFuncStASTNode(pointer))
             return ParseResult<CallFuncStASTNodeBase>.Failed("This token's line is not function.", "CallFuncStASTNode", pointer);
-        var stream = pointer.StartStream();
-        stream.should
+        var observer = pointer.StartStream();
+        observer.should
             .ExpectSymbolID(out string functionID)
             .Expect("(")
             .ExpectMultiComsumer(partialParseOneArg, out List<ExpASTNodeBase> expASTNodes)
@@ -23,7 +25,7 @@ public partial class EnemyParser
 
         return new(
                 new CallFuncStASTNode(functionID, expASTNodes),
-                stream.CurrentPointer
+                observer.CurrentPointer
         );
     }
     private bool TestCallFuncStASTNode(TokenStreamPointer pointer)
@@ -39,109 +41,95 @@ public partial class EnemyParser
      */
     private ParseResult<ExpASTNodeBase> partialParseOneArg(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
+        var observer = pointer.StartStream();
         if (
-            !stream.maybe
+            !observer.maybe
                 .ExpectConsumedBy(ParseExpASTNode, out var exp)
                 .Expect(",")
                 .IsSatisfied
         ) { return ParseResult<ExpASTNodeBase>.Failed("Arg sequence is finished.", "partialParseOneArg", pointer); }
         return new(
                 exp,
-                stream.CurrentPointer
+                observer.CurrentPointer
         );
     }
 
     public ParseResult<ExpASTNodeBase> ParseExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
+        var observer = pointer.StartStream();
         return new(
             ParseEqualityExpASTNode(pointer).ParsedNode,
-            stream.CurrentPointer
+            observer.CurrentPointer
         );
     }
     public ParseResult<EqualityExpASTNodeBase> ParseEqualityExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
+        var observer = pointer.StartStream();
         return new(
             ParseRelationalExpASTNode(pointer).ParsedNode,
-            stream.CurrentPointer
+            observer.CurrentPointer
         );
     }
     public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
+        var observer = pointer.StartStream();
         return new(
             ParseTermExpASTNode(pointer).ParsedNode,
-            stream.CurrentPointer
+            observer.CurrentPointer
         );
     }
     public ParseResult<TermExpASTNodeBase> ParseTermExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
+        var observer = pointer.StartStream();
         return new(
             ParseFactorExpASTNode(pointer).ParsedNode,
-            stream.CurrentPointer
+            observer.CurrentPointer
         );
     }
     public ParseResult<FactorExpASTNodeBase> ParseFactorExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
+        var observer = pointer.StartStream();
         return new(
             ParseUnaryExpASTNode(pointer).ParsedNode,
-            stream.CurrentPointer
+            observer.CurrentPointer
         );
     }
     public ParseResult<UnaryExpASTNodeBase> ParseUnaryExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
-        if (!stream.should
-            .Expect("-")
-            .ExpectConsumedBy(ParsePrimaryExpASTNode, out PrimaryExpASTNodeBase captured)
-            .IsSatisfied
-        ) { return ParseResult<UnaryExpASTNodeBase>.Failed("unaryExp.", "partialParseOneArg", pointer); }
+        var observer = pointer.StartStream();
+        var sign = (observer.maybe.Expect("-").IsSatisfied)
+        ? ScriptToken.GenerateToken("", ScriptToken.Type.SUB)
+        : ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        observer.should.ExpectConsumedBy(ParsePrimaryExpASTNode, out PrimaryExpASTNodeBase captured);
         return new(
-            new UnaryExpASTNode(captured),
-            stream.CurrentPointer
+            new UnaryExpASTNode(sign, captured),
+            observer.CurrentPointer
         );
-
-        throw new NotImplementedException();
     }
     public ParseResult<PrimaryExpASTNodeBase> ParsePrimaryExpASTNode(TokenStreamPointer pointer)
     {
-        var stream = pointer.StartStream();
-        ScriptToken capturedToken;
-        if (stream.maybe
-            .ExpectVariable(out capturedToken)
+        var observer = pointer.StartStream();
+        if (observer.maybe
+            .ExpectVariable(out ScriptToken capturedToken)
             .IsSatisfied)
         {
             switch (capturedToken.type)
             {
                 case ScriptToken.Type.INT_LITERAL:
-                    return new(
-                            new PrimaryExpASTNode(capturedToken.int_val),
-                            stream.CurrentPointer
-                        );
+                    return new(new PrimaryExpASTNode(capturedToken.int_val), observer.CurrentPointer);
                 case ScriptToken.Type.FLOAT_LITERAL:
-                    return new(
-                            new PrimaryExpASTNode(capturedToken.float_val),
-                            stream.CurrentPointer
-                        );
+                    return new(new PrimaryExpASTNode(capturedToken.float_val), observer.CurrentPointer);
                 case ScriptToken.Type.SYMBOL_ID:
-                    return new(
-                            new PrimaryExpASTNode(capturedToken.user_defined_symbol),
-                            stream.CurrentPointer
-                        );
+                    return new(new PrimaryExpASTNode(capturedToken.user_defined_symbol), observer.CurrentPointer);
+                default:
+                    throw new Exception($"Unexpected token {capturedToken.ToString()} received");
             }
         }
-        else if (stream.maybe
+        else if (observer.maybe
             .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase capturedExp)
             .IsSatisfied)
         {
-            return new(
-                    new PrimaryExpASTNode(capturedToken.user_defined_symbol),
-                    stream.CurrentPointer
-                );
+            return new(new PrimaryExpASTNode(capturedToken.user_defined_symbol), observer.CurrentPointer);
         }
         return ParseResult<PrimaryExpASTNodeBase>.Failed("This token's line is not primary expression.", "PrimaryExpASTNode", pointer);
     }

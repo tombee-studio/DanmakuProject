@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 // TODO: EnemyASTNodeTester ではなく, EnemyParserTester ではないか?
-public partial class EnemyASTNodeTester
+public partial class EnemyParserTester
 {
     public void ValidatePrintResult(List<ScriptToken> tokens, string expected){
         var parser = new EnemyParser();

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+
 public class TokenStreamChecker
 {
     public delegate ParseResult<N> ParserFunction<N>(TokenStreamPointer pointer) where N:notnull;
@@ -9,7 +11,9 @@ public class TokenStreamChecker
     private static Dictionary<ScriptToken.Type, string> reservedWordMap = EnemyLexer.mapFromTokenTypeToReservedWord;
     private static string ConvertToString(ScriptToken.Type type)
     {
-        if (reservedWordMap.TryGetValue(type, out string reservedWords)) throw new Exception($"The type `{type}` is not defined as Token.");
+        if (!reservedWordMap.TryGetValue(type, out string reservedWords)) {
+            throw new Exception($"The type `{type}` is not defined as Token.");
+        }
         return reservedWords;
     }
 

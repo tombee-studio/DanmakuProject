@@ -46,8 +46,18 @@ public partial class EnemyParser
 
     public ParseResult<ExpASTNodeBase> ParseExpASTNode(TokenStreamPointer pointer)
     {
-        throw new NotImplementedException();
+        return ParseFactorASTNode(pointer);
     }
+
+    public ParseResult<ExpASTNodeBase> ParseFactorASTNode(TokenStreamPointer pointer) {
+        var stream = pointer.StartStream();
+        stream.should
+            .ExpectVariable(out ScriptToken token);
+        return new ParseResult<ExpASTNodeBase>(
+            new PrimaryExpASTNode(token.int_val),
+            stream.CurrentPointer);
+    }
+
     private bool TestCallFuncStASTNode(TokenStreamPointer pointer)
     {
         return pointer.StartStream().maybe

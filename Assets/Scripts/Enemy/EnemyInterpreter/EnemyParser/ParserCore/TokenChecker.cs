@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +19,11 @@ public class TokenStreamChecker
     private static string ConvertToString(ScriptToken token){
         switch(token.type){
             case ScriptToken.Type.INT_LITERAL:
+                return token.int_val.ToString();
             case ScriptToken.Type.FLOAT_LITERAL:
+                return token.float_val.ToString();
             case ScriptToken.Type.SYMBOL_ID:
-                return token.ToString();
+                return token.user_defined_symbol.ToString();
         }
         return ConvertTypeToString(token.type);
     }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class EqualityExpASTNode : EqualityExpASTNodeBase
 {
-    private EqualityExpASTNodeBase left;
+    private RelationalExpASTNodeBase left;
     private ScriptToken relationOperator;
-    private RelationalExpASTNodeBase right;
+    private EqualityExpASTNodeBase right;
 
     public EqualityExpASTNode(RelationalExpASTNodeBase relationalExp)
     {
@@ -13,7 +13,7 @@ public class EqualityExpASTNode : EqualityExpASTNodeBase
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = relationalExp;
     }
-    public EqualityExpASTNode(EqualityExpASTNodeBase left, ScriptToken relationalOperator, RelationalExpASTNodeBase right)
+    public EqualityExpASTNode(RelationalExpASTNodeBase left, ScriptToken relationalOperator, EqualityExpASTNodeBase right)
     {
         this.left = left;
         this.relationOperator = relationalOperator;

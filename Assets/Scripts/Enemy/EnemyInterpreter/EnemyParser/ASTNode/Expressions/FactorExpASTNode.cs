@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class FactorExpASTNode : FactorExpASTNodeBase
 {
-    private FactorExpASTNodeBase left;
+    private UnaryExpASTNodeBase left;
     private ScriptToken arithmeticOperator;
-    private UnaryExpASTNodeBase right;
+    private FactorExpASTNodeBase right;
 
     public FactorExpASTNode(UnaryExpASTNodeBase unaryExp)
     {
@@ -13,7 +13,7 @@ public class FactorExpASTNode : FactorExpASTNodeBase
         this.arithmeticOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = unaryExp;
     }
-    public FactorExpASTNode(FactorExpASTNodeBase left, ScriptToken arithmeticOperator, PrimaryExpASTNodeBase right)
+    public FactorExpASTNode(UnaryExpASTNodeBase left, ScriptToken arithmeticOperator, FactorExpASTNodeBase right)
     {
         this.left = left;
         this.arithmeticOperator = arithmeticOperator;

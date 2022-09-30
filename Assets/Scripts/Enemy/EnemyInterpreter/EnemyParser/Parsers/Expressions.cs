@@ -73,16 +73,39 @@ public partial class EnemyParser
     }
     public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {
-        var observer = pointer.StartStream();
-        return new(
-            ParseTermExpASTNode(pointer).ParsedNode,
-            observer.CurrentPointer
-        );
+        var resultOfTerm = pointer.StartStream().should.ExpectConsumedBy(ParseTermExpASTNode, out var term);
+        if (resultOfTerm.CurrentPointer.OnTerminal()) return new(term, resultOfTerm.CurrentPointer);
+        var observerAfterTerm = resultOfTerm.CurrentPointer.StartStream();  // (1)
+
+        ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        if (false) { }
+        else if (observerAfterTerm.maybe.Expect("<").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.LESS_THAN);
+        }
+        else if (observerAfterTerm.maybe.Expect(">").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_THAN);
+        }
+        else if (observerAfterTerm.maybe.Expect("<=").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.LESS_EQUAL);
+        }
+        else if (observerAfterTerm.maybe.Expect(">=").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_EQUAL);
+        }
+        else
+        {
+            return new(term, observerAfterTerm.CurrentPointer);
+        }
+        var resultOFRelational = observerAfterTerm.should.ExpectConsumedBy(ParseRelationalExpASTNode, out var relational);
+        return new(new RelationalExpASTNode(term, op, relational), resultOFRelational.CurrentPointer);
     }
     public ParseResult<TermExpASTNodeBase> ParseTermExpASTNode(TokenStreamPointer pointer)
     {
         var resultOfFactor = pointer.StartStream().should.ExpectConsumedBy(ParseFactorExpASTNode, out var factor);
-        if(resultOfFactor.CurrentPointer.OnTerminal()) return new(factor, resultOfFactor.CurrentPointer);
+        if (resultOfFactor.CurrentPointer.OnTerminal()) return new(factor, resultOfFactor.CurrentPointer);
         var observerAfterFactor = resultOfFactor.CurrentPointer.StartStream();  // (1)
 
         ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
@@ -111,7 +134,7 @@ public partial class EnemyParser
         // この TokenStreamChecker.CurrentPointer を用いて新たな observer を生成する. (1)
 
         // ただし, observer を生成する段階で pointer が OnTerminal の場合はエラーを吐くので事前に弾いておく.
-        if(resultOfUnary.CurrentPointer.OnTerminal()) return new(unary, resultOfUnary.CurrentPointer);
+        if (resultOfUnary.CurrentPointer.OnTerminal()) return new(unary, resultOfUnary.CurrentPointer);
         var observerAfterUnary = resultOfUnary.CurrentPointer.StartStream();  // (1)
 
         ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);

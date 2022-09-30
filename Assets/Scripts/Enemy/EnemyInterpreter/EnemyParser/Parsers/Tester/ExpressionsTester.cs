@@ -16,6 +16,72 @@ public partial class EnemyParserTester
         var result = Parse(pointer);
         Assert.AreEqual(expected, result.ParsedNode.Print(0));
     }
+    public void test_ParseGE()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_EQUAL))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseRelationalExpASTNode,
+            "42>=91"
+        );
+    }
+    public void test_ParseGT()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_THAN))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseRelationalExpASTNode,
+            "42>91"
+        );
+    }
+    public void test_ParseLE()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.LESS_EQUAL))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseRelationalExpASTNode,
+            "42<=91"
+        );
+    }
+    public void test_ParseLT()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.LESS_THAN))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseRelationalExpASTNode,
+            "42<91"
+        );
+    }
+    public void test_ParseRelational()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.PLUS))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.SUB))
+            .Append(ScriptToken.GenerateToken("49", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseRelationalExpASTNode,
+            "91+-49"
+        );
+    }
     public void test_ParseADD()
     {
         var tokens = new List<ScriptToken>()

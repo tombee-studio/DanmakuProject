@@ -34,8 +34,6 @@ public partial class EnemyASTNodeTester : Tester
             .ToList()
         );
         int i = 0;
-        node.Compile(new Dictionary<string, int>())
-            .ForEach(e=>Debug.Log($"{e}, {i++}"));
         checkGeneratedInstructionIsSame(testCodes, node);
         checkPrintScript(scriptCodes, node);
     }

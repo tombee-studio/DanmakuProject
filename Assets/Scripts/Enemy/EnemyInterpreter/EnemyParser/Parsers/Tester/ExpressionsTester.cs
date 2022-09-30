@@ -16,6 +16,46 @@ public partial class EnemyParserTester
         var result = Parse(pointer);
         Assert.AreEqual(expected, result.ParsedNode.Print(0));
     }
+    public void test_ParseADD()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.PLUS))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.SUB))
+            .Append(ScriptToken.GenerateToken("49", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseTermExpASTNode,
+            "91+-49"
+        );
+    }
+    public void test_ParseSUB()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.SUB))
+            .Append(ScriptToken.GenerateToken("49", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseTermExpASTNode,
+            "91-49"
+        );
+    }
+    public void test_ParseTerm()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("133", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.MOD))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseTermExpASTNode,
+            "133%91"
+        );
+    }
     public void test_ParseMod()
     {
         var tokens = new List<ScriptToken>()

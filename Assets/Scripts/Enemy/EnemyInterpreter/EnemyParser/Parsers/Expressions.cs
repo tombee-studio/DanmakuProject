@@ -81,11 +81,26 @@ public partial class EnemyParser
     }
     public ParseResult<TermExpASTNodeBase> ParseTermExpASTNode(TokenStreamPointer pointer)
     {
-        var observer = pointer.StartStream();
-        return new(
-            ParseFactorExpASTNode(pointer).ParsedNode,
-            observer.CurrentPointer
-        );
+        var resultOfFactor = pointer.StartStream().should.ExpectConsumedBy(ParseFactorExpASTNode, out var factor);
+        if(resultOfFactor.CurrentPointer.OnTerminal()) return new(factor, resultOfFactor.CurrentPointer);
+        var observerAfterFactor = resultOfFactor.CurrentPointer.StartStream();  // (1)
+
+        ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        if (false) { }
+        else if (observerAfterFactor.maybe.Expect("+").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.PLUS);
+        }
+        else if (observerAfterFactor.maybe.Expect("-").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.SUB);
+        }
+        else
+        {
+            return new(factor, observerAfterFactor.CurrentPointer);
+        }
+        var resultOFTerm = observerAfterFactor.should.ExpectConsumedBy(ParseTermExpASTNode, out var term);
+        return new(new TermExpASTNode(factor, op, term), resultOFTerm.CurrentPointer);
     }
     // FACTOR := UNARY | UNARY [*/%] FACTOR
     public ParseResult<FactorExpASTNodeBase> ParseFactorExpASTNode(TokenStreamPointer pointer)

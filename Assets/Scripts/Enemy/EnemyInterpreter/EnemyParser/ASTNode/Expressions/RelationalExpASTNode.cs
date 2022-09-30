@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class RelationalExpASTNode : RelationalExpASTNodeBase
 {
-    private RelationalExpASTNodeBase left;
+    private TermExpASTNodeBase left;
     private ScriptToken relationOperator;
-    private TermExpASTNodeBase right;
+    private RelationalExpASTNodeBase right;
 
     public RelationalExpASTNode(TermExpASTNodeBase termExp)
     {
@@ -13,7 +13,7 @@ public class RelationalExpASTNode : RelationalExpASTNodeBase
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = termExp;
     }
-    public RelationalExpASTNode(RelationalExpASTNodeBase left, ScriptToken arithmeticOperator, TermExpASTNodeBase right)
+    public RelationalExpASTNode(TermExpASTNodeBase left, ScriptToken arithmeticOperator, RelationalExpASTNodeBase right)
     {
         this.left = left;
         this.relationOperator = arithmeticOperator;

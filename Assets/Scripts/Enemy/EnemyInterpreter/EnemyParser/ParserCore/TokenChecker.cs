@@ -37,6 +37,7 @@ public class TokenStreamChecker
             ScriptToken.Type.FLOAT_LITERAL
     };
     private TokenStream target;
+    public TokenStreamPointer CurrentPointer => target.CurrentPointer;
     private bool isSatisfiedInTheConditionSequence = true;
     private bool shouldBeSatisfied;
     private int initialPointer;

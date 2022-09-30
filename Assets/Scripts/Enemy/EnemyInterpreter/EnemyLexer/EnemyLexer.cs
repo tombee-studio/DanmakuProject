@@ -51,6 +51,7 @@ public partial class EnemyLexer {
         { TokenType.SUB, "-" },
         { TokenType.MULTIPLY, "*" },
         { TokenType.DIVIDE, "/" },
+        { TokenType.MOD, "%" },
         { TokenType.GREATER_THAN, ">" },
         { TokenType.LESS_THAN, "<" },
         { TokenType.BRACKET_LEFT, "(" },

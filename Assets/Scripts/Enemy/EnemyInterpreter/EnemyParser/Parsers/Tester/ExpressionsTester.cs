@@ -16,6 +16,45 @@ public partial class EnemyParserTester
         var result = Parse(pointer);
         Assert.AreEqual(expected, result.ParsedNode.Print(0));
     }
+    public void test_ParseNE()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseEqualityExpASTNode,
+            "42!=91"
+        );
+    }
+    public void test_ParseEQ()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("==", ScriptToken.Type.EQUAL))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseEqualityExpASTNode,
+            "42==91"
+        );
+    }
+    public void test_ParseEquality()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.GREATER_EQUAL))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseEqualityExpASTNode,
+            "42>=91"
+        );
+    }
     public void test_ParseGE()
     {
         var tokens = new List<ScriptToken>()

@@ -65,17 +65,33 @@ public partial class EnemyParser
     }
     public ParseResult<EqualityExpASTNodeBase> ParseEqualityExpASTNode(TokenStreamPointer pointer)
     {
-        var observer = pointer.StartStream();
-        return new(
-            ParseRelationalExpASTNode(pointer).ParsedNode,
-            observer.CurrentPointer
-        );
+        var resultOfRelational = pointer.StartStream().should.ExpectConsumedBy(ParseRelationalExpASTNode, out var relational);
+        if (resultOfRelational.CurrentPointer.OnTerminal()) return new(relational, resultOfRelational.CurrentPointer);
+        var observerAfterRelational = resultOfRelational.CurrentPointer.StartStream();
+
+        ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        if (false) { }
+        else if (observerAfterRelational.maybe.Expect("==").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.EQUAL);
+        }
+        else if (observerAfterRelational.maybe.Expect("not").IsSatisfied)
+        {
+            Debug.LogWarning("とりあえず not を != と同じように解釈します");
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.NOT);
+        }
+        else
+        {
+            return new(relational, observerAfterRelational.CurrentPointer);
+        }
+        var resultOFEquality = observerAfterRelational.should.ExpectConsumedBy(ParseEqualityExpASTNode, out var equality);
+        return new(new EqualityExpASTNode(relational, op, equality), resultOFEquality.CurrentPointer);
     }
     public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {
         var resultOfTerm = pointer.StartStream().should.ExpectConsumedBy(ParseTermExpASTNode, out var term);
         if (resultOfTerm.CurrentPointer.OnTerminal()) return new(term, resultOfTerm.CurrentPointer);
-        var observerAfterTerm = resultOfTerm.CurrentPointer.StartStream();  // (1)
+        var observerAfterTerm = resultOfTerm.CurrentPointer.StartStream();
 
         ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         if (false) { }
@@ -106,7 +122,7 @@ public partial class EnemyParser
     {
         var resultOfFactor = pointer.StartStream().should.ExpectConsumedBy(ParseFactorExpASTNode, out var factor);
         if (resultOfFactor.CurrentPointer.OnTerminal()) return new(factor, resultOfFactor.CurrentPointer);
-        var observerAfterFactor = resultOfFactor.CurrentPointer.StartStream();  // (1)
+        var observerAfterFactor = resultOfFactor.CurrentPointer.StartStream();
 
         ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         if (false) { }

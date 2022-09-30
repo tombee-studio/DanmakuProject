@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EqualityExpASTNode : EqualityExpASTNodeBase
 {
@@ -55,6 +56,7 @@ public class EqualityExpASTNode : EqualityExpASTNodeBase
                     str += "==";
                     break;
                 case ScriptToken.Type.NOT:
+                    Debug.LogWarning("とりあえず not を != と同じように解釈しています");
                     str += "!=";
                     break;
             }

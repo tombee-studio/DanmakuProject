@@ -47,6 +47,7 @@ public partial class EnemyLexer {
         { TokenType.GREATER_EQUAL, ">=" },
         { TokenType.LESS_EQUAL, "<=" },
         { TokenType.EQUAL, "==" },
+        { TokenType.NOT_EQUAL, "!=" },
         { TokenType.PLUS, "+" },
         { TokenType.SUB, "-" },
         { TokenType.MULTIPLY, "*" },

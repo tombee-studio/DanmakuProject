@@ -63,6 +63,7 @@ public struct ScriptToken
 
         ASSIGNMENT,
         EQUAL,
+        NOT_EQUAL,
         COMMA,
 
         SYMBOL_ID,

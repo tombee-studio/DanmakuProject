@@ -1,3 +1,3 @@
-public abstract class EqualityExpASTNodeBase: ExpASTNodeBase{
+public abstract class EqualityExpASTNodeBase: LogicalExpASTNodeBase{
     
 }

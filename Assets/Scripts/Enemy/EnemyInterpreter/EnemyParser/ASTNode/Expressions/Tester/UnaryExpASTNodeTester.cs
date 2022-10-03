@@ -37,5 +37,16 @@ public partial class EnemyASTNodeTester
         checkVMReturnValueFromSubProgram(node, value);
         Assert.AreEqual(node.Print(0), $"+{value}");
     }
+    void test_NOTUnaryExp()
+    {
+        int value = 57;
+        string[] testCodes = {
+            $"PUSH {value}",
+        };
+        UnaryExpASTNode node = new UnaryExpASTNode(ScriptToken.GenerateToken("", ScriptToken.Type.NOT), new PrimaryExpASTNode(value));
+        checkGeneratedInstructionIsSame(testCodes, node);
+        checkVMReturnValueFromSubProgram(node, value==0?1:0);
+        Assert.AreEqual(node.Print(0), $"not{value}");
+    }
 }
 

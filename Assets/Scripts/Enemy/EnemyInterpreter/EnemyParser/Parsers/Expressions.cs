@@ -82,6 +82,29 @@ public partial class EnemyParser
         var resultOFEquality = observerAfterRelational.should.ExpectConsumedBy(ParseEqualityExpASTNode, out var equality);
         return new(new EqualityExpASTNode(relational, op, equality), resultOFEquality.CurrentPointer);
     }
+    public ParseResult<LogicalExpASTNodeBase> ParseLogicalExpASTNode(TokenStreamPointer pointer)
+    {
+        var resultOfEquality = pointer.StartStream().should.ExpectConsumedBy(ParseEqualityExpASTNode, out var equality);
+        if (resultOfEquality.CurrentPointer.OnTerminal()) return new(equality, resultOfEquality.CurrentPointer);
+        var observerAfterEquality = resultOfEquality.CurrentPointer.StartStream();
+
+        ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        if (false) { }
+        else if (observerAfterEquality.maybe.Expect("and").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.AND);
+        }
+        else if (observerAfterEquality.maybe.Expect("or").IsSatisfied)
+        {
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.OR);
+        }
+        else
+        {
+            return new(equality, observerAfterEquality.CurrentPointer);
+        }
+        var resultOFLogical = observerAfterEquality.should.ExpectConsumedBy(ParseLogicalExpASTNode, out var logical);
+        return new(new LogicalExpASTNode(equality, op, logical), resultOFLogical.CurrentPointer);
+    }
     public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {
         var resultOfTerm = pointer.StartStream().should.ExpectConsumedBy(ParseTermExpASTNode, out var term);
@@ -173,9 +196,20 @@ public partial class EnemyParser
     public ParseResult<UnaryExpASTNodeBase> ParseUnaryExpASTNode(TokenStreamPointer pointer)
     {
         var observer = pointer.StartStream();
-        var sign = (observer.maybe.Expect("-").IsSatisfied)
-            ? ScriptToken.GenerateToken("", ScriptToken.Type.SUB)
-            : ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        ScriptToken sign;
+        if(false){}
+        else if(observer.maybe.Expect("-").IsSatisfied){
+            sign = ScriptToken.GenerateToken("", ScriptToken.Type.SUB);
+        }
+        else if(observer.maybe.Expect("+").IsSatisfied){
+            sign = ScriptToken.GenerateToken("", ScriptToken.Type.PLUS);
+        }
+        else if(observer.maybe.Expect("not").IsSatisfied){
+            sign = ScriptToken.GenerateToken("", ScriptToken.Type.NOT);
+        }
+        else{
+            sign = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
+        }
         var res = observer.should.ExpectConsumedBy(ParsePrimaryExpASTNode, out PrimaryExpASTNodeBase captured);
         return new(
             new UnaryExpASTNode(sign, captured),

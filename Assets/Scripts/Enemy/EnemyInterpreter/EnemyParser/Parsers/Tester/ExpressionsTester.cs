@@ -20,7 +20,7 @@ public partial class EnemyParserTester
     {
         var tokens = new List<ScriptToken>()
             .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
-            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT_EQUAL))
             .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
             .ToList();
         ValidatePrintResult(

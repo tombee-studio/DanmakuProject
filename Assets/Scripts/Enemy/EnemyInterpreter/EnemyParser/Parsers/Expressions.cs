@@ -57,11 +57,7 @@ public partial class EnemyParser
 
     public ParseResult<ExpASTNodeBase> ParseExpASTNode(TokenStreamPointer pointer)
     {
-        var observer = pointer.StartStream();
-        return new(
-            ParseEqualityExpASTNode(pointer).ParsedNode,
-            observer.CurrentPointer
-        );
+        return new(ParseEqualityExpASTNode(pointer).ParsedNode, pointer);
     }
     public ParseResult<EqualityExpASTNodeBase> ParseEqualityExpASTNode(TokenStreamPointer pointer)
     {
@@ -75,10 +71,9 @@ public partial class EnemyParser
         {
             op = ScriptToken.GenerateToken("", ScriptToken.Type.EQUAL);
         }
-        else if (observerAfterRelational.maybe.Expect("not").IsSatisfied)
+        else if (observerAfterRelational.maybe.Expect("!=").IsSatisfied)
         {
-            Debug.LogWarning("とりあえず not を != と同じように解釈します");
-            op = ScriptToken.GenerateToken("", ScriptToken.Type.NOT);
+            op = ScriptToken.GenerateToken("", ScriptToken.Type.NOT_EQUAL);
         }
         else
         {

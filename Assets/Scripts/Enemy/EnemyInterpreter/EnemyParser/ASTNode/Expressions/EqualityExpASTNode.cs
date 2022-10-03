@@ -32,7 +32,7 @@ public class EqualityExpASTNode : EqualityExpASTNodeBase
                 case ScriptToken.Type.EQUAL:
                     instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.EQ, 0));
                     break;
-                case ScriptToken.Type.NOT:
+                case ScriptToken.Type.NOT_EQUAL:
                     instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.NE, 0));
                     break;
             }
@@ -55,8 +55,7 @@ public class EqualityExpASTNode : EqualityExpASTNodeBase
                 case ScriptToken.Type.EQUAL:
                     str += "==";
                     break;
-                case ScriptToken.Type.NOT:
-                    Debug.LogWarning("とりあえず not を != と同じように解釈しています");
+                case ScriptToken.Type.NOT_EQUAL:
                     str += "!=";
                     break;
             }

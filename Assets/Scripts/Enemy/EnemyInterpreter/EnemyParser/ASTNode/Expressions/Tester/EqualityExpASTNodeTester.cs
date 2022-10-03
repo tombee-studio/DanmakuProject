@@ -27,13 +27,13 @@ public partial class EnemyASTNodeTester
             "NE 0"
         };
         var relationOperator1 = new ScriptToken();
-        relationOperator1.type = ScriptToken.Type.NOT;
+        relationOperator1.type = ScriptToken.Type.NOT_EQUAL;
 
         var left = new PrimaryExpASTNode(6);
         var right = new PrimaryExpASTNode(4);
         var node = new EqualityExpASTNode(left, relationOperator1, right);
 
-        Assert.AreEqual(node.Print(0), "6!=4");
+        Assert.AreEqual("6!=4", node.Print(0));
         checkVMReturnValueFromSubProgram(node, 6 != 4 ? 1 : 0);
         checkGeneratedInstructionIsSame(testCodes, node);
     }

@@ -15,10 +15,15 @@ public class TokenStream
     public static TokenStream FromPointer(TokenStreamPointer pointer) => new(pointer.sequence, pointer.index);
     public TokenStreamPointer CurrentPointer => new(sequence, index);
 
+    public void RestartStreamFrom(TokenStreamPointer p)
+    {
+        if (!this.sequence.Equals(p.sequence)) throw new Exception("Can not restart on the different token sequence.");
+        index = p.index;
+    }
 
     public ScriptToken Read()
     {
-        if (CurrentPointer.OnTerminal()) throw new Exception("This Pointer is on the terminal. Therefore you can't proceed with the pointer any longer.");
+        if (CurrentPointer.OnTerminal()) return ScriptToken.EndOfFile;
         return sequence[index++];
     }
     public ScriptToken Lookahead() => sequence[index];

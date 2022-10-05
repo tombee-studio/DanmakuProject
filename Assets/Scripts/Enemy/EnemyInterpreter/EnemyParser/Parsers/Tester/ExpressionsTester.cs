@@ -16,11 +16,50 @@ public partial class EnemyParserTester
         var result = Parse(pointer);
         Assert.AreEqual(expected, result.ParsedNode.Print(0));
     }
+    public void test_ParseAnd()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.AND))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseLogicalExpASTNode,
+            "42and91"
+        );
+    }
+    public void test_ParseOr()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.OR))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseLogicalExpASTNode,
+            "42or91"
+        );
+    }
+    public void test_ParseLogical()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT_EQUAL))
+            .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseLogicalExpASTNode,
+            "42!=91"
+        );
+    }
     public void test_ParseNE()
     {
         var tokens = new List<ScriptToken>()
             .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
-            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT_EQUAL))
             .Append(ScriptToken.GenerateToken("91", ScriptToken.Type.INT_LITERAL))
             .ToList();
         ValidatePrintResult(
@@ -212,6 +251,18 @@ public partial class EnemyParserTester
             tokens,
             new EnemyParser().ParseFactorExpASTNode,
             "-42"
+        );
+    }
+    public void test_ParseNot()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.NOT))
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseUnaryExpASTNode,
+            "not42"
         );
     }
     public void test_ParseMinus()

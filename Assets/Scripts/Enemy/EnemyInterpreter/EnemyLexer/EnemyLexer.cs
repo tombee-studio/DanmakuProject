@@ -47,6 +47,7 @@ public partial class EnemyLexer {
         { TokenType.GREATER_EQUAL, ">=" },
         { TokenType.LESS_EQUAL, "<=" },
         { TokenType.EQUAL, "==" },
+        { TokenType.NOT_EQUAL, "!=" },
         { TokenType.PLUS, "+" },
         { TokenType.SUB, "-" },
         { TokenType.MULTIPLY, "*" },
@@ -61,7 +62,11 @@ public partial class EnemyLexer {
         { TokenType.CURLY_BRACKET_RIGHT, "}" },
 
         { TokenType.ASSIGNMENT, "=" },
-        { TokenType.COMMA, "," }
+        { TokenType.COMMA, "," },
+        { TokenType.INT_LITERAL, "INT_LITERAL" },
+        { TokenType.FLOAT_LITERAL, "FLOAT_LITERAL" },
+
+        { TokenType.END_OF_FILE, "EOF" }
     };
     public readonly static ReservedTokenDictionary.KeyCollection reservedTokenTypes = mapFromTokenTypeToReservedWord.Keys;
 

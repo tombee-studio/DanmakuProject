@@ -15,6 +15,10 @@ public partial class EnemyVM
         JNE,
         BREAK,
 
+        AND,
+        OR,
+        NOT,
+
         LT,
         LE,
         GT,

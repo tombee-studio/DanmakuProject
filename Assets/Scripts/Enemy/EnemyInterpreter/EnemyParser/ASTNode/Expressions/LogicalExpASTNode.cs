@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EqualityExpASTNode : EqualityExpASTNodeBase
+public class LogicalExpASTNode : LogicalExpASTNodeBase
 {
-    private RelationalExpASTNodeBase left;
+    private EqualityExpASTNodeBase left;
     private ScriptToken relationOperator;
-    private EqualityExpASTNodeBase right;
+    private LogicalExpASTNodeBase right;
 
-    public EqualityExpASTNode(RelationalExpASTNodeBase relationalExp)
+    public LogicalExpASTNode(EqualityExpASTNodeBase equalityExp)
     {
         this.left = null;
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
-        this.right = relationalExp;
+        this.right = equalityExp;
     }
-    public EqualityExpASTNode(RelationalExpASTNodeBase left, ScriptToken relationalOperator, EqualityExpASTNodeBase right)
+    public LogicalExpASTNode(EqualityExpASTNodeBase left, ScriptToken equalityOperator, LogicalExpASTNodeBase right)
     {
         this.left = left;
-        this.relationOperator = relationalOperator;
+        this.relationOperator = equalityOperator;
         this.right = right;
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
@@ -29,11 +29,11 @@ public class EqualityExpASTNode : EqualityExpASTNodeBase
             instructions.AddRange(right.Compile(vtable));
             switch (relationOperator.type)
             {
-                case ScriptToken.Type.EQUAL:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.EQ, 0));
+                case ScriptToken.Type.AND:
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.AND, 0));
                     break;
-                case ScriptToken.Type.NOT_EQUAL:
-                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.NE, 0));
+                case ScriptToken.Type.OR:
+                    instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.OR, 0));
                     break;
             }
         }
@@ -52,11 +52,11 @@ public class EqualityExpASTNode : EqualityExpASTNodeBase
             str = left.Print(tab);
             switch (relationOperator.type)
             {
-                case ScriptToken.Type.EQUAL:
-                    str += "==";
+                case ScriptToken.Type.AND:
+                    str += "and";
                     break;
-                case ScriptToken.Type.NOT_EQUAL:
-                    str += "!=";
+                case ScriptToken.Type.OR:
+                    str += "or";
                     break;
             }
         }

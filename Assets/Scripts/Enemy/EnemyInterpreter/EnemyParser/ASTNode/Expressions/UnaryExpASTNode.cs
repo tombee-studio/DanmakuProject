@@ -24,6 +24,9 @@ public class UnaryExpASTNode : UnaryExpASTNodeBase
             case ScriptToken.Type.PLUS:
                 this.sign = 1;
                 break;
+            case ScriptToken.Type.NOT:
+                this.sign = 2;
+                break;
             default:
                 throw new Exception("Unexpected Token received.");
         }
@@ -31,17 +34,23 @@ public class UnaryExpASTNode : UnaryExpASTNodeBase
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
         var instructions = primaryExp.Compile(vtable);
-        if (sign == -1)
-        {
-            instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, -1));
-            instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0));
+        switch(sign){
+            case -1:
+                instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.PUSH, -1));
+                instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.MUL, 0));
+                break;
+            // case 0: DoNothing();
+            // case 1: DONothing();
+            case 2:
+                instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.NOT, 0));
+                break;
         }
         return instructions;
     }
 
     public override string Print(int tab)
     {
-        string[] signs = { "-", "", "+" };
+        string[] signs = { "-", "", "+", "not" };
         string sign_str = signs[sign + 1];
         return sign_str + primaryExp.Print(tab);
     }

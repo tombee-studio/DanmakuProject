@@ -57,7 +57,10 @@ public partial class EnemyParser
 
     public ParseResult<ExpASTNodeBase> ParseExpASTNode(TokenStreamPointer pointer)
     {
-        return new(ParseEqualityExpASTNode(pointer).ParsedNode, pointer);
+        var observer = pointer.StartStream();
+        observer.should
+            .ExpectConsumedBy(ParseLogicalExpASTNode, out var logical);
+        return new(logical, observer.CurrentPointer);
     }
     public ParseResult<LogicalExpASTNodeBase> ParseLogicalExpASTNode(TokenStreamPointer pointer)
     {

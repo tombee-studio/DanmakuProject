@@ -38,7 +38,7 @@ public class TokenStream
     {
         return new TokenStreamBranchConsumer<BasedNodeType>(this);
     }
-    public TokenStreamBranch match<BasedNodeType>()
+    public TokenStreamBranch match()
     {
         return new TokenStreamBranch(this);
     }

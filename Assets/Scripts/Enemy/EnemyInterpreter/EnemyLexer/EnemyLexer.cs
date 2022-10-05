@@ -62,7 +62,9 @@ public partial class EnemyLexer {
         { TokenType.CURLY_BRACKET_RIGHT, "}" },
 
         { TokenType.ASSIGNMENT, "=" },
-        { TokenType.COMMA, "," }
+        { TokenType.COMMA, "," },
+        { TokenType.INT_LITERAL, "INT_LITERAL" },
+        { TokenType.FLOAT_LITERAL, "FLOAT_LITERAL" }
     };
     public readonly static ReservedTokenDictionary.KeyCollection reservedTokenTypes = mapFromTokenTypeToReservedWord.Keys;
 

@@ -216,6 +216,13 @@ public partial class EnemyParser
             res.CurrentPointer
         );
     }
+
+    private bool TestParseUnaryExpASTNode(TokenStreamPointer pointer)
+        => pointer.StartStream().maybe
+            .Expect("-")
+            .ExpectConsumedBy(ParsePrimaryExpASTNode, out PrimaryExpASTNodeBase captured)
+            .IsSatisfied;
+
     public ParseResult<PrimaryExpASTNodeBase> ParsePrimaryExpASTNode(TokenStreamPointer pointer)
     {
         var observer = pointer.StartStream();

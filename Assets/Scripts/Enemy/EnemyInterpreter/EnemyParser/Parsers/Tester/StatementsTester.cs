@@ -86,7 +86,7 @@ public partial class EnemyParserTester
         ValidatePrintResult(
             tokens,
             new EnemyParser().ParseIfSt,
-            "if(0)42else91\n"
+            "if(0)\n\t42\nelse\n\t91\n"
         );
     }
     void test_if(){
@@ -100,7 +100,7 @@ public partial class EnemyParserTester
         ValidatePrintResult(
             tokens,
             new EnemyParser().ParseIfSt,
-            "if(1)42\n"
+            "if(1)\n\t42\n"
         );
     }
     void test_assign_st1()
@@ -147,11 +147,15 @@ public partial class EnemyParserTester
     {
         var tokens = new List<ScriptToken>()
             .Append(ScriptToken.GenerateToken("", ScriptToken.Type.REPEAT))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.BRACKET_LEFT))
+            .Append(ScriptToken.GenerateToken("32", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.BRACKET_RIGHT))
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
             .ToList();
         ValidatePrintResult(
             tokens,
             new EnemyParser().ParseRepeatSt,
-            "repeat"
+            "repeat(32)42\n"
         );
     }
 }

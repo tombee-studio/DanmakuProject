@@ -162,36 +162,29 @@ public partial class EnemyParser
     // FACTOR := UNARY | UNARY [*/%] FACTOR
     public ParseResult<FactorExpASTNodeBase> ParseFactorExpASTNode(TokenStreamPointer pointer)
     {
-        var resultOfUnary = pointer.StartStream().should.ExpectConsumedBy(ParseUnaryExpASTNode, out var unary);
-        // ExpectConsumedBy を使うとポインタが進まない.
-        // これを解決するために, TokenStreamChecker.CurrentPointer として TokenStreamChecker.target.CurrentPointer を読み込めるようにした.
-        // この TokenStreamChecker.CurrentPointer を用いて新たな observer を生成する. (1)
-
-        // ただし, observer を生成する段階で pointer が OnTerminal の場合はエラーを吐くので事前に弾いておく.
-        if (resultOfUnary.CurrentPointer.OnTerminal()) return new(unary, resultOfUnary.CurrentPointer);
-        var observerAfterUnary = resultOfUnary.CurrentPointer.StartStream();  // (1)
+        var observer = pointer.StartStream();
+        observer.should.ExpectConsumedBy(ParseUnaryExpASTNode, out var unary);
 
         ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         if (false) { }
-        else if (observerAfterUnary.maybe.Expect("*").IsSatisfied)
+        else if (observer.maybe.Expect("*").IsSatisfied)
         {
             op = ScriptToken.GenerateToken("", ScriptToken.Type.MULTIPLY);
         }
-        else if (observerAfterUnary.maybe.Expect("/").IsSatisfied)
+        else if (observer.maybe.Expect("/").IsSatisfied)
         {
             op = ScriptToken.GenerateToken("", ScriptToken.Type.DIVIDE);
         }
-        else if (observerAfterUnary.maybe.Expect("%").IsSatisfied)
+        else if (observer.maybe.Expect("%").IsSatisfied)
         {
             op = ScriptToken.GenerateToken("", ScriptToken.Type.MOD);
         }
         else
         {
-            return new(unary, observerAfterUnary.CurrentPointer);
+            return new(unary, observer.CurrentPointer);
         }
-        // 上記と同じく result を受け取って更新後の CurrentPointer を受け取れるようにする
-        var resultOFFactor = observerAfterUnary.should.ExpectConsumedBy(ParseFactorExpASTNode, out var factor);
-        return new(new FactorExpASTNode(unary, op, factor), resultOFFactor.CurrentPointer);
+        observer.should.ExpectConsumedBy(ParseFactorExpASTNode, out var factor);
+        return new(new FactorExpASTNode(unary, op, factor), observer.CurrentPointer);
     }
     public ParseResult<UnaryExpASTNodeBase> ParseUnaryExpASTNode(TokenStreamPointer pointer)
     {

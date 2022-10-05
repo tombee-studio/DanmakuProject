@@ -16,6 +16,14 @@ public partial class EnemyParserTester
         var result = Parse(pointer);
         Assert.AreEqual(expected, result.ParsedNode.Print(0));
     }
+    private void TestOnParseExpAstNode(
+        List<ScriptToken> tokens,
+        string expected
+    )
+    {
+        ValidatePrintResult(tokens, new EnemyParser().ParseExpASTNode, expected);
+    }
+    public void test_ParseExp()
     public void test_ParseAnd()
     {
         var tokens = new List<ScriptToken>()
@@ -28,6 +36,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseLogicalExpASTNode,
             "42and91"
         );
+        TestOnParseExpAstNode(tokens, "42and91");
     }
     public void test_ParseOr()
     {
@@ -41,6 +50,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseLogicalExpASTNode,
             "42or91"
         );
+        TestOnParseExpAstNode(tokens, "42or91");
     }
     public void test_ParseLogical()
     {
@@ -67,6 +77,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseEqualityExpASTNode,
             "42!=91"
         );
+        TestOnParseExpAstNode(tokens, "42!=91");
     }
     public void test_ParseEQ()
     {
@@ -80,6 +91,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseEqualityExpASTNode,
             "42==91"
         );
+        TestOnParseExpAstNode(tokens, "42==91");
     }
     public void test_ParseEquality()
     {
@@ -106,6 +118,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseRelationalExpASTNode,
             "42>=91"
         );
+        TestOnParseExpAstNode(tokens, "42>=91");
     }
     public void test_ParseGT()
     {
@@ -119,6 +132,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseRelationalExpASTNode,
             "42>91"
         );
+        TestOnParseExpAstNode(tokens, "42>91");
     }
     public void test_ParseLE()
     {
@@ -132,6 +146,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseRelationalExpASTNode,
             "42<=91"
         );
+        TestOnParseExpAstNode(tokens, "42<=91");
     }
     public void test_ParseLT()
     {
@@ -145,6 +160,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseRelationalExpASTNode,
             "42<91"
         );
+        TestOnParseExpAstNode(tokens, "42<91");
     }
     public void test_ParseRelational()
     {
@@ -159,6 +175,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseRelationalExpASTNode,
             "91+-49"
         );
+        TestOnParseExpAstNode(tokens, "91+-49");
     }
     public void test_ParseADD()
     {
@@ -173,6 +190,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseTermExpASTNode,
             "91+-49"
         );
+        TestOnParseExpAstNode(tokens, "91+-49");
     }
     public void test_ParseSUB()
     {
@@ -186,6 +204,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseTermExpASTNode,
             "91-49"
         );
+        TestOnParseExpAstNode(tokens, "91-49");
     }
     public void test_ParseTerm()
     {
@@ -199,6 +218,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseTermExpASTNode,
             "133%91"
         );
+        TestOnParseExpAstNode(tokens, "133%91");
     }
     public void test_ParseMod()
     {
@@ -212,6 +232,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseFactorExpASTNode,
             "133%91"
         );
+        TestOnParseExpAstNode(tokens, "133%91");
     }
     public void test_ParseDiv()
     {
@@ -225,6 +246,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseFactorExpASTNode,
             "882/42"
         );
+        TestOnParseExpAstNode(tokens, "882/42");
     }
     public void test_ParseMlt()
     {
@@ -240,6 +262,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseFactorExpASTNode,
             "-7*-6"
         );
+        TestOnParseExpAstNode(tokens, "-7*-6");
     }
     public void test_ParseFactor()
     {
@@ -252,6 +275,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseFactorExpASTNode,
             "-42"
         );
+        TestOnParseExpAstNode(tokens, "-42");
     }
     public void test_ParseNot()
     {
@@ -264,6 +288,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseUnaryExpASTNode,
             "not42"
         );
+        TestOnParseExpAstNode(tokens, "not42");
     }
     public void test_ParseMinus()
     {
@@ -276,6 +301,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParseUnaryExpASTNode,
             "-42"
         );
+        TestOnParseExpAstNode(tokens, "-42");
     }
     public void test_ParseUnary()
     {
@@ -298,6 +324,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParsePrimaryExpASTNode,
             "42"
         );
+        TestOnParseExpAstNode(tokens, "42");
     }
     public void test_ParseFloatLiteral()
     {
@@ -309,6 +336,7 @@ public partial class EnemyParserTester
             new EnemyParser().ParsePrimaryExpASTNode,
             "3.14"
         );
+        TestOnParseExpAstNode(tokens, "3.14");
     }
     public void test_ParseSymbolIDLiteral()
     {
@@ -320,5 +348,6 @@ public partial class EnemyParserTester
             new EnemyParser().ParsePrimaryExpASTNode,
             "foo"
         );
+        TestOnParseExpAstNode(tokens, "foo");
     }
 }

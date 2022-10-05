@@ -23,7 +23,7 @@ public class TokenStream
 
     public ScriptToken Read()
     {
-        if (CurrentPointer.OnTerminal()) throw new Exception("This Pointer is on the terminal. Therefore you can't proceed with the pointer any longer.");
+        if (CurrentPointer.OnTerminal()) return ScriptToken.EndOfFile;
         return sequence[index++];
     }
     public ScriptToken Lookahead() => sequence[index];

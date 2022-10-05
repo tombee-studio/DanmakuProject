@@ -163,8 +163,7 @@ public partial class EnemyParser
     public ParseResult<FactorExpASTNodeBase> ParseFactorExpASTNode(TokenStreamPointer pointer)
     {
         var observer = pointer.StartStream();
-        observer.should.ExpectConsumedBy(ParseUnaryExpASTNode, out var unary);
-
+            observer.should.ExpectConsumedBy(ParseUnaryExpASTNode, out var unary);
         ScriptToken op = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         if (false) { }
         else if (observer.maybe.Expect("*").IsSatisfied)
@@ -209,6 +208,13 @@ public partial class EnemyParser
             res.CurrentPointer
         );
     }
+
+    private bool TestParseUnaryExpASTNode(TokenStreamPointer pointer)
+        => pointer.StartStream().maybe
+            .Expect("-")
+            .ExpectConsumedBy(ParsePrimaryExpASTNode, out PrimaryExpASTNodeBase captured)
+            .IsSatisfied;
+
     public ParseResult<PrimaryExpASTNodeBase> ParsePrimaryExpASTNode(TokenStreamPointer pointer)
     {
         var observer = pointer.StartStream();

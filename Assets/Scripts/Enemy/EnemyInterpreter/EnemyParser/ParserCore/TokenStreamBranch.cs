@@ -10,7 +10,7 @@ public class TokenStreamBranch
     {
         target = _target;
     }
-    public TokenStreamBranch Try<N>(string tokenInString)
+    public TokenStreamBranch Try(string tokenInString)
     {
         if (_result != null) return this;
         var parseResult = target.maybe.Expect(tokenInString);

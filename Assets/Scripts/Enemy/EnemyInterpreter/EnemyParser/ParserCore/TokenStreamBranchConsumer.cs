@@ -1,6 +1,6 @@
 ﻿#nullable enable
 using System;
-public class TokenStreamBranchConsumer<ResultType> where ResultType:notnull
+public class TokenStreamBranchConsumer<ResultType> where ResultType : notnull
 {
     public delegate ParseResult<NodeType> ParserFunction<NodeType>(TokenStreamPointer pointer) where NodeType : ResultType;
 
@@ -15,10 +15,17 @@ public class TokenStreamBranchConsumer<ResultType> where ResultType:notnull
     public TokenStreamBranchConsumer<ResultType> Try<N>(ParserFunction<N> parseFunction) where N : ResultType
     {
         if (_result != null) return this;
-        var parseResult = parseFunction.Invoke(target.CurrentPointer);
-        if (!parseResult.IsSucceeded()) return this;
-        _result = parseResult.ParsedNode;
-        parseResult.ApplyIfSucceeded(ref target);
-        return this;
+        try
+        {
+            var parseResult = parseFunction.Invoke(target.CurrentPointer);
+            if (!parseResult.IsSucceeded()) return this;
+            _result = parseResult.ParsedNode;
+            parseResult.ApplyIfSucceeded(ref target);
+            return this;
+        }
+        catch (ParseException e)  // should モードのときに投げられる exception を握りつぶす
+        {
+            return this;  // if (!parseResult.IsSucceeded()) return this;  と同じ
+        }
     }
 }

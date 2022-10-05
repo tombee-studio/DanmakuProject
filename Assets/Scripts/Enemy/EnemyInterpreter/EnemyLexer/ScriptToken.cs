@@ -25,6 +25,7 @@ public struct ScriptToken
                 return GenerateReservedToken(token);
         }
     }
+    public static ScriptToken EndOfFile => new(){ type = Type.END_OF_FILE };
     public enum Type
     {
         NONE,

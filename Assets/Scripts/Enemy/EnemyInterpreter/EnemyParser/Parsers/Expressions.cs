@@ -167,28 +167,29 @@ public partial class EnemyParser
     public ParseResult<PrimaryExpASTNodeBase> ParsePrimaryExpASTNode(TokenStreamPointer pointer)
     {
         var observer = pointer.StartStream();
-        TokenStreamChecker result = observer.maybe.ExpectVariable(out ScriptToken capturedToken);
-        TokenStreamChecker resultOfExp;
-        if (result.IsSatisfied)
+        if (observer.maybe
+            .ExpectVariable(out var capturedToken)
+            .IsSatisfied)
         {
             switch (capturedToken.type)
             {
                 case ScriptToken.Type.INT_LITERAL:
-                    return new(new PrimaryExpASTNode(capturedToken.int_val), result.CurrentPointer);
+                    return new(new PrimaryExpASTNode(capturedToken.int_val), observer.CurrentPointer);
                 case ScriptToken.Type.FLOAT_LITERAL:
-                    return new(new PrimaryExpASTNode(capturedToken.float_val), result.CurrentPointer);
+                    return new(new PrimaryExpASTNode(capturedToken.float_val), observer.CurrentPointer);
                 case ScriptToken.Type.SYMBOL_ID:
-                    return new(new PrimaryExpASTNode(capturedToken.user_defined_symbol), result.CurrentPointer);
+                    return new(new PrimaryExpASTNode(capturedToken.user_defined_symbol), observer.CurrentPointer);
                 default:
                     throw new Exception($"Unexpected token {capturedToken.ToString()} received");
             }
         }
-        else if ((resultOfExp = observer.maybe
-            .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase capturedExp)
-            ).IsSatisfied)
+        else
         {
-            return new(new PrimaryExpASTNode(capturedToken.user_defined_symbol), resultOfExp.CurrentPointer);
+            observer.should
+                .Expect("(");
+            observer.should.ExpectConsumedBy(ParseExpASTNode, out var exp);
+            observer.should.Expect(")");
+            return new(new PrimaryExpASTNode(exp), observer.CurrentPointer);
         }
-        return ParseResult<PrimaryExpASTNodeBase>.Failed("This token's line is not primary expression.", "PrimaryExpASTNode", pointer);
     }
 }

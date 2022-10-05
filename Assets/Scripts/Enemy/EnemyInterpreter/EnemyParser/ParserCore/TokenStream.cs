@@ -34,9 +34,13 @@ public class TokenStream
     {
         this.index = initialPointer;
     }
-    public TokenStreamBranch<BasedNodeType> match<BasedNodeType>()
+    public TokenStreamBranchConsumer<BasedNodeType> matchConsume<BasedNodeType>()
     {
-        return new TokenStreamBranch<BasedNodeType>(this);
+        return new TokenStreamBranchConsumer<BasedNodeType>(this);
+    }
+    public TokenStreamBranch match()
+    {
+        return new TokenStreamBranch(this);
     }
 
 }

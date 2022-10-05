@@ -67,7 +67,9 @@ public struct ScriptToken
 
         SYMBOL_ID,
         INT_LITERAL,
-        FLOAT_LITERAL
+        FLOAT_LITERAL,
+
+        END_OF_FILE
 
     };
 

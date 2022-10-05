@@ -15,6 +15,11 @@ public class TokenStream
     public static TokenStream FromPointer(TokenStreamPointer pointer) => new(pointer.sequence, pointer.index);
     public TokenStreamPointer CurrentPointer => new(sequence, index);
 
+    public void RestartStreamFrom(TokenStreamPointer p)
+    {
+        if (!this.sequence.Equals(p.sequence)) throw new Exception("Can not restart on the different token sequence.");
+        index = p.index;
+    }
 
     public ScriptToken Read()
     {

@@ -59,6 +59,22 @@ public partial class EnemyParser
     {
         return new(ParseEqualityExpASTNode(pointer).ParsedNode, pointer);
     }
+    public ParseResult<LogicalExpASTNodeBase> ParseLogicalExpASTNode(TokenStreamPointer pointer)
+    {
+        var observer = pointer.StartStream();
+        observer.should
+            .ExpectConsumedBy(ParseEqualityExpASTNode, out var equality);
+        var result = observer.match()
+            .Try("and")
+            .Try("or");
+
+        if (result.Result == null)
+        {
+            return new(equality, observer.CurrentPointer);
+        }
+        observer.should.ExpectConsumedBy(ParseLogicalExpASTNode, out var logical);
+        return new(new LogicalExpASTNode(equality, (ScriptToken)result.Result, logical), observer.CurrentPointer);
+    }
     public ParseResult<EqualityExpASTNodeBase> ParseEqualityExpASTNode(TokenStreamPointer pointer)
     {
         var observer = pointer.StartStream();
@@ -75,22 +91,6 @@ public partial class EnemyParser
         }
         observer.should.ExpectConsumedBy(ParseEqualityExpASTNode, out var equality);
         return new(new EqualityExpASTNode(relational, (ScriptToken)result.Result, equality), observer.CurrentPointer);
-    }
-    public ParseResult<LogicalExpASTNodeBase> ParseLogicalExpASTNode(TokenStreamPointer pointer)
-    {
-        var observer = pointer.StartStream();
-        observer.should
-            .ExpectConsumedBy(ParseEqualityExpASTNode, out var equality);
-        var result = observer.match()
-            .Try("and")
-            .Try("or");
-
-        if (result.Result == null)
-        {
-            return new(equality, observer.CurrentPointer);
-        }
-        observer.should.ExpectConsumedBy(ParseLogicalExpASTNode, out var logical);
-        return new(new LogicalExpASTNode(equality, (ScriptToken)result.Result, logical), observer.CurrentPointer);
     }
     public ParseResult<RelationalExpASTNodeBase> ParseRelationalExpASTNode(TokenStreamPointer pointer)
     {

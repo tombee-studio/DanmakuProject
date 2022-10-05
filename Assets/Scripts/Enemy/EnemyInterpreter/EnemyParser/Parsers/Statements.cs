@@ -20,7 +20,7 @@ public partial class EnemyParser
 
     public ParseResult<StatementASTNodeBase> ParseStatement(TokenStreamPointer pointer) {
         var stream = pointer.StartStream();
-        var result = stream.match<StatementASTNodeBase>()
+        var result = stream.matchConsume<StatementASTNodeBase>()
             .Try(ParseAssignSt)
             .Try(ParseExpSt)
             .Result;

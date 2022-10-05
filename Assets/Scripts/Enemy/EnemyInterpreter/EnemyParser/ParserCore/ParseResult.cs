@@ -48,7 +48,7 @@ public struct ParseResult<N> where N:notnull
 
     public ParseResult<N> ApplyIfSucceeded(ref TokenStream stream)
     {
-        if (IsSucceeded()) stream.RestartStreamFrom(pointerWhenParseFinished);
+        if (IsSucceeded()) stream = TokenStream.FromPointer(pointerWhenParseFinished);
         return this;
     }
     public ParseResult<N> ShouldSucceed()

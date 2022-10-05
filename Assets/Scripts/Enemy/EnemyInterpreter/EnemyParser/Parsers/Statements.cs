@@ -117,7 +117,7 @@ public partial class EnemyParser
                 "BlockStASTNodeBase",
                 stream.CurrentPointer);
         }
-        if (stream.maybe
+        else if (stream.maybe
                 .Expect("else")
                 .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase elseStatement)
                 .IsSatisfied)
@@ -153,7 +153,7 @@ public partial class EnemyParser
 
     public ParseResult<RepeatStASTNodeBase> ParseRepeatSt(TokenStreamPointer pointer) {
         var stream = pointer.StartStream();
-        if (!stream.should
+        if (!stream.maybe
             .Expect("repeat")
             .Expect("(")
             .ExpectVariable(out ScriptToken token)

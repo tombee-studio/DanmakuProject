@@ -17,7 +17,7 @@ public class TokenStream
 
     public void RestartStreamFrom(TokenStreamPointer p)
     {
-        if (this.sequence.Equals(p.sequence)) throw new Exception("Can not restart on the different token sequence.");
+        if (!this.sequence.Equals(p.sequence)) throw new Exception("Can not restart on the different token sequence.");
         index = p.index;
     }
 

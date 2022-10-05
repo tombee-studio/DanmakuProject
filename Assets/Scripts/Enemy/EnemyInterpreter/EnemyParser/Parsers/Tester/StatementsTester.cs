@@ -86,7 +86,7 @@ public partial class EnemyParserTester
         ValidatePrintResult(
             tokens,
             new EnemyParser().ParseIfSt,
-            "if(0)42else91"
+            "if(0)42else91\n"
         );
     }
     void test_if(){
@@ -100,7 +100,7 @@ public partial class EnemyParserTester
         ValidatePrintResult(
             tokens,
             new EnemyParser().ParseIfSt,
-            "if(1)42"
+            "if(1)42\n"
         );
     }
     void test_assign_st1()

@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-// TODO: EnemyASTNodeTester ではなく, EnemyParserTester ではないか?
 public partial class EnemyParserTester
 {
     public void ValidatePrintResult<N>(
@@ -24,6 +23,31 @@ public partial class EnemyParserTester
         ValidatePrintResult(tokens, new EnemyParser().ParseExpASTNode, expected);
     }
     public void test_ParseExp()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParseExpASTNode,
+            "42"
+        );
+        TestOnParseExpAstNode(tokens, "42");
+    }
+    public void test_ParseExpWithBracket()
+    {
+        var tokens = new List<ScriptToken>()
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.BRACKET_LEFT))
+            .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
+            .Append(ScriptToken.GenerateToken("", ScriptToken.Type.BRACKET_RIGHT))
+            .ToList();
+        ValidatePrintResult(
+            tokens,
+            new EnemyParser().ParsePrimaryExpASTNode,
+            "(42)"
+        );
+        TestOnParseExpAstNode(tokens, "(42)");
+    }
     public void test_ParseAnd()
     {
         var tokens = new List<ScriptToken>()
@@ -309,7 +333,7 @@ public partial class EnemyParserTester
             .Append(ScriptToken.GenerateToken("42", ScriptToken.Type.INT_LITERAL))
             .ToList();
         ValidatePrintResult(
-            tokens, 
+            tokens,
             new EnemyParser().ParseUnaryExpASTNode,
             "42"
         );

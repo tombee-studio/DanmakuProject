@@ -14,8 +14,10 @@ public class TokenStreamBranch
     {
         if (_result != null) return this;
         var parseResult = target.maybe.Expect(tokenInString);
-        if (!parseResult.IsSatisfied) return this;
-        _result = target.CurrentPointer.sequence[target.CurrentPointer.index];
+        if (parseResult.IsSatisfied)
+        {
+            _result = target.CurrentPointer.sequence[target.CurrentPointer.index - 1];
+        }
         return this;
     }
 }

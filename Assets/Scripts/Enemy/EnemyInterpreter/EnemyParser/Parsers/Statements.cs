@@ -14,29 +14,30 @@ public partial class EnemyParser
             stream.CurrentPointer);
     }
 
-    public ParseResult<StatementASTNodeBase> ParseStatement(TokenStreamPointer pointer) {
-        var stream = pointer.StartStream();
-        var result = stream.matchConsume<StatementASTNodeBase>()
-            .Try(ParseIfSt)
-            .Try(ParseExpSt)
-            .Try(ParseBlockSt)
+    public ParseResult<StatementASTNodeBase> ParseStatement(TokenStreamPointer pointer)
+    {
+        var observer = pointer.StartStream();
+        var result = observer.matchConsume<StatementASTNodeBase>()
             .Try(ParseBreakSt)
+            .Try(ParseBlockSt)
+            .Try(ParseDeclarationSt)
+            .Try(ParseIfSt)
             .Try(ParseAssignSt)
             .Try(ParseRepeatSt)
-            .Try(ParseCallFuncStASTNode)
+            .Try(ParseExpSt)
             .Result;
         if (result == null)
         {
             throw new ParseException("Undefined Exception");
         }
-        else {
-            return new (
-                result,
-                stream.CurrentPointer);
+        else
+        {
+            return new(result, observer.CurrentPointer);
         }
     }
 
-    public ParseResult<BlockStASTNodeBase> ParseBlockSt(TokenStreamPointer pointer) {
+    public ParseResult<BlockStASTNodeBase> ParseBlockSt(TokenStreamPointer pointer)
+    {
         var stream = pointer.StartStream();
         stream.should
             .Expect("{")
@@ -50,20 +51,23 @@ public partial class EnemyParser
     public ParseResult<DeclarationStASTNodeBase> ParseDeclarationSt(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
-        if(false){}
-        else if(stream.maybe.Expect("int").IsSatisfied){
+        if (false) { }
+        else if (stream.maybe.Expect("int").IsSatisfied)
+        {
             stream.should.ExpectSymbolID(out var id);
             return new ParseResult<DeclarationStASTNodeBase>(
                 new DeclarationStASTNode(PrimitiveValue.Type.INT, id),
                 stream.CurrentPointer);
         }
-        else if(stream.maybe.Expect("float").IsSatisfied){
+        else if (stream.maybe.Expect("float").IsSatisfied)
+        {
             stream.should.ExpectSymbolID(out var id);
             return new ParseResult<DeclarationStASTNodeBase>(
                 new DeclarationStASTNode(PrimitiveValue.Type.FLOAT, id),
                 stream.CurrentPointer);
         }
-        else{
+        else
+        {
             return ParseResult<DeclarationStASTNodeBase>.Failed(
                 "expected int, float",
                 "DeclarationStASTNode",
@@ -79,7 +83,7 @@ public partial class EnemyParser
             new ExpStASTNode(exp),
             stream.CurrentPointer);
     }
-    
+
     public ParseResult<IfStASTNodeBase> ParseIfSt(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
@@ -90,7 +94,8 @@ public partial class EnemyParser
             .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase cond)
             .Expect(")")
             .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase statement);
-        if(!stream.maybe.Expect("else").IsSatisfied){
+        if (!stream.maybe.Expect("else").IsSatisfied)
+        {
             return new ParseResult<IfStASTNodeBase>(
                 new IfStASTNode(cond, statement),
                 stream.CurrentPointer);
@@ -107,12 +112,13 @@ public partial class EnemyParser
         stream.should.ExpectSymbolID(out string id)
             .Expect("=")
             .ExpectConsumedBy(ParseExpASTNode, out ExpASTNodeBase exp);
-        return new (
+        return new(
             new AssignStASTNode(id, exp),
             stream.CurrentPointer);
     }
 
-    public ParseResult<RepeatStASTNodeBase> ParseRepeatSt(TokenStreamPointer pointer) {
+    public ParseResult<RepeatStASTNodeBase> ParseRepeatSt(TokenStreamPointer pointer)
+    {
         var stream = pointer.StartStream();
         stream.should
             .Expect("repeat")
@@ -120,7 +126,7 @@ public partial class EnemyParser
             .ExpectVariable(out ScriptToken token)
             .Expect(")")
             .ExpectConsumedBy(ParseStatement, out StatementASTNodeBase statement);
-        return new (
+        return new(
             new RepeatStASTNode(
                 token.int_val,
                 statement),

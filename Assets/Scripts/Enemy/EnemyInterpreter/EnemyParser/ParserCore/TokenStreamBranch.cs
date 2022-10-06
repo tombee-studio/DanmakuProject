@@ -1,24 +1,23 @@
 ﻿#nullable enable
 using System;
-public class TokenStreamBranch<ResultType> where ResultType:notnull
+public class TokenStreamBranch
 {
-    public delegate ParseResult<NodeType> ParserFunction<NodeType>(TokenStreamPointer pointer) where NodeType : ResultType;
-
     private TokenStream target;
-    private ResultType? _result;
-    public ResultType? Result { get => _result; }
+    private ScriptToken? _result;
+    public ScriptToken? Result { get => _result; }
 
     public TokenStreamBranch(TokenStream _target)
     {
         target = _target;
     }
-    public TokenStreamBranch<ResultType> Try<N>(ParserFunction<N> parseFunction) where N : ResultType
+    public TokenStreamBranch Try(string tokenInString)
     {
         if (_result != null) return this;
-        var parseResult = parseFunction.Invoke(target.CurrentPointer);
-        if (!parseResult.IsSucceeded()) return this;
-        _result = parseResult.ParsedNode;
-        parseResult.ApplyIfSucceeded(ref target);
+        var parseResult = target.maybe.Expect(tokenInString);
+        if (parseResult.IsSatisfied)
+        {
+            _result = target.CurrentPointer.sequence[target.CurrentPointer.index - 1];
+        }
         return this;
     }
 }

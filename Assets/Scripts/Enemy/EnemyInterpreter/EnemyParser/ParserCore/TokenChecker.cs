@@ -90,7 +90,7 @@ public class TokenStreamChecker
     {
         var nextToken = target.Read();
         if (!allowedTokenTypeList.Contains(nextToken.type)) RecognizeFailed($"expected something of variable tokens but `{nextToken.type}` is coming.");
-        captured = nextToken; 
+        captured = nextToken;
         return this;
     }
     public TokenStreamChecker ExpectSymbolID(out string captured)
@@ -173,10 +173,18 @@ public class TokenStreamChecker
     public TokenStreamChecker ExpectMultiComsumer<N>(ParserFunction<N> parser, out List<N> captured) where N : notnull
     {
         captured = new();
-        while (true) {
-            MaybeConsumedBy(parser, out N? result);
-            if (result == null) break;
-            captured.Add(result ?? throw new Exception());
+        while (true)
+        {
+            try
+            {
+                MaybeConsumedBy(parser, out N? result);
+                if (result == null) break;
+                captured.Add(result ?? throw new Exception());
+            }
+            catch (ParseException e)  // parser 内で should を使っていると exception が返ってくるので, 失敗扱いで処理をする.
+            {
+                break;
+            }
         }
         return this;
     }

@@ -110,7 +110,7 @@ public partial class EnemyLexer {
         }
 
         var lineCount = 0;
-        var columnCount = 0; var tokenStartingColumnNumber = 0;
+        var columnCount = 0;
         var codeCharNumber = code.Length;
         
         var tokens = new List<ScriptToken>();
@@ -122,23 +122,23 @@ public partial class EnemyLexer {
             char nextChar = code[textPointer + 1];
             if (currentChar == '\n')
             {
-                lineCount++; columnCount = 0; tokenStartingColumnNumber = 0;
+                lineCount++; columnCount = 0;
                 continue;
             }
-            columnCount++; 
+            columnCount++;
 
             if (shouldSkippedCurrentCharacter(snippet, currentChar)) continue;
             snippet += currentChar;
+
             if (!existPossibleTokenWhenLookaheading(snippet, nextChar)){
-                tokenStartingColumnNumber = columnCount;
-                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, lineCount, columnCount - tokenStartingColumnNumber));
+                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, columnCount));
                 snippet = "";
             }
         }
 
         if (shouldSkippedCurrentCharacter(snippet, code[codeCharNumber - 1])) return tokens;
         snippet += code[codeCharNumber - 1];
-        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, lineCount, columnCount));
+        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, columnCount));
         return tokens;
     }
     /**
@@ -154,10 +154,12 @@ public partial class EnemyLexer {
     /**
      * snippetに含まれる文字列をトークン列に変換する
      */
-    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode, int lineNumber, int columnNumber)
+    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode, int tokenEndColumnNumber)
     {
         var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet, lineCount, allCode);
-        return ScriptToken.GenerateTokenWithPosition(snippet, matchedTokenTypeInLastChar, lineNumber, columnNumber);
+        int length = snippet.Length;
+        TokenRangeInCode tokenRange = new(lineCount, tokenEndColumnNumber - length, length);
+        return ScriptToken.GenerateTokenWithPosition(snippet, matchedTokenTypeInLastChar, tokenRange);
     }
 
     /*

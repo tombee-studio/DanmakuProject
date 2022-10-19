@@ -6,7 +6,7 @@ public struct TokenRangeInCode
     int lineNumber;
     int beginColumnNumber;
     int length;
-    public TokenRangeInCode(int lineNumber, int beginColumnNumber, int endColumnNumber)
+    public TokenRangeInCode(int lineNumber, int beginColumnNumber, int length)
     {
         this.lineNumber = lineNumber;
         this.beginColumnNumber = beginColumnNumber;
@@ -41,7 +41,6 @@ public struct ScriptToken
     }
     public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, int lineNumber, int beginColumnNumber, int length)
     {
-
         ScriptToken scriptToken = GenerateToken(snippet, token);
         scriptToken.range = new(lineNumber, beginColumnNumber, length);
         return scriptToken;

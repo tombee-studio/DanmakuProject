@@ -520,7 +520,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "behavior enemy001 {\n  bullet >>\n       ID: 0\n            generate_bullets(24)\n           
+  m_Text: "behavior enemy001 {\n  bullet >>\n      ID : 0\n            generate_bullets(24)\n           
     set_bullets_position_at_enemy(0)\n            scatter_bullets_in_circular_pattern(0.1f,
     0f)\n            delay_bullets(60)\n            scatter_bullets_in_circular_pattern(0.1f,
     180f)\n            delay_bullets(120)\n\n       ID: 1\n            generate_bullets(24)\n           

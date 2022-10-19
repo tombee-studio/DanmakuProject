@@ -1,6 +1,18 @@
 ﻿#nullable enable
 using UnityEngine;
 
+public struct TokenRangeInCode
+{
+    int lineNumber;
+    int beginColumnNumber;
+    int length;
+    public TokenRangeInCode(int lineNumber, int beginColumnNumber, int endColumnNumber)
+    {
+        this.lineNumber = lineNumber;
+        this.beginColumnNumber = beginColumnNumber;
+        this.length = length;
+    }
+}
 public struct ScriptToken
 {
     public Type type;
@@ -8,10 +20,7 @@ public struct ScriptToken
     public int int_val;
     public float float_val;
 
-    private int? _lineNumber;
-    private int? _columnNumber;
-    public int? LineNumber { get => _lineNumber; }
-    public int? ColumnNumber { get => _columnNumber; }    
+    public TokenRangeInCode range;
 
     /**
      * 与えられたトークンの情報から適切にトークンを生成する。
@@ -30,12 +39,11 @@ public struct ScriptToken
                 return GenerateReservedToken(token);
         }
     }
-    public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, int lineNumber, int columnNumber)
+    public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, int lineNumber, int beginColumnNumber, int length)
     {
 
         ScriptToken scriptToken = GenerateToken(snippet, token);
-        scriptToken._lineNumber = lineNumber;
-        scriptToken._columnNumber = columnNumber;
+        scriptToken.range = new(lineNumber, beginColumnNumber, length);
         return scriptToken;
     }
     public static ScriptToken EndOfFile => new(){ type = Type.END_OF_FILE };

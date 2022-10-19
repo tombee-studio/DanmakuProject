@@ -12,6 +12,6 @@ public class ParseException : Exception
     {
         TokenRangeInCode range = scriptToken.range;
         int endColumnNumber = range.length + range.beginColumnNumber;
-        return new(message + $" : at line {range.lineNumber}, column {range.beginColumnNumber} to {endColumnNumber}");
+        return new(message + $" : at line {range.lineNumber}, column {range.beginColumnNumber} to {endColumnNumber} token number {pointer.index}");
     }
 }

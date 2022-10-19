@@ -24,6 +24,7 @@ public class EnemyComponent : MonoBehaviour
 
     void Start()
     {
+        vm = new EnemyVM(this);
         interpreter.test_run();
         LoadScript();
     }

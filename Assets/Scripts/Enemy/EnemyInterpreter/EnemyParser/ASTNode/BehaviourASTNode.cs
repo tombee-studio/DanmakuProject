@@ -10,7 +10,9 @@ public class BehaviourASTNode : BehaviourASTNodeBase
     {
         this.id = id;
         this.bulletAndAction = new List<ASTNode>();
-        this.bulletAndAction.Add(bullet);
+        if (bullet != null) {
+            this.bulletAndAction.Add(bullet);
+        }
         this.bulletAndAction.Add(action);
     }
     public BehaviourASTNode(string id, ActionASTNodeBase action)

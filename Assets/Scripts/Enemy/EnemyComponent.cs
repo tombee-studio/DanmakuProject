@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(CircleCollider2D), typeof(Text))]
 public class EnemyComponent : MonoBehaviour
 {
 #nullable enable
@@ -11,13 +12,13 @@ public class EnemyComponent : MonoBehaviour
     EnemyInterpreter interpreter { get => _interpreter ??= new EnemyInterpreter(this); }
     Dictionary<int, List<BulletComponent>> bulletsList = new Dictionary<int, List<BulletComponent>>();
     [SerializeField] BulletComponent? bulletPrefab;
+
+    [SerializeField] private Text script => GetComponent<Text>();
+
     void Start()
     {
         interpreter.test_run();
-        Debug.Log(interpreter.ReturnValue);
-#pragma warning disable CS0618  // ここではわざと使っているので警告を出さない.
-        Toriaezu();
-#pragma warning restore CS0618
+        LoadScript();
     }
     private List<ExpASTNodeBase> GetArgsList(params PrimitiveValue[] args)
     {
@@ -30,112 +31,19 @@ public class EnemyComponent : MonoBehaviour
     {
         return elements.ToList();
     }
-    // とりあえず動作させる
-    [System.Obsolete("とりあえず用意しただけのメソッドなのでいずれ消します")]
-    void Toriaezu()
+
+    void LoadScript()
     {
-        /* サンプルプログラム */
-        /*
-            bullet >>
-            ID: 0
-            generate_bullets(24)
-            set_bullets_position_at_enemy()
-            scatter_bullets_in_circular_pattern(0.1f, 0f)
-            delay_bullets(60)
-            scatter_bullets_in_circular_pattern(0.1f, 180f)
-            delay_bullets(120)
-
-            ID: 1
-            generate_bullets(24)
-            delay_bullets(60)
-            set_bullets_position_at_enemy()
-            scatter_bullets_in_circular_pattern(0.1f, 0f)
-            delay_bullets(60)
-            move_bullets_parallel(0.1f, 30f)
-            delay_bullets(120)
-
-            action >>
-            activate_bullets(0)
-            activate_bullets(1)
-        */
-        /* 上のサンプルに対応する AST の動作を確認する */
-        int id;
-        id = 0;
-        var nodes0 = getList(
-            new CallFuncStASTNode(
-                "generate_bullets",
-                GetArgsList(24)
-            ),
-            new CallFuncStASTNode(
-                "set_bullets_position_at_enemy",
-                GetArgsList()
-            ),
-            new CallFuncStASTNode(
-                "scatter_bullets_in_circular_pattern",
-                GetArgsList(0.1f, 0f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(60)
-            ),
-            new CallFuncStASTNode(
-                "scatter_bullets_in_circular_pattern",
-                GetArgsList(0.1f, 180f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(120)
-            ),
-            new CallFuncStASTNode(
-                "activate_bullets",
-                GetArgsList()
-            )
-        );
-        nodes0.ForEach(e=>e.id = id);
-
-        id = 1;
-        var nodes1 = getList(
-            new CallFuncStASTNode(
-                "generate_bullets",
-                GetArgsList(24)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(60)
-            ),
-            new CallFuncStASTNode(
-                "set_bullets_position_at_enemy",
-                GetArgsList()
-            ),
-            new CallFuncStASTNode(
-                "scatter_bullets_in_circular_pattern",
-                GetArgsList(0.1f, 0f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(60)
-            ),
-            new CallFuncStASTNode(
-                "move_bullets_parallel",
-                GetArgsList(0.1f, 30f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(120)
-            ),
-            new CallFuncStASTNode(
-                "activate_bullets",
-                GetArgsList()
-            )
-        );
-        nodes1.ForEach(e=>e.id = id);
+        var tokens = interpreter.compiler.lexer.Lex(script.text);
+        var ast = interpreter.compiler.parser.ParseBehaviour(
+            new TokenStreamPointer(tokens));
 
         var enemy = GameObject.FindObjectOfType<EnemyComponent>();
         var vm = new EnemyVM(enemy);
         var vtable = new Dictionary<string, int>();
-        var instructions = nodes0.Concat(nodes1)
-            .Select(node => node.Compile(vtable))
-            .SelectMany(instructions => instructions).ToList();
+        var instructions = ast.ParsedNode
+            .Compile(new Dictionary<string, int>())
+            .ToList();
         instructions.ForEach(instruction => vm.appendInstruction(instruction));
         while (!vm.IsExit)
         {

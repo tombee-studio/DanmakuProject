@@ -1,13 +1,17 @@
 ﻿using System;
+using UnityEngine;
+
 public partial class EnemyParser
 {
     public ParseResult<BulletASTNode> ParseBulletAST(TokenStreamPointer pointer)
     {
         var stream = pointer.StartStream();
-        if (stream.maybe.Expect("bullet").IsSatisfied) return ParseResult<BulletASTNode>.Failed("expected token `bullet` is not found.", "BulletAST", pointer);
+        if (!stream.maybe.Expect("bullet").IsSatisfied) {
+            return ParseResult<BulletASTNode>.Failed("expected token `bullet` is not found.", "BulletAST", pointer);
+        }
         stream.should
             .Expect(">>")
-            .ExpectMultiComsumerAtLeast1(ParseBulletSectionAST, out var bulletSections);
+            .ExpectMultiComsumer(ParseBulletSectionAST, out var bulletSections);
         return new(
             new BulletASTNode(bulletSections),
             stream.CurrentPointer
@@ -36,7 +40,7 @@ public partial class EnemyParser
         stream.should
             .Expect("action")
             .Expect(">>")
-            .ExpectMultiComsumerAtLeast1(ParseStatement, out var statementASTNodes);
+            .ExpectMultiComsumer(ParseStatement, out var statementASTNodes);
         return new(
             new ActionASTNode(statementASTNodes),
             stream.CurrentPointer

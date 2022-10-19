@@ -24,6 +24,7 @@ public partial class EnemyParser
             .Try(ParseIfSt)
             .Try(ParseAssignSt)
             .Try(ParseRepeatSt)
+            .Try(ParseCallFuncStASTNode)
             .Try(ParseExpSt)
             .Result;
         if (result == null)

@@ -6,10 +6,10 @@ public partial class EnemyParser {
         var stream = pointer.StartStream();
 
         stream.should
-            .Expect("behaviour")
+            .Expect("behavior")
             .ExpectSymbolID(out string id)
             .Expect("{")
-            .MaybeConsumedBy(ParseBulletAST, out BulletASTNode? bulletASTNode)
+            .ExpectConsumedBy(ParseBulletAST, out BulletASTNode bulletASTNode)
             .ExpectConsumedBy(ParseActionAST, out ActionASTNodeBase actionASTNode)
             .Expect("}");
 

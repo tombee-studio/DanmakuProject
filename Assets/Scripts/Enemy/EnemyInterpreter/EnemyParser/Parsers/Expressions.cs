@@ -14,18 +14,19 @@ public partial class EnemyParser
      */
     public ParseResult<CallFuncStASTNodeBase> ParseCallFuncStASTNode(TokenStreamPointer pointer)
     {
-        if (!TestCallFuncStASTNode(pointer))
-            return ParseResult<CallFuncStASTNodeBase>.Failed("This token's line is not function.", "CallFuncStASTNode", pointer);
         var observer = pointer.StartStream();
+        if (!observer.maybe.ExpectSymbolID(out string funcName).IsSatisfied) {
+            return ParseResult<CallFuncStASTNodeBase>.Failed("This token's line is not function.", "CallFuncStASTNode", pointer);
+        }
         observer.should
-            .ExpectSymbolID(out string functionID)
             .Expect("(")
             .ExpectMultiComsumer(partialParseOneArg, out List<ExpASTNodeBase> expASTNodes)
-            .MaybeConsumedBy(ParseExpASTNode, out var expASTNodeNullable);
+            .MaybeConsumedBy(ParseExpASTNode, out var expASTNodeNullable)
+            .Expect(")");
         if (expASTNodeNullable != null) expASTNodes.Add(expASTNodeNullable);
 
         return new(
-                new CallFuncStASTNode(functionID, expASTNodes),
+                new CallFuncStASTNode(funcName, expASTNodes),
                 observer.CurrentPointer
         );
     }

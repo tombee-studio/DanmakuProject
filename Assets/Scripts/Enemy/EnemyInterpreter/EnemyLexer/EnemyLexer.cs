@@ -110,7 +110,7 @@ public partial class EnemyLexer {
         }
 
         var lineCount = 0;
-        var columnCount = 0;
+        var columnCount = 0; var tokenStartingColumnNumber = 0;
         var codeCharNumber = code.Length;
         
         var tokens = new List<ScriptToken>();
@@ -122,15 +122,16 @@ public partial class EnemyLexer {
             char nextChar = code[textPointer + 1];
             if (currentChar == '\n')
             {
-                lineCount++; columnCount = 0;
+                lineCount++; columnCount = 0; tokenStartingColumnNumber = 0;
                 continue;
             }
-            columnCount++;
+            columnCount++; 
 
             if (shouldSkippedCurrentCharacter(snippet, currentChar)) continue;
             snippet += currentChar;
             if (!existPossibleTokenWhenLookaheading(snippet, nextChar)){
-                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, lineCount, columnCount));
+                tokenStartingColumnNumber = columnCount;
+                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, lineCount, columnCount - tokenStartingColumnNumber));
                 snippet = "";
             }
         }

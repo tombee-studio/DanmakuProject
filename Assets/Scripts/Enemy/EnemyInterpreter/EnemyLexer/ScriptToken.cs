@@ -3,9 +3,9 @@ using UnityEngine;
 
 public struct TokenRangeInCode
 {
-    int lineNumber;
-    int beginColumnNumber;
-    int length;
+    public int lineNumber;
+    public int beginColumnNumber;
+    public int length;
     public TokenRangeInCode(int lineNumber, int beginColumnNumber, int length)
     {
         this.lineNumber = lineNumber;

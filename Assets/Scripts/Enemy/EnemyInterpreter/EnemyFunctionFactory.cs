@@ -101,4 +101,10 @@ public class EnemyFunctionFactory
         float speed = vm.PopFromStack();
         enemy.ScatterBulletsInCircularPattern(id, speed, angleOffset);
     }
+
+    public void Wait(EnemyComponent enemy, EnemyVM vm)
+    {
+        int frames = vm.PopFromStack();
+        enemy.SetDelayTime(frames);
+    }
 }

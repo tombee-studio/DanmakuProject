@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,15 +12,22 @@ public class EnemyComponent : MonoBehaviour
 
     EnemyInterpreter interpreter { get => _interpreter ??= new EnemyInterpreter(this); }
     Dictionary<int, List<BulletComponent>> bulletsList = new Dictionary<int, List<BulletComponent>>();
+    Dictionary<int, List<GunAction>> gunActions = new Dictionary<int, List<GunAction>>();
+
     [SerializeField] BulletComponent? bulletPrefab;
 
     [SerializeField] private Text script => GetComponent<Text>();
+
+    private int delayTime = 0;
+
+    private EnemyVM vm;
 
     void Start()
     {
         interpreter.test_run();
         LoadScript();
     }
+
     private List<ExpASTNodeBase> GetArgsList(params PrimitiveValue[] args)
     {
         return new List<ExpASTNodeBase>(
@@ -39,21 +47,26 @@ public class EnemyComponent : MonoBehaviour
             new TokenStreamPointer(tokens));
 
         var enemy = GameObject.FindObjectOfType<EnemyComponent>();
-        var vm = new EnemyVM(enemy);
+        vm = new EnemyVM(enemy);
         var vtable = new Dictionary<string, int>();
         var instructions = ast.ParsedNode
             .Compile(new Dictionary<string, int>())
             .ToList();
         instructions.ForEach(instruction => vm.appendInstruction(instruction));
-        while (!vm.IsExit)
-        {
-            vm.run();
-        }
     }
 
     void Update()
     {
-        Move(0.25f * Mathf.Cos(Mathf.Deg2Rad * 30), 0.25f * Mathf.Sin(Mathf.Deg2Rad * 30));  // とりあえずの動き
+        if (delayTime > 0)
+        {
+            delayTime--;
+        }
+        else {
+            while (!vm.IsExit && delayTime < 1)
+            {
+                vm.run();
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -82,50 +95,49 @@ public class EnemyComponent : MonoBehaviour
         if (bulletPrefab == null) { throw new System.NullReferenceException("Set bullet Prefab from inspector."); }
         if (bulletsList.ContainsKey(id)) { throw new System.Exception($"Duplicated Key Exception: id = {id} already used. (id = {id} は既に使われています.)"); }
 
-        bulletsList.Add(id, new List<BulletComponent>());
-        for (int i = 0; i < bulletCount; i++)
-        {
-            bulletsList[id].Add(Instantiate(bulletPrefab));
-        }
-        // 画面外で初期化. 弾は活動開始まで画面外で待機.
-        Vector3 extreme = 100 * WindowInformation.UP_RIGHT;
-        bulletsList[id].ForEach(bullet => bullet.transform.position = new Vector3(extreme.x, extreme.y, 0));
+        gunActions.Add(id, new List<GunAction>());
+        gunActions[id].Add(new GenerateBulletGunAction(bulletCount));
     }
     public void ActivateBullets(int id)
     {
-        bulletsList[id].ForEach(bullet => bullet.Activate());
+        var bullets = new List<BulletComponent>();
+        foreach (var gunAction in gunActions[id]) {
+            bullets = gunAction.Run(this, bullets);
+        }
+        foreach (var bullet in bullets) {
+            bullet.Activate();
+        }
     }
     public void DelayBullets(int id, int frames)
     {
-        bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletDelay(bullet, frames)));
+        gunActions[id].Add(new DelayGunAction(frames));
     }
     public void SetBulletsPositionAtEnemy(int id)
     {
-        bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletSetRelativePosition(bullet, Vector3.zero, transform)));
+        gunActions[id].Add(new SetBulletsPositionAtEnemyGunAction());
     }
     public void MoveBulletsParallel(int id, float speed, float angleOffset)
     {
-        bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletMoveLinear(bullet, speed, angleOffset)));
+        gunActions[id].Add(
+            new MoveBulletsParallelGunAction(speed, angleOffset));
     }
     public void SetBulletsPositionInCircularPattern(int id, float angleOffset/* = 0*/)
     {
-        int i = 0;
-        bulletsList[id].ForEach(bullet =>
-        {
-            float deg = i * (360f / bulletsList[id].Count);
-            Vector3 relativePos = new Vector3(Mathf.Cos(Mathf.Deg2Rad * (deg + angleOffset)), Mathf.Sin(Mathf.Deg2Rad * (deg + angleOffset)), 0f);
-            bullet.EnqueueAction(new BulletSetRelativePosition(bullet, relativePos, transform));
-            i++;
-        });
+        gunActions[id].Add(
+            new SetBulletsPositionInCircularPatternGunAction(angleOffset));
     }
     public void ScatterBulletsInCircularPattern(int id, float speed, float angleOffset/* = 0*/)
     {
-        int i = 0;
-        bulletsList[id].ForEach(bullet =>
-        {
-            float deg = i * (360f / bulletsList[id].Count);
-            bullet.EnqueueAction(new BulletMoveLinear(bullet, speed, deg + angleOffset));
-            i++;
-        });
+        gunActions[id].Add(
+            new ScatterBulletsInCircularPatternGunAction(speed, angleOffset));
+    }
+
+    public void SetDelayTime(int delayTime) {
+        this.delayTime = delayTime;
+    }
+
+    public BulletComponent GenerateBullets()
+    {
+        return Instantiate(bulletPrefab);
     }
 }

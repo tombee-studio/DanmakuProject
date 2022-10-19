@@ -25,6 +25,7 @@ public class TokenStreamPointer
     {
         var actualPointer = index + delta;
         if (actualPointer > sequence.Count) throw ParseException.Information($"try to access ${actualPointer} but failed because the token sequence's length is {sequence.Count}.", this);
+        if (actualPointer == sequence.Count) return ScriptToken.EndOfFile;
         return sequence[actualPointer];
     }
     /// <summary>

@@ -4,7 +4,8 @@ public class ParseException : Exception
 {
     public ParseException(string message) : base(message) { }
     public static ParseException Information(string message, TokenStreamPointer pointer) {
-        ScriptToken currentToken = pointer.Access();
-        return new(message + $" : at line {currentToken.LineNumber}, column {currentToken.ColumnNumber} token number {pointer.index}");
+        TokenRangeInCode range = pointer.Access().range;
+        int endColumnNumber = range.length + range.beginColumnNumber;
+        return new(message + $" : at line {range.lineNumber}, column {range.beginColumnNumber} to {endColumnNumber} token number {pointer.index}");
     }
 }

@@ -39,10 +39,10 @@ public struct ScriptToken
                 return GenerateReservedToken(token);
         }
     }
-    public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, int lineNumber, int beginColumnNumber, int length)
+    public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, TokenRangeInCode tokenRange)
     {
         ScriptToken scriptToken = GenerateToken(snippet, token);
-        scriptToken.range = new(lineNumber, beginColumnNumber, length);
+        scriptToken.range = tokenRange;
         return scriptToken;
     }
     public static ScriptToken EndOfFile => new(){ type = Type.END_OF_FILE };

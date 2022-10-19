@@ -110,6 +110,7 @@ public partial class EnemyLexer {
         }
 
         var lineCount = 0;
+        var columnCount = 0;
         var codeCharNumber = code.Length;
         
         var tokens = new List<ScriptToken>();
@@ -119,19 +120,24 @@ public partial class EnemyLexer {
 
             char currentChar = code[textPointer];
             char nextChar = code[textPointer + 1];
-            if (currentChar == '\n') lineCount++;
-            
+            if (currentChar == '\n')
+            {
+                lineCount++; columnCount = 0;
+                continue;
+            }
+            columnCount++;
+
             if (shouldSkippedCurrentCharacter(snippet, currentChar)) continue;
             snippet += currentChar;
             if (!existPossibleTokenWhenLookaheading(snippet, nextChar)){
-                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code));
+                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, lineCount, columnCount));
                 snippet = "";
             }
         }
 
         if (shouldSkippedCurrentCharacter(snippet, code[codeCharNumber - 1])) return tokens;
         snippet += code[codeCharNumber - 1];
-        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code));
+        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, lineCount, columnCount));
         return tokens;
     }
     /**
@@ -147,10 +153,10 @@ public partial class EnemyLexer {
     /**
      * snippetに含まれる文字列をトークン列に変換する
      */
-    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode)
+    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode, int lineNumber, int columnNumber)
     {
         var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet, lineCount, allCode);
-        return ScriptToken.GenerateToken(snippet, matchedTokenTypeInLastChar);
+        return ScriptToken.GenerateTokenWithPosition(snippet, matchedTokenTypeInLastChar, lineNumber, columnNumber);
     }
 
     /*

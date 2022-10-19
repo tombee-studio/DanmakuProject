@@ -21,6 +21,5 @@ public partial class EnemyParserTester: Tester
         Assert.AreEqual(tokens.Count(), 23);
         var result = (new EnemyParser()).
             ParseBehaviour(new TokenStreamPointer(tokens));
-        Debug.Log(result.ParsedNode.Print(0));
     }
 }

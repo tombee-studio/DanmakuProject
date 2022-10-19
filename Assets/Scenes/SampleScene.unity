@@ -355,9 +355,9 @@ GameObject:
   - component: {fileID: 1517548206}
   - component: {fileID: 1517548209}
   - component: {fileID: 1517548208}
+  - component: {fileID: 1517548211}
   - component: {fileID: 1517548210}
   - component: {fileID: 1517548212}
-  - component: {fileID: 1517548211}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -527,7 +527,8 @@ MonoBehaviour:
     delay_bullets(60)\n            set_bullets_position_at_enemy(0)\n           
     scatter_bullets_in_circular_pattern(0.1f, 0f)\n            delay_bullets(60)\n           
     move_bullets_parallel(0.1f, 30f)\n            delay_bullets(120)\n\n  action
-    >>\n            activate_bullets(0)\n            activate_bullets(1)\n}"
+    >>\n            repeat(10) {\n                activate_bullets(0)\n               
+    wait(30)\n            }\n}"
 --- !u!222 &1517548212
 CanvasRenderer:
   m_ObjectHideFlags: 0

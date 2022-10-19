@@ -55,10 +55,10 @@ public class TokenStreamChecker
         this.initialPointer = initialPointer;
     }
 
-    private void RecognizeFailed(string reason)
+    private void RecognizeFailed(string reason, ScriptToken token)
     {
         isSatisfiedInTheConditionSequence = false;
-        parseException = ParseException.Information(reason, target.CurrentPointer);
+        parseException = ParseException.Information(reason, token);
         target.RecoverPointer(initialPointer);
         if (shouldBeSatisfied) throw parseException;
     }
@@ -66,7 +66,7 @@ public class TokenStreamChecker
     public TokenStreamChecker Expect(string tokenInString)
     {
         var nextToken = target.Read();
-        if (!TheSameTokens(nextToken, tokenInString)) RecognizeFailed($"expected `{tokenInString}` but `{ConvertToString(nextToken)}` is coming.");
+        if (!TheSameTokens(nextToken, tokenInString)) RecognizeFailed($"expected `{tokenInString}` but `{ConvertToString(nextToken)}` is coming.", nextToken);
         return this;
     }
 
@@ -89,14 +89,14 @@ public class TokenStreamChecker
     public TokenStreamChecker ExpectVariable(out ScriptToken captured)
     {
         var nextToken = target.Read();
-        if (!allowedTokenTypeList.Contains(nextToken.type)) RecognizeFailed($"expected something of variable tokens but `{nextToken.type}` is coming.");
+        if (!allowedTokenTypeList.Contains(nextToken.type)) RecognizeFailed($"expected something of variable tokens but `{nextToken.type}` is coming.", nextToken);
         captured = nextToken;
         return this;
     }
     public TokenStreamChecker ExpectSymbolID(out string captured)
     {
         var nextToken = target.Read();
-        if (nextToken.type != ScriptToken.Type.SYMBOL_ID) RecognizeFailed($"expected something of symbolID but `{nextToken.type}` is coming.");
+        if (nextToken.type != ScriptToken.Type.SYMBOL_ID) RecognizeFailed($"expected something of symbolID but `{nextToken.type}` is coming.", nextToken);
         captured = nextToken.user_defined_symbol;
         return this;
     }

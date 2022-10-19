@@ -1,4 +1,4 @@
-﻿
+﻿#nullable enable
 using UnityEngine;
 
 public struct ScriptToken
@@ -7,6 +7,11 @@ public struct ScriptToken
     public string user_defined_symbol;
     public int int_val;
     public float float_val;
+
+    private int? _lineNumber;
+    public int? LineNumber { get => _lineNumber; }
+    private int? ColumnNumber { get => _columnNumber; }
+    public int? _columnNumber;
 
     /**
      * 与えられたトークンの情報から適切にトークンを生成する。
@@ -24,6 +29,14 @@ public struct ScriptToken
             default:
                 return GenerateReservedToken(token);
         }
+    }
+    public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, int lineNumber, int columnNumber)
+    {
+
+        ScriptToken scriptToken = GenerateToken(snippet, token);
+        scriptToken._lineNumber = lineNumber;
+        scriptToken._columnNumber = columnNumber;
+        return scriptToken;
     }
     public static ScriptToken EndOfFile => new(){ type = Type.END_OF_FILE };
     public enum Type

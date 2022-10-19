@@ -9,9 +9,9 @@ public struct ScriptToken
     public float float_val;
 
     private int? _lineNumber;
+    private int? _columnNumber;
     public int? LineNumber { get => _lineNumber; }
-    private int? ColumnNumber { get => _columnNumber; }
-    public int? _columnNumber;
+    public int? ColumnNumber { get => _columnNumber; }    
 
     /**
      * 与えられたトークンの情報から適切にトークンを生成する。

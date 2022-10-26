@@ -1,39 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class RelationalExpASTNode : ASTNode
+public class RelationalExpASTNode : RelationalExpASTNodeBase
 {
-    private RelationalExpASTNode left;
+    private TermExpASTNodeBase left;
     private ScriptToken relationOperator;
-    private TermExpASTNode right;
+    private RelationalExpASTNodeBase right;
 
-    public RelationalExpASTNode(TermExpASTNode termExp)
+    public RelationalExpASTNode(TermExpASTNodeBase termExp)
     {
         this.left = null;
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = termExp;
     }
-    public RelationalExpASTNode(RelationalExpASTNode left, ScriptToken arithmeticOperator, TermExpASTNode right)
+    public RelationalExpASTNode(TermExpASTNodeBase left, ScriptToken arithmeticOperator, RelationalExpASTNodeBase right)
     {
         this.left = left;
         this.relationOperator = arithmeticOperator;
         this.right = right;
-    }
-    public static implicit operator RelationalExpASTNode(TermExpASTNode node)
-    {
-        return new RelationalExpASTNode(node);
-    }
-    public static implicit operator RelationalExpASTNode(FactorExpASTNode node)
-    {
-        return new RelationalExpASTNode(node);
-    }
-    public static implicit operator RelationalExpASTNode(UnaryExpASTNode node)
-    {
-        return new RelationalExpASTNode(node);
-    }
-    public static implicit operator RelationalExpASTNode(PrimaryExpASTNode node)
-    {
-        return new RelationalExpASTNode(node);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

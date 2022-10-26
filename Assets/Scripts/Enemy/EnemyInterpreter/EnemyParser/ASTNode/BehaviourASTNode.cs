@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-public class BehaviourASTNode : ASTNode
+public class BehaviourASTNode : BehaviourASTNodeBase
 {
     public string id;
     private List<ASTNode> bulletAndAction;
 
-    public BehaviourASTNode(string id, BulletASTNode bullet, ActionASTNode action)
+    public BehaviourASTNode(string id, BulletASTNodeBase bullet, ActionASTNodeBase action)
     {
         this.id = id;
         this.bulletAndAction = new List<ASTNode>();
-        this.bulletAndAction.Add(bullet);
+        if (bullet != null) {
+            this.bulletAndAction.Add(bullet);
+        }
         this.bulletAndAction.Add(action);
     }
-    public BehaviourASTNode(string id, ActionASTNode action)
+    public BehaviourASTNode(string id, ActionASTNodeBase action)
     {
         this.id = id;
         this.bulletAndAction = new List<ASTNode>();

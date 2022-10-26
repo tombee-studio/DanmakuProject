@@ -32,32 +32,32 @@ public partial class EnemyASTNodeTester
             $"CALL {fFactory.Find("scatter_bullets_in_circular_pattern")}",
         };
         var node = new BulletASTNode(
-            new List<BulletSectionASTNode>()
+            new List<BulletSectionASTNodeBase>()
             .Append(new BulletSectionASTNode(0,
-                new List<CallFuncStASTNode>()
+                new List<CallFuncStASTNodeBase>()
                     .Append(new CallFuncStASTNode(
                         "generate_bullets", 
-                        new List<ExpASTNode>()
+                        new List<ExpASTNodeBase>()
                             .Append(new PrimaryExpASTNode(24))
                             .ToList()
                     ))
                     .Append(new CallFuncStASTNode(
                         "set_bullets_position_at_enemy",
-                        new List<ExpASTNode>()
+                        new List<ExpASTNodeBase>()
                     ))
                     .ToList()
             ))
             .Append(new BulletSectionASTNode(1,
-                new List<CallFuncStASTNode>()
+                new List<CallFuncStASTNodeBase>()
                     .Append(new CallFuncStASTNode(
                         "generate_bullets", 
-                        new List<ExpASTNode>()
+                        new List<ExpASTNodeBase>()
                             .Append(new PrimaryExpASTNode(48))
                             .ToList()
                     ))
                     .Append(new CallFuncStASTNode(
                         "scatter_bullets_in_circular_pattern",
-                        new List<ExpASTNode>()
+                        new List<ExpASTNodeBase>()
                             .Append(new PrimaryExpASTNode(0.1f))
                             .Append(new PrimaryExpASTNode(0f))
                             .ToList()

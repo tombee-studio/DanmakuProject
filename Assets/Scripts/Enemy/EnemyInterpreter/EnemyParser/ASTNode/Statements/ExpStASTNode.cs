@@ -1,40 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class ExpStASTNode : ASTNode
+// TODO: 設定は反映しない
+public class ExpStASTNode : ExpStASTNodeBase
 {
-    ExpASTNode exp;
-    public ExpStASTNode(ExpASTNode exp)
+    ExpASTNodeBase exp;
+    public ExpStASTNode(ExpASTNodeBase exp)
     {
         this.exp = exp;
-    }
-    public static implicit operator ExpStASTNode(ExpASTNode node)
-    {
-        return new ExpStASTNode(node);
-    }
-    public static implicit operator ExpStASTNode(EqualityExpASTNode node)
-    {
-        return new ExpStASTNode(node);
-    }
-    public static implicit operator ExpStASTNode(RelationalExpASTNode node)
-    {
-        return new ExpStASTNode(node);
-    }
-    public static implicit operator ExpStASTNode(TermExpASTNode node)
-    {
-        return new ExpStASTNode(node);
-    }
-    public static implicit operator ExpStASTNode(FactorExpASTNode node)
-    {
-        return new ExpStASTNode(node);
-    }
-    public static implicit operator ExpStASTNode(UnaryExpASTNode node)
-    {
-        return new ExpStASTNode(node);
-    }
-    public static implicit operator ExpStASTNode(PrimaryExpASTNode node)
-    {
-        return new ExpStASTNode(node);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

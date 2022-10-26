@@ -122,6 +122,10 @@ public partial class EnemyVM
             case Mnemonic.DIV: Div(); break;
             case Mnemonic.MOD: Mod(); break;
 
+            case Mnemonic.AND: And(); break;
+            case Mnemonic.OR: Or(); break;
+            case Mnemonic.NOT: Not(); break;
+
             case Mnemonic.EQ: Eq(); break;
             case Mnemonic.NE: Ne(); break;
 

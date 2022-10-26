@@ -1,43 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class EqualityExpASTNode : ASTNode
+public class EqualityExpASTNode : EqualityExpASTNodeBase
 {
-    private EqualityExpASTNode left;
+    private RelationalExpASTNodeBase left;
     private ScriptToken relationOperator;
-    private RelationalExpASTNode right;
+    private EqualityExpASTNodeBase right;
 
-    public EqualityExpASTNode(RelationalExpASTNode relationalExp)
+    public EqualityExpASTNode(RelationalExpASTNodeBase relationalExp)
     {
         this.left = null;
         this.relationOperator = ScriptToken.GenerateToken("", ScriptToken.Type.NONE);
         this.right = relationalExp;
     }
-    public EqualityExpASTNode(EqualityExpASTNode left, ScriptToken relationalOperator, RelationalExpASTNode right)
+    public EqualityExpASTNode(RelationalExpASTNodeBase left, ScriptToken relationalOperator, EqualityExpASTNodeBase right)
     {
         this.left = left;
         this.relationOperator = relationalOperator;
         this.right = right;
-    }
-    public static implicit operator EqualityExpASTNode(RelationalExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(TermExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(FactorExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(UnaryExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
-    }
-    public static implicit operator EqualityExpASTNode(PrimaryExpASTNode node)
-    {
-        return new EqualityExpASTNode(node);
     }
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {
@@ -51,7 +32,7 @@ public class EqualityExpASTNode : ASTNode
                 case ScriptToken.Type.EQUAL:
                     instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.EQ, 0));
                     break;
-                case ScriptToken.Type.NOT:
+                case ScriptToken.Type.NOT_EQUAL:
                     instructions.Add(new EnemyVM.Instruction(EnemyVM.Mnemonic.NE, 0));
                     break;
             }
@@ -74,7 +55,7 @@ public class EqualityExpASTNode : ASTNode
                 case ScriptToken.Type.EQUAL:
                     str += "==";
                     break;
-                case ScriptToken.Type.NOT:
+                case ScriptToken.Type.NOT_EQUAL:
                     str += "!=";
                     break;
             }

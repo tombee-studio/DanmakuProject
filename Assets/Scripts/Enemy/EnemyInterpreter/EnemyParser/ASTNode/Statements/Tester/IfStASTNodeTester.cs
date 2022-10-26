@@ -19,16 +19,19 @@ public partial class EnemyASTNodeTester
         };
         var node = new IfStASTNode(
             new PrimaryExpASTNode(cond),
-            new FactorExpASTNode(
-                new PrimaryExpASTNode(ifBody1),
-                ScriptToken.GenerateToken("", ScriptToken.Type.MULTIPLY),
-                new PrimaryExpASTNode(ifBody2)
+            new ExpStASTNode(
+                new FactorExpASTNode(
+                    new PrimaryExpASTNode(ifBody1),
+                    ScriptToken.GenerateToken("", ScriptToken.Type.MULTIPLY),
+                    new PrimaryExpASTNode(ifBody2)
+                )
             )
         );
         checkGeneratedInstructionIsSame(testCodes, node);
-        Assert.AreEqual(node.Print(0), 
+        Assert.AreEqual( 
             $"if({cond})\n"
-            +"\t" + $"{ifBody1}*{ifBody2}\n");
+            +"\t" + $"{ifBody1}*{ifBody2}\n"
+        ,node.Print(0));
         checkVMReturnValueFromSubProgram(node, ifBody1 * ifBody2);
     }
     void test_ifAndElseIfStASTNodeTester()
@@ -48,12 +51,16 @@ public partial class EnemyASTNodeTester
         };
         var node = new IfStASTNode(
             new PrimaryExpASTNode(cond),
-            new FactorExpASTNode(
-                new PrimaryExpASTNode(ifBody1),
-                ScriptToken.GenerateToken("", ScriptToken.Type.MULTIPLY),
-                new PrimaryExpASTNode(ifBody2)
+            new ExpStASTNode(
+                new FactorExpASTNode(
+                    new PrimaryExpASTNode(ifBody1),
+                    ScriptToken.GenerateToken("", ScriptToken.Type.MULTIPLY),
+                    new PrimaryExpASTNode(ifBody2)
+                )
             ),
-            new PrimaryExpASTNode(elseBody)
+            new ExpStASTNode(
+                new PrimaryExpASTNode(elseBody)
+            )
         );
         checkGeneratedInstructionIsSame(testCodes, node);
         Assert.AreEqual(node.Print(0), 

@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-public class IfStASTNode : ASTNode
+
+// TODO: 設定は反映しない
+public class IfStASTNode : IfStASTNodeBase
 {
-    ExpASTNode cond;
-    StatementASTNode ifBody;
-    StatementASTNode elseBody;
+    ExpASTNodeBase cond;
+    StatementASTNodeBase ifBody;
+    StatementASTNodeBase elseBody;
     public IfStASTNode(
-        ExpASTNode cond,
-        StatementASTNode ifBody,
-        StatementASTNode elseBody
+        ExpASTNodeBase cond,
+        StatementASTNodeBase ifBody,
+        StatementASTNodeBase elseBody
     )
     {
         this.cond = cond;
@@ -17,8 +19,8 @@ public class IfStASTNode : ASTNode
         this.elseBody = elseBody;
     }
     public IfStASTNode(
-        ExpASTNode cond,
-        StatementASTNode ifBody
+        ExpASTNodeBase cond,
+        StatementASTNodeBase ifBody
     )
     {
         this.cond = cond;

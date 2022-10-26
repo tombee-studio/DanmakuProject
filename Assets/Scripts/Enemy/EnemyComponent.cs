@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(CircleCollider2D), typeof(Text))]
 public class EnemyComponent : MonoBehaviour
 {
 #nullable enable
@@ -10,19 +12,27 @@ public class EnemyComponent : MonoBehaviour
 
     EnemyInterpreter interpreter { get => _interpreter ??= new EnemyInterpreter(this); }
     Dictionary<int, List<BulletComponent>> bulletsList = new Dictionary<int, List<BulletComponent>>();
+    Dictionary<int, List<GunAction>> gunActions = new Dictionary<int, List<GunAction>>();
+
     [SerializeField] BulletComponent? bulletPrefab;
+
+    [SerializeField] private Text script => GetComponent<Text>();
+
+    private int delayTime = 0;
+
+    private EnemyVM vm;
+
     void Start()
     {
+        vm = new EnemyVM(this);
         interpreter.test_run();
-        Debug.Log(interpreter.ReturnValue);
-#pragma warning disable CS0618  // ここではわざと使っているので警告を出さない.
-        Toriaezu();
-#pragma warning restore CS0618
+        LoadScript();
     }
-    private List<ExpASTNode> GetArgsList(params PrimitiveValue[] args)
+
+    private List<ExpASTNodeBase> GetArgsList(params PrimitiveValue[] args)
     {
-        return new List<ExpASTNode>(
-            args.Select(e => (ExpASTNode)new PrimaryExpASTNode(e))
+        return new List<ExpASTNodeBase>(
+            args.Select(e => (ExpASTNodeBase)new PrimaryExpASTNode(e))
         );
     }
     [System.Obsolete("とりあえず用意しただけのメソッドに紐づいているメソッドなのでいずれ消します")]
@@ -30,122 +40,34 @@ public class EnemyComponent : MonoBehaviour
     {
         return elements.ToList();
     }
-    // とりあえず動作させる
-    [System.Obsolete("とりあえず用意しただけのメソッドなのでいずれ消します")]
-    void Toriaezu()
+
+    void LoadScript()
     {
-        /* サンプルプログラム */
-        /*
-            bullet >>
-            ID: 0
-            generate_bullets(24)
-            set_bullets_position_at_enemy()
-            scatter_bullets_in_circular_pattern(0.1f, 0f)
-            delay_bullets(60)
-            scatter_bullets_in_circular_pattern(0.1f, 180f)
-            delay_bullets(120)
-
-            ID: 1
-            generate_bullets(24)
-            delay_bullets(60)
-            set_bullets_position_at_enemy()
-            scatter_bullets_in_circular_pattern(0.1f, 0f)
-            delay_bullets(60)
-            move_bullets_parallel(0.1f, 30f)
-            delay_bullets(120)
-
-            action >>
-            activate_bullets(0)
-            activate_bullets(1)
-        */
-        /* 上のサンプルに対応する AST の動作を確認する */
-        int id;
-        id = 0;
-        var nodes0 = getList(
-            new CallFuncStASTNode(
-                "generate_bullets",
-                GetArgsList(24)
-            ),
-            new CallFuncStASTNode(
-                "set_bullets_position_at_enemy",
-                GetArgsList()
-            ),
-            new CallFuncStASTNode(
-                "scatter_bullets_in_circular_pattern",
-                GetArgsList(0.1f, 0f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(60)
-            ),
-            new CallFuncStASTNode(
-                "scatter_bullets_in_circular_pattern",
-                GetArgsList(0.1f, 180f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(120)
-            ),
-            new CallFuncStASTNode(
-                "activate_bullets",
-                GetArgsList()
-            )
-        );
-        nodes0.ForEach(e=>e.id = id);
-
-        id = 1;
-        var nodes1 = getList(
-            new CallFuncStASTNode(
-                "generate_bullets",
-                GetArgsList(24)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(60)
-            ),
-            new CallFuncStASTNode(
-                "set_bullets_position_at_enemy",
-                GetArgsList()
-            ),
-            new CallFuncStASTNode(
-                "scatter_bullets_in_circular_pattern",
-                GetArgsList(0.1f, 0f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(60)
-            ),
-            new CallFuncStASTNode(
-                "move_bullets_parallel",
-                GetArgsList(0.1f, 30f)
-            ),
-            new CallFuncStASTNode(
-                "delay_bullets",
-                GetArgsList(120)
-            ),
-            new CallFuncStASTNode(
-                "activate_bullets",
-                GetArgsList()
-            )
-        );
-        nodes1.ForEach(e=>e.id = id);
+        var tokens = interpreter.compiler.lexer.Lex(script.text);
+        var ast = interpreter.compiler.parser.ParseBehaviour(
+            new TokenStreamPointer(tokens));
 
         var enemy = GameObject.FindObjectOfType<EnemyComponent>();
-        var vm = new EnemyVM(enemy);
+        vm = new EnemyVM(enemy);
         var vtable = new Dictionary<string, int>();
-        var instructions = nodes0.Concat(nodes1)
-            .Select(node => node.Compile(vtable))
-            .SelectMany(instructions => instructions).ToList();
+        var instructions = ast.ParsedNode
+            .Compile(new Dictionary<string, int>())
+            .ToList();
         instructions.ForEach(instruction => vm.appendInstruction(instruction));
-        while (!vm.IsExit)
-        {
-            vm.run();
-        }
     }
 
     void Update()
     {
-        Move(0.25f * Mathf.Cos(Mathf.Deg2Rad * 30), 0.25f * Mathf.Sin(Mathf.Deg2Rad * 30));  // とりあえずの動き
+        if (delayTime > 0)
+        {
+            delayTime--;
+        }
+        else {
+            while (!vm.IsExit && delayTime < 1)
+            {
+                vm.run();
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -174,50 +96,49 @@ public class EnemyComponent : MonoBehaviour
         if (bulletPrefab == null) { throw new System.NullReferenceException("Set bullet Prefab from inspector."); }
         if (bulletsList.ContainsKey(id)) { throw new System.Exception($"Duplicated Key Exception: id = {id} already used. (id = {id} は既に使われています.)"); }
 
-        bulletsList.Add(id, new List<BulletComponent>());
-        for (int i = 0; i < bulletCount; i++)
-        {
-            bulletsList[id].Add(Instantiate(bulletPrefab));
-        }
-        // 画面外で初期化. 弾は活動開始まで画面外で待機.
-        Vector3 extreme = 100 * WindowInformation.UP_RIGHT;
-        bulletsList[id].ForEach(bullet => bullet.transform.position = new Vector3(extreme.x, extreme.y, 0));
+        gunActions.Add(id, new List<GunAction>());
+        gunActions[id].Add(new GenerateBulletGunAction(bulletCount));
     }
     public void ActivateBullets(int id)
     {
-        bulletsList[id].ForEach(bullet => bullet.Activate());
+        var bullets = new List<BulletComponent>();
+        foreach (var gunAction in gunActions[id]) {
+            bullets = gunAction.Run(this, bullets);
+        }
+        foreach (var bullet in bullets) {
+            bullet.Activate();
+        }
     }
     public void DelayBullets(int id, int frames)
     {
-        bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletDelay(bullet, frames)));
+        gunActions[id].Add(new DelayGunAction(frames));
     }
     public void SetBulletsPositionAtEnemy(int id)
     {
-        bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletSetRelativePosition(bullet, Vector3.zero, transform)));
+        gunActions[id].Add(new SetBulletsPositionAtEnemyGunAction());
     }
     public void MoveBulletsParallel(int id, float speed, float angleOffset)
     {
-        bulletsList[id].ForEach(bullet => bullet.EnqueueAction(new BulletMoveLinear(bullet, speed, angleOffset)));
+        gunActions[id].Add(
+            new MoveBulletsParallelGunAction(speed, angleOffset));
     }
     public void SetBulletsPositionInCircularPattern(int id, float angleOffset/* = 0*/)
     {
-        int i = 0;
-        bulletsList[id].ForEach(bullet =>
-        {
-            float deg = i * (360f / bulletsList[id].Count);
-            Vector3 relativePos = new Vector3(Mathf.Cos(Mathf.Deg2Rad * (deg + angleOffset)), Mathf.Sin(Mathf.Deg2Rad * (deg + angleOffset)), 0f);
-            bullet.EnqueueAction(new BulletSetRelativePosition(bullet, relativePos, transform));
-            i++;
-        });
+        gunActions[id].Add(
+            new SetBulletsPositionInCircularPatternGunAction(angleOffset));
     }
     public void ScatterBulletsInCircularPattern(int id, float speed, float angleOffset/* = 0*/)
     {
-        int i = 0;
-        bulletsList[id].ForEach(bullet =>
-        {
-            float deg = i * (360f / bulletsList[id].Count);
-            bullet.EnqueueAction(new BulletMoveLinear(bullet, speed, deg + angleOffset));
-            i++;
-        });
+        gunActions[id].Add(
+            new ScatterBulletsInCircularPatternGunAction(speed, angleOffset));
+    }
+
+    public void SetDelayTime(int delayTime) {
+        this.delayTime = delayTime;
+    }
+
+    public BulletComponent GenerateBullets()
+    {
+        return Instantiate(bulletPrefab);
     }
 }

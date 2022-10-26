@@ -49,7 +49,7 @@ public partial class EnemyASTNodeTester
     public void test_ParenExp()
     {
         int value = 42;
-        ExpASTNode exp = new PrimaryExpASTNode(value);
+        ExpASTNodeBase exp = new PrimaryExpASTNode(value);
         string[] testCodes = {
             $"PUSH {value}"
         };

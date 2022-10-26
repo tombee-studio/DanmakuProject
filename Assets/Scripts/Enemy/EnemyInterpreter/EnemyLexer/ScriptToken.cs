@@ -1,12 +1,26 @@
-﻿
+﻿#nullable enable
 using UnityEngine;
 
+public struct TokenRangeInCode
+{
+    public int lineNumber;
+    public int beginColumnNumber;
+    public int length;
+    public TokenRangeInCode(int lineNumber, int beginColumnNumber, int length)
+    {
+        this.lineNumber = lineNumber;
+        this.beginColumnNumber = beginColumnNumber;
+        this.length = length;
+    }
+}
 public struct ScriptToken
 {
     public Type type;
     public string user_defined_symbol;
     public int int_val;
     public float float_val;
+
+    public TokenRangeInCode range;
 
     /**
      * 与えられたトークンの情報から適切にトークンを生成する。
@@ -25,6 +39,13 @@ public struct ScriptToken
                 return GenerateReservedToken(token);
         }
     }
+    public static ScriptToken GenerateTokenWithPosition(string snippet, Type token, TokenRangeInCode tokenRange)
+    {
+        ScriptToken scriptToken = GenerateToken(snippet, token);
+        scriptToken.range = tokenRange;
+        return scriptToken;
+    }
+    public static ScriptToken EndOfFile => new(){ type = Type.END_OF_FILE };
     public enum Type
     {
         NONE,
@@ -63,11 +84,14 @@ public struct ScriptToken
 
         ASSIGNMENT,
         EQUAL,
+        NOT_EQUAL,
         COMMA,
 
         SYMBOL_ID,
         INT_LITERAL,
-        FLOAT_LITERAL
+        FLOAT_LITERAL,
+
+        END_OF_FILE
 
     };
 

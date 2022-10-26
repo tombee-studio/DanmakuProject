@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Assertions;
-public class RepeatStASTNode : ASTNode
+
+// TODO: 設定は反映しない
+public class RepeatStASTNode : RepeatStASTNodeBase
 {
     static int loopCount = 0;
     int N;
-    StatementASTNode statement;
-    public RepeatStASTNode(int numberOfExecutions, StatementASTNode statement)
+    StatementASTNodeBase statement;
+    public RepeatStASTNode(int numberOfExecutions, StatementASTNodeBase statement)
     {
         this.N = numberOfExecutions;
         this.statement = statement;

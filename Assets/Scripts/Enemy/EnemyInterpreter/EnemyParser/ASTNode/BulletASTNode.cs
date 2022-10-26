@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class BulletASTNode : ASTNode
+public class BulletASTNode : BulletASTNodeBase
 {
-    private List<BulletSectionASTNode> bulletSections;
-    public BulletASTNode(List<BulletSectionASTNode> bulletSections)
+    private List<BulletSectionASTNodeBase> bulletSections;
+    public BulletASTNode(List<BulletSectionASTNodeBase> bulletSections)
     {
         this.bulletSections = bulletSections;
     }

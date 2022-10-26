@@ -47,10 +47,12 @@ public partial class EnemyLexer {
         { TokenType.GREATER_EQUAL, ">=" },
         { TokenType.LESS_EQUAL, "<=" },
         { TokenType.EQUAL, "==" },
+        { TokenType.NOT_EQUAL, "!=" },
         { TokenType.PLUS, "+" },
         { TokenType.SUB, "-" },
         { TokenType.MULTIPLY, "*" },
         { TokenType.DIVIDE, "/" },
+        { TokenType.MOD, "%" },
         { TokenType.GREATER_THAN, ">" },
         { TokenType.LESS_THAN, "<" },
         { TokenType.BRACKET_LEFT, "(" },
@@ -60,7 +62,11 @@ public partial class EnemyLexer {
         { TokenType.CURLY_BRACKET_RIGHT, "}" },
 
         { TokenType.ASSIGNMENT, "=" },
-        { TokenType.COMMA, "," }
+        { TokenType.COMMA, "," },
+        { TokenType.INT_LITERAL, "INT_LITERAL" },
+        { TokenType.FLOAT_LITERAL, "FLOAT_LITERAL" },
+
+        { TokenType.END_OF_FILE, "EOF" }
     };
     public readonly static ReservedTokenDictionary.KeyCollection reservedTokenTypes = mapFromTokenTypeToReservedWord.Keys;
 
@@ -104,6 +110,7 @@ public partial class EnemyLexer {
         }
 
         var lineCount = 0;
+        var columnCount = 0;
         var codeCharNumber = code.Length;
         
         var tokens = new List<ScriptToken>();
@@ -113,19 +120,25 @@ public partial class EnemyLexer {
 
             char currentChar = code[textPointer];
             char nextChar = code[textPointer + 1];
-            if (currentChar == '\n') lineCount++;
-            
+            if (currentChar == '\n')
+            {
+                lineCount++; columnCount = 0;
+                continue;
+            }
+            columnCount++;
+
             if (shouldSkippedCurrentCharacter(snippet, currentChar)) continue;
             snippet += currentChar;
+
             if (!existPossibleTokenWhenLookaheading(snippet, nextChar)){
-                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code));
+                tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, columnCount));
                 snippet = "";
             }
         }
 
         if (shouldSkippedCurrentCharacter(snippet, code[codeCharNumber - 1])) return tokens;
         snippet += code[codeCharNumber - 1];
-        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code));
+        tokens.Add(ConvertCurrentSnippetToToken(snippet, lineCount, code, columnCount));
         return tokens;
     }
     /**
@@ -141,10 +154,12 @@ public partial class EnemyLexer {
     /**
      * snippetに含まれる文字列をトークン列に変換する
      */
-    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode)
+    ScriptToken ConvertCurrentSnippetToToken(string snippet, int lineCount, string allCode, int tokenEndColumnNumber)
     {
         var matchedTokenTypeInLastChar = FindOutMatchedTokenTypeInList(snippet, lineCount, allCode);
-        return ScriptToken.GenerateToken(snippet, matchedTokenTypeInLastChar);
+        int length = snippet.Length;
+        TokenRangeInCode tokenRange = new(lineCount, tokenEndColumnNumber - length, length);
+        return ScriptToken.GenerateTokenWithPosition(snippet, matchedTokenTypeInLastChar, tokenRange);
     }
 
     /*

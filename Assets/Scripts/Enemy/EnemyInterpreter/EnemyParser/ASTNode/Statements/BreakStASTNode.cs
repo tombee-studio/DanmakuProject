@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class BreakStASTNode : ASTNode
+// TODO: 設定は反映しない
+public class BreakStASTNode : BreakStASTNodeBase
 {
     public BreakStASTNode(){}
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class AssignStASTNode : ASTNode
+// TODO: 設定は反映しない
+public class AssignStASTNode : AssignStASTNodeBase
 {
     string id;
-    ExpASTNode exp;
-    public AssignStASTNode(string id, ExpASTNode exp)
+    ExpASTNodeBase exp;
+    public AssignStASTNode(string id, ExpASTNodeBase exp)
     {
         this.id = id;
         this.exp = exp;

@@ -18,24 +18,22 @@ public partial class EnemyASTNodeTester : Tester
             $"CALL {fFactory.Find("activate_bullets")}",
         };
         var node = new ActionASTNode(
-            new List<StatementASTNode>()
+            new List<StatementASTNodeBase>()
             .Append(new CallFuncStASTNode(
                 "activate_bullets",
-                new List<ExpASTNode>()
+                new List<ExpASTNodeBase>()
                 .Append(new PrimaryExpASTNode(0))
                 .ToList()
                 ))
             .Append(new CallFuncStASTNode(
                 "activate_bullets",
-                new List<ExpASTNode>()
+                new List<ExpASTNodeBase>()
                 .Append(new PrimaryExpASTNode(1))
                 .ToList()
                 ))
             .ToList()
         );
         int i = 0;
-        node.Compile(new Dictionary<string, int>())
-            .ForEach(e=>Debug.Log($"{e}, {i++}"));
         checkGeneratedInstructionIsSame(testCodes, node);
         checkPrintScript(scriptCodes, node);
     }

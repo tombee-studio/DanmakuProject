@@ -18,7 +18,9 @@ public partial class EnemyASTNodeTester
             node.Compile(new Dictionary<string, int>());
             throw new ExpectedExceptionNotThrownException();
         }
+#pragma warning disable CS0168  // e is not used but required to check if expected error is thrown
         catch (KeyNotFoundException e)
+#pragma warning restore CS0168
         {
             // DoNothing(); because expected exception thrown.
         }

@@ -5,13 +5,13 @@ using UnityEngine;
 using UnityEngine.Assertions;
 public partial class EnemyASTNodeTester
 {
-    private List<ExpASTNode> ChangeArgsToList(PrimitiveValue[] args)
+    private List<ExpASTNodeBase> ChangeArgsToList(PrimitiveValue[] args)
     {
-        return new List<ExpASTNode>(
-            args.Select(e => (ExpASTNode)new PrimaryExpASTNode(e))
+        return new List<ExpASTNodeBase>(
+            args.Select(e => new PrimaryExpASTNode(e))
         );
     }
-    private List<ExpASTNode> GetArgsList(params PrimitiveValue[] args)
+    private List<ExpASTNodeBase> GetArgsList(params PrimitiveValue[] args)
     {
         return ChangeArgsToList(args);
     }

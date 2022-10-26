@@ -19,12 +19,12 @@ public partial class EnemyASTNodeTester
             "LOAD 0",
         };
         var node = new BlockStASTNode(
-            new List<StatementASTNode>()
+            new List<StatementASTNodeBase>()
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "i"))
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "j"))
             .Append(new AssignStASTNode("i", new PrimaryExpASTNode(42)))
             .Append(new AssignStASTNode("j", new PrimaryExpASTNode(91)))
-            .Append(new PrimaryExpASTNode("j"))
+            .Append(new ExpStASTNode(new PrimaryExpASTNode("j")))
             .ToList()
         );
         checkGeneratedInstructionIsSame(testCodes, node);
@@ -56,16 +56,20 @@ public partial class EnemyASTNodeTester
             "SUB 0",
         };
         var node = new BlockStASTNode(
-            new List<StatementASTNode>()
+            new List<StatementASTNodeBase>()
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "i"))
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "j"))
             .Append(new AssignStASTNode("i", new PrimaryExpASTNode(0)))
             .Append(new AssignStASTNode("j", new PrimaryExpASTNode(42)))
-            .Append(new TermExpASTNode(
-                new PrimaryExpASTNode("i"),
-                ScriptToken.GenerateToken("", ScriptToken.Type.SUB),
-                new PrimaryExpASTNode("j")
-            ))
+            .Append(
+                new ExpStASTNode(
+                    new TermExpASTNode(
+                        new PrimaryExpASTNode("i"),
+                        ScriptToken.GenerateToken("", ScriptToken.Type.SUB),
+                        new PrimaryExpASTNode("j")
+                    )
+                )
+            )
             .ToList()
         );
         checkGeneratedInstructionIsSame(testCodes, node);
@@ -150,13 +154,13 @@ public partial class EnemyASTNodeTester
             "LOAD 0",
         };
         var node = new BlockStASTNode(
-            new List<StatementASTNode>()
+            new List<StatementASTNodeBase>()
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "i"))
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "sum"))
             .Append(new AssignStASTNode("i", new PrimaryExpASTNode(1)))
             .Append(new AssignStASTNode("sum", new PrimaryExpASTNode(0)))
             .Append(new RepeatStASTNode(10, new BlockStASTNode(
-                new List<StatementASTNode>()
+                new List<StatementASTNodeBase>()
                 .Append(new AssignStASTNode("sum",
                     new TermExpASTNode(
                         new PrimaryExpASTNode("sum"),
@@ -173,7 +177,11 @@ public partial class EnemyASTNodeTester
                 ))
                 .ToList()
             )))
-            .Append(new PrimaryExpASTNode("sum"))
+            .Append(
+                new ExpStASTNode(
+                    new PrimaryExpASTNode("sum")
+                )
+            )
             .ToList()
         );
         checkPrintScript(scriptCodes, node);
@@ -260,13 +268,13 @@ public partial class EnemyASTNodeTester
             "LOAD 0",
         };
         var node = new BlockStASTNode(
-            new List<StatementASTNode>()
+            new List<StatementASTNodeBase>()
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "i"))
             .Append(new DeclarationStASTNode(PrimitiveValue.Type.INT, "sum"))
             .Append(new AssignStASTNode("i", new PrimaryExpASTNode(1)))
             .Append(new AssignStASTNode("sum", new PrimaryExpASTNode(0)))
             .Append(new RepeatStASTNode(10, new BlockStASTNode(
-                new List<StatementASTNode>()
+                new List<StatementASTNodeBase>()
                 .Append(new IfStASTNode(
                     new RelationalExpASTNode(
                         new PrimaryExpASTNode("i"),
@@ -291,7 +299,11 @@ public partial class EnemyASTNodeTester
                 ))
                 .ToList()
             )))
-            .Append(new PrimaryExpASTNode("sum"))
+            .Append(
+                new ExpStASTNode(
+                    new PrimaryExpASTNode("sum")
+                )
+            )
             .ToList()
         );
         checkPrintScript(scriptCodes, node);

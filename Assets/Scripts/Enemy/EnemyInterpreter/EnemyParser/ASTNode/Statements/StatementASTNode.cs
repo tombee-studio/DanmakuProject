@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class StatementASTNode : ASTNode
+// TODO: 設定は反映しない
+public class StatementASTNode : StatementASTNodeBase
 {
     ASTNode child;
+
     public StatementASTNode(DeclarationStASTNode statement)
     {
         this.child = statement;
@@ -36,67 +38,6 @@ public class StatementASTNode : ASTNode
     {
         this.child = statement;
     }
-    public static implicit operator StatementASTNode(DeclarationStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(AssignStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(IfStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(RepeatStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(BreakStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(CallFuncStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(BlockStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(ExpStASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(ExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(EqualityExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(RelationalExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(TermExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(FactorExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(UnaryExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-    public static implicit operator StatementASTNode(PrimaryExpASTNode node)
-    {
-        return new StatementASTNode(node);
-    }
-
 
     public override List<EnemyVM.Instruction> Compile(Dictionary<string, int> vtable)
     {

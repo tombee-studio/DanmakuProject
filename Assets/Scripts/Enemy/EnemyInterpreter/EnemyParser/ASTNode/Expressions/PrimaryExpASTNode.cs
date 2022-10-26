@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class PrimaryExpASTNode : ASTNode
+public class PrimaryExpASTNode : PrimaryExpASTNodeBase
 {
     class PrimaryValueException : Exception
     {
@@ -11,7 +11,7 @@ public class PrimaryExpASTNode : ASTNode
     bool hasParen = false;
     string id;
     PrimitiveValue number;
-    ExpASTNode exp = null;
+    ExpASTNodeBase exp = null;
     // 読み出しトークンの型に応じて呼び出しコンストラクタを変えられるようにしておく
     public PrimaryExpASTNode(PrimitiveValue value) { number = value; }
     public PrimaryExpASTNode(string id)
@@ -19,7 +19,7 @@ public class PrimaryExpASTNode : ASTNode
         this.id = id;
         isId = true;
     }
-    public PrimaryExpASTNode(ExpASTNode exp)
+    public PrimaryExpASTNode(ExpASTNodeBase exp)
     {
         this.exp = exp;
         this.hasParen = true;

@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class EnemyCompiler
 {
-    EnemyLexer lexer;
-    EnemyParser parser;
+    public EnemyLexer lexer = new EnemyLexer();
+    public EnemyParser parser = new EnemyParser();
 }
